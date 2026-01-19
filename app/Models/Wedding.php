@@ -24,6 +24,7 @@ class Wedding extends Model
         'event_type',
         'event_date',
         'upload_code',
+        'access_code',
         'client_password',
         'user_id',
         'is_active',
@@ -50,6 +51,11 @@ class Wedding extends Model
     public function getUploadUrl(): string
     {
         return url("/upload/{$this->upload_code}");
+    }
+
+    public function getAccessUrl(): string
+    {
+        return url("/access/{$this->access_code}");
     }
 
     public function getEventTypeLabel(): string

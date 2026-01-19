@@ -56,6 +56,7 @@ class WeddingController extends Controller
             'event_type' => $validated['event_type'],
             'event_date' => $validated['event_date'],
             'upload_code' => $this->generateUniqueCode(),
+            'access_code' => $this->generateUniqueAccessCode(),
             'client_password' => $validated['password'],
             'user_id' => $user->id,
             'is_active' => $validated['is_active'] ?? true,
@@ -81,6 +82,7 @@ class WeddingController extends Controller
             'clientPassword' => $wedding->client_password,
             'wedding' => $weddingData,
             'uploadUrl' => $wedding->getUploadUrl(),
+            'accessUrl' => $wedding->getAccessUrl(),
             'eventTypes' => Wedding::getEventTypeOptions(),
         ]);
     }
@@ -122,6 +124,15 @@ class WeddingController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Link-ul de upload a fost regenerat.');
+    }
+
+    public function regenerateAccessCode(Wedding $wedding): RedirectResponse
+    {
+        $wedding->update([
+            'access_code' => $this->generateUniqueAccessCode(),
+        ]);
+
+        return redirect()->back()->with('success', 'Link-ul de acces a fost regenerat.');
     }
 
     public function gallery(Wedding $wedding): Response
@@ -218,6 +229,15 @@ class WeddingController extends Controller
         do {
             $code = Str::random(8);
         } while (Wedding::where('upload_code', $code)->exists());
+
+        return $code;
+    }
+
+    private function generateUniqueAccessCode(): string
+    {
+        do {
+            $code = Str::random(24);
+        } while (Wedding::where('access_code', $code)->exists());
 
         return $code;
     }

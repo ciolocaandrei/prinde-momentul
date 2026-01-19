@@ -7,6 +7,7 @@ import QRCode from 'qrcode';
 const props = defineProps({
     wedding: Object,
     uploadUrl: String,
+    accessUrl: String,
     eventTypes: Object,
     clientPassword: String,
 });
@@ -21,6 +22,7 @@ const eventTypeLabels = {
 
 const editing = ref(false);
 const copied = ref(false);
+const accessLinkCopied = ref(false);
 const credentialsCopied = ref(false);
 const qrCodeUrl = ref('');
 
@@ -68,8 +70,21 @@ const copyUploadUrl = async () => {
     }, 2000);
 };
 
+const copyAccessLink = async () => {
+    await navigator.clipboard.writeText(props.accessUrl);
+    accessLinkCopied.value = true;
+    setTimeout(() => {
+        accessLinkCopied.value = false;
+    }, 2000);
+};
+
+const regenerateAccessCode = () => {
+    if (confirm('Ești sigur? Linkul actual de acces va deveni invalid.')) {
+        router.post(route('admin.events.regenerate-access-code', props.wedding.id));
+    }
+};
+
 const copyCredentials = async () => {
-    const loginUrl = window.location.origin + '/login';
     const eventDate = new Date(props.wedding.event_date).toLocaleDateString('ro-RO', {
         weekday: 'long',
         day: 'numeric',
@@ -84,10 +99,8 @@ Vă transmitem datele de acces pentru platforma Prinde Momentul, unde veți pute
 📅 Eveniment: ${props.wedding.couple_name}
 📆 Data: ${eventDate}
 
-🔐 Date de autentificare:
-• Link: ${loginUrl}
-• Email: ${props.wedding.user.email}
-• Parola: ${props.clientPassword}
+🔐 Link de acces (click pentru autentificare automată):
+${props.accessUrl}
 
 📸 Link pentru invitați:
 ${props.uploadUrl}
@@ -393,29 +406,60 @@ const deleteWedding = () => {
                     </div>
                 </div>
 
-                <!-- Client Credentials -->
+                <!-- Client Access Link -->
                 <div class="rounded-2xl bg-white shadow-sm ring-1 ring-slate-900/5">
                     <div class="border-b border-slate-200 px-6 py-5">
-                        <h2 class="text-lg font-semibold text-slate-900">Credențiale Client</h2>
+                        <h2 class="text-lg font-semibold text-slate-900">Link Acces Client</h2>
                     </div>
-                    <div class="px-6 py-6 space-y-3">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs text-slate-500">Email</span>
-                            <span class="text-sm font-medium text-slate-900">{{ wedding.user.email }}</span>
+                    <div class="px-6 py-6">
+                        <p class="text-sm text-slate-500 mb-4">Acest link permite autentificarea automată pentru client.</p>
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-x-2">
+                                <input
+                                    type="text"
+                                    :value="accessUrl"
+                                    readonly
+                                    class="block w-full rounded-xl border-slate-200 bg-slate-50 text-sm text-slate-600"
+                                />
+                            </div>
+                            <div class="flex gap-x-2">
+                                <button
+                                    @click="copyAccessLink"
+                                    class="flex-1 inline-flex items-center justify-center gap-x-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-4 py-2.5 text-sm font-semibold text-white hover:from-emerald-700 hover:to-teal-700 transition-all"
+                                >
+                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                    </svg>
+                                    {{ accessLinkCopied ? 'Copiat!' : 'Copiază Link' }}
+                                </button>
+                                <a
+                                    :href="accessUrl"
+                                    target="_blank"
+                                    class="inline-flex items-center justify-center rounded-xl bg-slate-100 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-200 transition-colors"
+                                >
+                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                    </svg>
+                                </a>
+                            </div>
+                            <button
+                                @click="regenerateAccessCode"
+                                class="w-full text-center text-sm text-red-500 hover:text-red-600 transition-colors"
+                            >
+                                Regenerează Link Acces
+                            </button>
                         </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs text-slate-500">Parolă</span>
-                            <span class="text-sm font-medium text-slate-900">{{ clientPassword }}</span>
+                        <div class="mt-4 pt-4 border-t border-slate-200">
+                            <button
+                                @click="copyCredentials"
+                                class="w-full inline-flex items-center justify-center gap-x-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-4 py-2.5 text-sm font-semibold text-white hover:from-violet-700 hover:to-purple-700 transition-all"
+                            >
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                </svg>
+                                {{ credentialsCopied ? 'Copiat!' : 'Copiază Mesaj Complet' }}
+                            </button>
                         </div>
-                        <button
-                            @click="copyCredentials"
-                            class="w-full mt-4 inline-flex items-center justify-center gap-x-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-4 py-2.5 text-sm font-semibold text-white hover:from-emerald-700 hover:to-teal-700 transition-all"
-                        >
-                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-                            </svg>
-                            {{ credentialsCopied ? 'Copiat!' : 'Copiază Mesaj Client' }}
-                        </button>
                     </div>
                 </div>
 

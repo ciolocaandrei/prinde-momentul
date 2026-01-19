@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccessController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\PreorderController as AdminPreorderController;
 use App\Http\Controllers\Admin\WeddingController;
@@ -24,6 +25,9 @@ Route::get('/', function () {
 Route::get('/upload/{code}', [GuestUploadController::class, 'show'])->name('guest.upload');
 Route::post('/upload/{code}', [GuestUploadController::class, 'upload'])->name('guest.upload.store');
 
+// Auto-Login Access Route (Public - No Auth Required)
+Route::get('/access/{code}', [AccessController::class, 'login'])->name('access.login');
+
 // Preorder Routes (Public)
 Route::get('/precomanda', [PreorderController::class, 'create'])->name('preorder.create');
 Route::post('/precomanda', [PreorderController::class, 'store'])->name('preorder.store');
@@ -34,6 +38,7 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::resource('events', WeddingController::class)->except(['edit'])->parameters(['events' => 'wedding']);
     Route::post('/events/{wedding}/regenerate-code', [WeddingController::class, 'regenerateCode'])->name('events.regenerate-code');
+    Route::post('/events/{wedding}/regenerate-access-code', [WeddingController::class, 'regenerateAccessCode'])->name('events.regenerate-access-code');
     Route::get('/events/{wedding}/gallery', [WeddingController::class, 'gallery'])->name('events.gallery');
     Route::get('/events/{wedding}/download', [WeddingController::class, 'download'])->name('events.download');
     Route::get('/events/{wedding}/download-selected', [WeddingController::class, 'downloadSelected'])->name('events.download-selected');

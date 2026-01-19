@@ -64,7 +64,7 @@ const handleDragLeave = () => {
 };
 
 const addFiles = (newFiles) => {
-    const maxPhotoSize = 20 * 1024 * 1024; // 20MB for photos
+    const maxPhotoSize = 500 * 1024 * 1024; // 500MB for photos
     const maxVideoSize = 100 * 1024 * 1024; // 100MB for videos
 
     let videosToAdd = 0;
@@ -83,7 +83,7 @@ const addFiles = (newFiles) => {
             return false;
         }
         if (isImage && file.size > maxPhotoSize) {
-            errors.value.files = `Fotografia ${file.name} depaseste limita de 20MB`;
+            errors.value.files = `Fotografia ${file.name} depaseste limita de 500MB`;
             return false;
         }
 
@@ -312,7 +312,7 @@ const uploadMore = () => {
                                     <p class="mt-4 text-sm font-medium text-slate-900">
                                         <span class="text-violet-600">Click pentru a incarca</span> sau trage si plaseaza
                                     </p>
-                                    <p class="mt-1 text-xs text-slate-500">Fotografii (PNG, JPG, GIF, WebP) pana la 20MB</p>
+                                    <p class="mt-1 text-xs text-slate-500">Fotografii (PNG, JPG, GIF, WebP) pana la 500MB</p>
                                     <p class="text-xs text-slate-500">Videoclipuri (MP4, MOV, AVI, WebM) pana la 100MB</p>
                                     <p v-if="canUploadMoreVideos" class="mt-2 text-xs text-amber-600 font-medium">
                                         Limita: {{ remainingVideoSlots }} videoclipuri ramase in aceasta sesiune
