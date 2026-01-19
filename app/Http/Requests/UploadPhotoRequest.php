@@ -14,19 +14,22 @@ class UploadPhotoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:20480', // 20MB max
+            'file' => 'required|file|mimes:jpeg,png,jpg,gif,webp,mp4,mov,avi,webm|max:102400', // 100MB max for videos
             'uploaded_by_name' => 'required|string|max:255',
+            'type' => 'required|in:photo,video',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'photo.required' => 'Please select a photo to upload.',
-            'photo.image' => 'The file must be an image.',
-            'photo.mimes' => 'The photo must be a JPEG, PNG, JPG, GIF, or WebP file.',
-            'photo.max' => 'The photo must not exceed 20MB.',
-            'uploaded_by_name.required' => 'Please enter your name.',
+            'file.required' => 'Te rugam sa selectezi un fisier.',
+            'file.file' => 'Fisierul nu este valid.',
+            'file.mimes' => 'Fisierul trebuie sa fie JPEG, PNG, JPG, GIF, WebP, MP4, MOV, AVI sau WebM.',
+            'file.max' => 'Fisierul nu poate depasi 100MB.',
+            'uploaded_by_name.required' => 'Te rugam sa introduci numele tau.',
+            'type.required' => 'Tipul fisierului este obligatoriu.',
+            'type.in' => 'Tipul fisierului nu este valid.',
         ];
     }
 }

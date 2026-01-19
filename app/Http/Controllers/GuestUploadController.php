@@ -38,30 +38,35 @@ class GuestUploadController extends Controller
         }
 
         $validated = $request->validated();
-        $file = $request->file('photo');
+        $file = $request->file('file');
+        $type = $validated['type'];
 
         // Generate unique filename
         $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-        $path = "weddings/{$wedding->id}/{$filename}";
+        $folder = $type === 'video' ? 'videos' : 'photos';
+        $path = "weddings/{$wedding->id}/{$folder}/{$filename}";
 
         // Store the file in Cloudflare R2
-        $file->storeAs("weddings/{$wedding->id}", $filename, 'r2');
+        $file->storeAs("weddings/{$wedding->id}/{$folder}", $filename, 'r2');
 
-        // Create photo record
+        // Create photo/video record
         $photo = Photo::create([
             'wedding_id' => $wedding->id,
             'filename' => $filename,
             'original_name' => $file->getClientOriginalName(),
             'path' => $path,
+            'type' => $type,
+            'mime_type' => $file->getMimeType(),
             'size' => $file->getSize(),
             'uploaded_by_name' => $validated['uploaded_by_name'],
         ]);
 
         return response()->json([
-            'message' => 'Photo uploaded successfully.',
-            'photo' => [
+            'message' => $type === 'video' ? 'Video incarcat cu succes.' : 'Fotografie incarcata cu succes.',
+            'media' => [
                 'id' => $photo->id,
                 'original_name' => $photo->original_name,
+                'type' => $photo->type,
             ],
         ]);
     }

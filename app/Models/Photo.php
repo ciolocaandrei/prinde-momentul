@@ -16,9 +16,21 @@ class Photo extends Model
         'filename',
         'original_name',
         'path',
+        'type',
+        'mime_type',
         'size',
         'uploaded_by_name',
     ];
+
+    public function isVideo(): bool
+    {
+        return $this->type === 'video';
+    }
+
+    public function isPhoto(): bool
+    {
+        return $this->type === 'photo';
+    }
 
     public function wedding(): BelongsTo
     {
