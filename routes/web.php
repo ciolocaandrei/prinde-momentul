@@ -33,6 +33,10 @@ Route::get('/precomanda', [PreorderController::class, 'create'])->name('preorder
 Route::post('/precomanda', [PreorderController::class, 'store'])->name('preorder.store');
 Route::get('/precomanda/succes', [PreorderController::class, 'success'])->name('preorder.success');
 
+// Legal Pages (Public)
+Route::get('/gdpr', fn () => Inertia::render('Legal/Gdpr'))->name('legal.gdpr');
+Route::get('/termeni', fn () => Inertia::render('Legal/Terms'))->name('legal.terms');
+
 // Admin Routes
 Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');

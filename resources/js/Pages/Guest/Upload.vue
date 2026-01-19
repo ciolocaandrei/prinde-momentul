@@ -1,5 +1,5 @@
 <script setup>
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 
@@ -19,6 +19,8 @@ const uploadedMedia = ref([]);
 const errors = ref({});
 const dragOver = ref(false);
 const videosUploadedInSession = ref(0);
+const acceptGdpr = ref(false);
+const acceptTerms = ref(false);
 
 const hasFiles = computed(() => files.value.length > 0);
 const selectedVideos = computed(() => files.value.filter(f => f.isVideo).length);
@@ -398,10 +400,41 @@ const uploadMore = () => {
                             </ul>
                         </div>
 
+                        <!-- Consent Checkboxes -->
+                        <div class="space-y-4 rounded-xl bg-slate-50 p-4">
+                            <p class="text-sm font-medium text-slate-700">Inainte de a incarca, te rugam sa accepti:</p>
+
+                            <label class="flex items-start gap-x-3 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    v-model="acceptTerms"
+                                    class="mt-0.5 h-4 w-4 rounded border-slate-300 text-violet-600 focus:ring-violet-500"
+                                />
+                                <span class="text-sm text-slate-600">
+                                    Am citit si sunt de acord cu
+                                    <Link href="/termeni" target="_blank" class="text-violet-600 hover:text-violet-700 underline">Termenii si Conditiile</Link>
+                                    de utilizare.
+                                </span>
+                            </label>
+
+                            <label class="flex items-start gap-x-3 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    v-model="acceptGdpr"
+                                    class="mt-0.5 h-4 w-4 rounded border-slate-300 text-violet-600 focus:ring-violet-500"
+                                />
+                                <span class="text-sm text-slate-600">
+                                    Am citit si sunt de acord cu
+                                    <Link href="/gdpr" target="_blank" class="text-violet-600 hover:text-violet-700 underline">Politica de Confidentialitate (GDPR)</Link>
+                                    si consimt la prelucrarea datelor mele personale.
+                                </span>
+                            </label>
+                        </div>
+
                         <!-- Submit Button -->
                         <button
                             type="submit"
-                            :disabled="uploading || !hasFiles || !guestName.trim()"
+                            :disabled="uploading || !hasFiles || !guestName.trim() || !acceptTerms || !acceptGdpr"
                             class="w-full inline-flex items-center justify-center gap-x-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-6 py-4 text-base font-semibold text-white shadow-lg shadow-violet-500/25 hover:from-violet-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                         >
                             <svg v-if="uploading" class="h-5 w-5 animate-spin" fill="none" viewBox="0 0 24 24">
