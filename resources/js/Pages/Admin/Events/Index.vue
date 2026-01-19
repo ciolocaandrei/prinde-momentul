@@ -33,7 +33,7 @@ const deleteWedding = (wedding) => {
             </div>
             <Link
                 :href="route('admin.events.create')"
-                class="inline-flex items-center gap-x-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 hover:from-violet-700 hover:to-purple-700 transition-all"
+                class="inline-flex items-center gap-x-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-slate-900/25 hover:bg-slate-800 transition-all"
             >
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -71,7 +71,7 @@ const deleteWedding = (wedding) => {
                     <tr v-for="wedding in weddings.data" :key="wedding.id" class="hover:bg-slate-50 transition-colors">
                         <td class="whitespace-nowrap py-5 pl-6 pr-3">
                             <div class="flex items-center gap-x-4">
-                                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 text-white text-sm font-bold">
+                                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-900 text-white text-sm font-bold">
                                     {{ wedding.couple_name.charAt(0) }}
                                 </div>
                                 <div>
@@ -118,7 +118,7 @@ const deleteWedding = (wedding) => {
                             <div class="flex items-center justify-end gap-x-3">
                                 <Link
                                     :href="route('admin.events.show', wedding.id)"
-                                    class="text-violet-600 hover:text-violet-800 font-medium transition-colors"
+                                    class="text-rose-500 hover:text-rose-600 font-medium transition-colors"
                                 >
                                     Vezi
                                 </Link>
@@ -143,7 +143,7 @@ const deleteWedding = (wedding) => {
                             <div class="mt-6">
                                 <Link
                                     :href="route('admin.events.create')"
-                                    class="inline-flex items-center gap-x-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 hover:from-violet-700 hover:to-purple-700 transition-all"
+                                    class="inline-flex items-center gap-x-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-slate-900/25 hover:bg-slate-800 transition-all"
                                 >
                                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -187,7 +187,7 @@ const deleteWedding = (wedding) => {
                                 :href="link.url"
                                 :class="[
                                     link.active
-                                        ? 'bg-violet-600 text-white'
+                                        ? 'bg-slate-900 text-white'
                                         : 'bg-white text-slate-700 hover:bg-slate-50 ring-1 ring-inset ring-slate-300',
                                     'relative inline-flex items-center px-3.5 py-2 text-sm font-medium rounded-lg transition-colors'
                                 ]"

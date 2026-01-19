@@ -29,12 +29,12 @@ const submit = () => {
 
     <div class="min-h-screen flex">
         <!-- Left Side - Branding -->
-        <div class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-violet-600 via-purple-600 to-pink-600 relative overflow-hidden">
+        <div class="hidden lg:flex lg:w-1/2 bg-slate-900 relative overflow-hidden">
             <!-- Background decoration -->
             <div class="absolute inset-0">
-                <div class="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
-                <div class="absolute bottom-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2"></div>
-                <div class="absolute top-1/2 left-1/2 w-64 h-64 bg-white/5 rounded-full blur-2xl -translate-x-1/2 -translate-y-1/2"></div>
+                <div class="absolute top-0 right-0 w-96 h-96 bg-rose-500/10 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
+                <div class="absolute bottom-0 left-0 w-96 h-96 bg-slate-700/30 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2"></div>
+                <div class="absolute top-1/2 left-1/2 w-64 h-64 bg-rose-500/5 rounded-full blur-2xl -translate-x-1/2 -translate-y-1/2"></div>
             </div>
 
             <!-- Content -->
@@ -108,13 +108,13 @@ const submit = () => {
                 <!-- Mobile logo -->
                 <div class="lg:hidden mb-10">
                     <Link href="/" class="flex items-center gap-x-3">
-                        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-purple-600">
+                        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900">
                             <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                         </div>
-                        <span class="text-xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+                        <span class="text-xl font-bold text-slate-900">
                             Prinde Momentul
                         </span>
                     </Link>
@@ -145,7 +145,7 @@ const submit = () => {
                             required
                             autofocus
                             autocomplete="username"
-                            class="mt-2 block w-full rounded-xl border-0 bg-white px-4 py-3 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm"
+                            class="mt-2 block w-full rounded-xl border-0 bg-white px-4 py-3 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-slate-900 sm:text-sm"
                             placeholder="email@exemplu.ro"
                         />
                         <InputError class="mt-2" :message="form.errors.email" />
@@ -161,7 +161,7 @@ const submit = () => {
                             v-model="form.password"
                             required
                             autocomplete="current-password"
-                            class="mt-2 block w-full rounded-xl border-0 bg-white px-4 py-3 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm"
+                            class="mt-2 block w-full rounded-xl border-0 bg-white px-4 py-3 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-slate-900 sm:text-sm"
                             placeholder="••••••••"
                         />
                         <InputError class="mt-2" :message="form.errors.password" />
@@ -172,7 +172,7 @@ const submit = () => {
                             <input
                                 type="checkbox"
                                 v-model="form.remember"
-                                class="h-4 w-4 rounded border-slate-300 text-violet-600 focus:ring-violet-600"
+                                class="h-4 w-4 rounded border-slate-300 text-slate-900 focus:ring-slate-900"
                             />
                             <span class="ms-2 text-sm text-slate-600">Tine-ma minte</span>
                         </label>
@@ -180,7 +180,7 @@ const submit = () => {
                         <Link
                             v-if="canResetPassword"
                             :href="route('password.request')"
-                            class="text-sm font-medium text-violet-600 hover:text-violet-700"
+                            class="text-sm font-medium text-rose-500 hover:text-rose-600"
                         >
                             Ai uitat parola?
                         </Link>
@@ -189,7 +189,7 @@ const submit = () => {
                     <button
                         type="submit"
                         :disabled="form.processing"
-                        class="relative w-full rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-4 py-3.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/30 hover:from-violet-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-violet-600 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                        class="relative w-full rounded-xl bg-slate-900 px-4 py-3.5 text-sm font-semibold text-white shadow-lg shadow-slate-900/30 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                     >
                         <span v-if="form.processing" class="flex items-center justify-center gap-2">
                             <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">

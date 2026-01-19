@@ -27,7 +27,7 @@ const eventTypeLabels = {
             </div>
             <Link
                 :href="route('admin.events.create')"
-                class="inline-flex items-center gap-x-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 hover:from-violet-700 hover:to-purple-700 transition-all"
+                class="inline-flex items-center gap-x-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-slate-900/25 hover:bg-slate-800 transition-all"
             >
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -40,7 +40,7 @@ const eventTypeLabels = {
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             <div class="relative overflow-hidden rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-900/5">
                 <div class="flex items-center gap-x-4">
-                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-purple-600">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-900">
                         <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
@@ -112,7 +112,7 @@ const eventTypeLabels = {
                             class="flex items-center justify-between gap-x-6 px-6 py-5 hover:bg-slate-50 transition-colors"
                         >
                             <div class="flex min-w-0 gap-x-4">
-                                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 text-white font-bold text-lg">
+                                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-900 text-white font-bold text-lg">
                                     {{ wedding.couple_name.charAt(0) }}
                                 </div>
                                 <div class="min-w-0 flex-auto">
@@ -163,7 +163,7 @@ const eventTypeLabels = {
                         <div class="mt-6">
                             <Link
                                 :href="route('admin.events.create')"
-                                class="inline-flex items-center gap-x-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 hover:from-violet-700 hover:to-purple-700 transition-all"
+                                class="inline-flex items-center gap-x-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-slate-900/25 hover:bg-slate-800 transition-all"
                             >
                                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />

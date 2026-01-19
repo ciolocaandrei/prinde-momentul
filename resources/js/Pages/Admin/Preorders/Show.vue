@@ -51,7 +51,7 @@ const updateStatus = () => {
                     <div class="flex items-center gap-x-4">
                         <select
                             v-model="form.status"
-                            class="flex-1 rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
+                            class="flex-1 rounded-xl border-slate-300 shadow-sm focus:border-slate-900 focus:ring-slate-900 text-sm"
                         >
                             <option v-for="(label, value) in statuses" :key="value" :value="value">
                                 {{ label }}
@@ -60,7 +60,7 @@ const updateStatus = () => {
                         <button
                             @click="updateStatus"
                             :disabled="form.processing || form.status === preorder.status"
-                            class="inline-flex items-center gap-x-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 hover:from-violet-700 hover:to-purple-700 disabled:opacity-50 transition-all"
+                            class="inline-flex items-center gap-x-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-slate-900/25 hover:bg-slate-800 disabled:opacity-50 transition-all"
                         >
                             <svg v-if="form.processing" class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -86,7 +86,7 @@ const updateStatus = () => {
                         <div>
                             <dt class="text-sm font-medium text-slate-500">Email</dt>
                             <dd class="mt-1 text-sm text-slate-900">
-                                <a :href="'mailto:' + preorder.contact_email" class="text-violet-600 hover:text-violet-800">
+                                <a :href="'mailto:' + preorder.contact_email" class="text-rose-500 hover:text-rose-600">
                                     {{ preorder.contact_email }}
                                 </a>
                             </dd>
@@ -95,7 +95,7 @@ const updateStatus = () => {
                             <dt class="text-sm font-medium text-slate-500">Telefon</dt>
                             <dd class="mt-1 text-sm text-slate-900">
                                 <template v-if="preorder.contact_phone">
-                                    <a :href="'tel:' + preorder.contact_phone" class="text-violet-600 hover:text-violet-800">
+                                    <a :href="'tel:' + preorder.contact_phone" class="text-rose-500 hover:text-rose-600">
                                         {{ preorder.contact_phone }}
                                     </a>
                                 </template>

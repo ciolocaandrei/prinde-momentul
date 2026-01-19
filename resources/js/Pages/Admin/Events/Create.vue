@@ -62,7 +62,7 @@ const generatePassword = () => {
                                 type="text"
                                 v-model="form.couple_name"
                                 placeholder="ex: Ana & Mihai"
-                                class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
+                                class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-slate-900 focus:ring-slate-900 text-sm"
                                 required
                             />
                             <p v-if="form.errors.couple_name" class="mt-2 text-sm text-red-600">{{ form.errors.couple_name }}</p>
@@ -73,7 +73,7 @@ const generatePassword = () => {
                             <select
                                 id="event_type"
                                 v-model="form.event_type"
-                                class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
+                                class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-slate-900 focus:ring-slate-900 text-sm"
                                 required
                             >
                                 <option v-for="(label, value) in eventTypes" :key="value" :value="value">
@@ -89,7 +89,7 @@ const generatePassword = () => {
                                 id="event_date"
                                 type="date"
                                 v-model="form.event_date"
-                                class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
+                                class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-slate-900 focus:ring-slate-900 text-sm"
                                 required
                             />
                             <p v-if="form.errors.event_date" class="mt-2 text-sm text-red-600">{{ form.errors.event_date }}</p>
@@ -100,7 +100,7 @@ const generatePassword = () => {
                                 id="is_active"
                                 type="checkbox"
                                 v-model="form.is_active"
-                                class="h-4 w-4 rounded border-slate-300 text-violet-600 focus:ring-violet-500"
+                                class="h-4 w-4 rounded border-slate-300 text-slate-900 focus:ring-slate-900"
                             />
                             <label for="is_active" class="text-sm font-medium text-slate-700">
                                 Activează upload-ul de fotografii imediat
@@ -123,7 +123,7 @@ const generatePassword = () => {
                                 type="email"
                                 v-model="form.email"
                                 placeholder="email@exemplu.com"
-                                class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
+                                class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-slate-900 focus:ring-slate-900 text-sm"
                                 required
                             />
                             <p v-if="form.errors.email" class="mt-2 text-sm text-red-600">{{ form.errors.email }}</p>
@@ -137,7 +137,7 @@ const generatePassword = () => {
                                     type="text"
                                     v-model="form.password"
                                     placeholder="Minim 8 caractere"
-                                    class="block w-full rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
+                                    class="block w-full rounded-xl border-slate-300 shadow-sm focus:border-slate-900 focus:ring-slate-900 text-sm"
                                     required
                                 />
                                 <button
@@ -168,7 +168,7 @@ const generatePassword = () => {
                     <button
                         type="submit"
                         :disabled="form.processing"
-                        class="inline-flex items-center gap-x-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 hover:from-violet-700 hover:to-purple-700 disabled:opacity-50 transition-all"
+                        class="inline-flex items-center gap-x-2 rounded-xl bg-slate-900 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-slate-900/25 hover:bg-slate-800 disabled:opacity-50 transition-all"
                     >
                         <svg v-if="form.processing" class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

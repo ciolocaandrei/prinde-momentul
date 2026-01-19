@@ -61,19 +61,19 @@ const submit = () => {
 <template>
     <Head title="Precomanda - Prinde Momentul" />
 
-    <div class="min-h-screen bg-gradient-to-br from-violet-50 via-white to-purple-50">
+    <div class="min-h-screen bg-slate-50">
         <!-- Header -->
         <header class="bg-white/80 backdrop-blur-sm border-b border-slate-200/50 sticky top-0 z-50">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
                 <div class="flex items-center justify-between">
                     <Link href="/" class="flex items-center gap-x-3">
-                        <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-violet-600 to-purple-600 flex items-center justify-center">
+                        <div class="h-10 w-10 rounded-xl bg-slate-900 flex items-center justify-center">
                             <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                         </div>
-                        <span class="text-xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">Prinde Momentul</span>
+                        <span class="text-xl font-bold text-slate-900">Prinde Momentul</span>
                     </Link>
                 </div>
             </div>
@@ -107,7 +107,7 @@ const submit = () => {
                                     type="text"
                                     v-model="form.contact_name"
                                     placeholder="ex: Ana Popescu"
-                                    class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
+                                    class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-slate-900 focus:ring-slate-900 text-sm"
                                     required
                                 />
                                 <p v-if="form.errors.contact_name" class="mt-2 text-sm text-red-600">{{ form.errors.contact_name }}</p>
@@ -120,7 +120,7 @@ const submit = () => {
                                     type="email"
                                     v-model="form.contact_email"
                                     placeholder="email@exemplu.com"
-                                    class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
+                                    class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-slate-900 focus:ring-slate-900 text-sm"
                                     required
                                 />
                                 <p v-if="form.errors.contact_email" class="mt-2 text-sm text-red-600">{{ form.errors.contact_email }}</p>
@@ -134,7 +134,7 @@ const submit = () => {
                                 type="tel"
                                 v-model="form.contact_phone"
                                 placeholder="ex: 0722 123 456"
-                                class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
+                                class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-slate-900 focus:ring-slate-900 text-sm"
                             />
                             <p v-if="form.errors.contact_phone" class="mt-2 text-sm text-red-600">{{ form.errors.contact_phone }}</p>
                         </div>
@@ -154,7 +154,7 @@ const submit = () => {
                                 <select
                                     id="event_type"
                                     v-model="form.event_type"
-                                    class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
+                                    class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-slate-900 focus:ring-slate-900 text-sm"
                                     required
                                 >
                                     <option v-for="(label, value) in eventTypes" :key="value" :value="value">
@@ -170,7 +170,7 @@ const submit = () => {
                                     id="event_date"
                                     type="date"
                                     v-model="form.event_date"
-                                    class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
+                                    class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-slate-900 focus:ring-slate-900 text-sm"
                                 />
                                 <p v-if="form.errors.event_date" class="mt-2 text-sm text-red-600">{{ form.errors.event_date }}</p>
                             </div>
@@ -191,7 +191,7 @@ const submit = () => {
                                 id="wants_print_package"
                                 type="checkbox"
                                 v-model="form.wants_print_package"
-                                class="mt-1 h-5 w-5 rounded border-slate-300 text-violet-600 focus:ring-violet-500"
+                                class="mt-1 h-5 w-5 rounded border-slate-300 text-slate-900 focus:ring-slate-900"
                             />
                             <div class="flex-1">
                                 <label for="wants_print_package" class="block text-sm font-semibold text-slate-900 cursor-pointer">
@@ -202,7 +202,7 @@ const submit = () => {
                                 </p>
                             </div>
                             <div class="flex-shrink-0">
-                                <span class="inline-flex items-center rounded-full bg-violet-100 px-3 py-1 text-sm font-medium text-violet-700">
+                                <span class="inline-flex items-center rounded-full bg-rose-100 px-3 py-1 text-sm font-medium text-rose-700">
                                     Popular
                                 </span>
                             </div>
@@ -215,7 +215,7 @@ const submit = () => {
                                     id="wants_qr_card"
                                     type="checkbox"
                                     v-model="form.wants_qr_card"
-                                    class="mt-1 h-5 w-5 rounded border-slate-300 text-violet-600 focus:ring-violet-500"
+                                    class="mt-1 h-5 w-5 rounded border-slate-300 text-slate-900 focus:ring-slate-900"
                                 />
                                 <div class="flex-1">
                                     <label for="wants_qr_card" class="block text-sm font-semibold text-slate-900 cursor-pointer">
@@ -239,7 +239,7 @@ const submit = () => {
                                             v-model="form.qr_card_quantity"
                                             min="1"
                                             max="1000"
-                                            class="block w-32 rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
+                                            class="block w-32 rounded-xl border-slate-300 shadow-sm focus:border-slate-900 focus:ring-slate-900 text-sm"
                                             required
                                         />
                                         <span class="text-sm text-slate-500">bucati</span>
@@ -258,7 +258,7 @@ const submit = () => {
                                         :class="[
                                             'flex-1 rounded-xl px-4 py-3 text-sm font-medium transition-all',
                                             useCustomImage
-                                                ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/25'
+                                                ? 'bg-slate-900 text-white shadow-lg shadow-slate-900/25'
                                                 : 'bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50'
                                         ]"
                                     >
@@ -270,7 +270,7 @@ const submit = () => {
                                         :class="[
                                             'flex-1 rounded-xl px-4 py-3 text-sm font-medium transition-all',
                                             !useCustomImage
-                                                ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/25'
+                                                ? 'bg-slate-900 text-white shadow-lg shadow-slate-900/25'
                                                 : 'bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50'
                                         ]"
                                     >
@@ -282,7 +282,7 @@ const submit = () => {
                                 <div v-if="useCustomImage" class="space-y-4">
                                     <div
                                         v-if="!imagePreview"
-                                        class="relative border-2 border-dashed border-slate-300 rounded-xl p-8 text-center hover:border-violet-400 transition-colors cursor-pointer"
+                                        class="relative border-2 border-dashed border-slate-300 rounded-xl p-8 text-center hover:border-rose-400 transition-colors cursor-pointer"
                                         @click="$refs.imageInput.click()"
                                     >
                                         <svg class="mx-auto h-12 w-12 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -327,7 +327,7 @@ const submit = () => {
                                         v-model="form.qr_card_theme"
                                         rows="3"
                                         placeholder="ex: Tema florala cu nuante de roz pastel si auriu, cu elemente de eucalipt..."
-                                        class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
+                                        class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-slate-900 focus:ring-slate-900 text-sm"
                                     ></textarea>
                                     <p v-if="form.errors.qr_card_theme" class="mt-2 text-sm text-red-600">{{ form.errors.qr_card_theme }}</p>
                                 </div>
@@ -348,7 +348,7 @@ const submit = () => {
                             v-model="form.notes"
                             rows="4"
                             placeholder="Scrie aici orice alte detalii consideri relevante..."
-                            class="block w-full rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
+                            class="block w-full rounded-xl border-slate-300 shadow-sm focus:border-slate-900 focus:ring-slate-900 text-sm"
                         ></textarea>
                         <p v-if="form.errors.notes" class="mt-2 text-sm text-red-600">{{ form.errors.notes }}</p>
                     </div>
@@ -365,7 +365,7 @@ const submit = () => {
                     <button
                         type="submit"
                         :disabled="form.processing"
-                        class="inline-flex items-center gap-x-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 hover:from-violet-700 hover:to-purple-700 disabled:opacity-50 transition-all"
+                        class="inline-flex items-center gap-x-2 rounded-xl bg-slate-900 px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-900/25 hover:bg-slate-800 disabled:opacity-50 transition-all"
                     >
                         <svg v-if="form.processing" class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

@@ -182,7 +182,7 @@ onUnmounted(() => {
                 <button
                     @click="toggleSelectMode"
                     :class="[
-                        selectMode ? 'bg-violet-100 text-violet-700' : 'bg-slate-100 text-slate-700 hover:bg-slate-200',
+                        selectMode ? 'bg-rose-100 text-rose-700' : 'bg-slate-100 text-slate-700 hover:bg-slate-200',
                         'inline-flex items-center gap-x-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors'
                     ]"
                 >
@@ -193,7 +193,7 @@ onUnmounted(() => {
                 </button>
                 <a
                     :href="isAdmin ? route('admin.events.download', wedding.id) : route('couple.download')"
-                    class="inline-flex items-center gap-x-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 hover:from-violet-700 hover:to-purple-700 transition-all"
+                    class="inline-flex items-center gap-x-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-slate-900/25 hover:bg-slate-800 transition-all"
                 >
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -207,7 +207,7 @@ onUnmounted(() => {
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 mb-8">
             <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-900/5">
                 <div class="flex items-center gap-x-4">
-                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-purple-600">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-900">
                         <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
@@ -236,22 +236,22 @@ onUnmounted(() => {
         </div>
 
         <!-- Selection Bar -->
-        <div v-if="selectMode" class="mb-4 rounded-2xl bg-violet-50 p-4 flex items-center justify-between">
+        <div v-if="selectMode" class="mb-4 rounded-2xl bg-slate-50 p-4 flex items-center justify-between">
             <div class="flex items-center gap-x-4">
-                <span class="text-sm font-medium text-violet-900">
+                <span class="text-sm font-medium text-slate-900">
                     {{ selectedPhotos.size }} {{ selectedPhotos.size === 1 ? 'fotografie selectată' : 'fotografii selectate' }}
                 </span>
-                <button @click="selectAll" class="text-sm text-violet-600 hover:text-violet-700 font-medium">
+                <button @click="selectAll" class="text-sm text-rose-500 hover:text-rose-600 font-medium">
                     Selectează tot
                 </button>
-                <button @click="deselectAll" class="text-sm text-violet-600 hover:text-violet-700 font-medium">
+                <button @click="deselectAll" class="text-sm text-rose-500 hover:text-rose-600 font-medium">
                     Deselectează tot
                 </button>
             </div>
             <button
                 @click="downloadSelected"
                 :disabled="selectedPhotos.size === 0 || downloading"
-                class="inline-flex items-center gap-x-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 hover:from-violet-700 hover:to-purple-700 disabled:opacity-50 transition-all"
+                class="inline-flex items-center gap-x-2 rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-slate-900/25 hover:bg-slate-800 disabled:opacity-50 transition-all"
             >
                 <svg v-if="downloading" class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -277,14 +277,14 @@ onUnmounted(() => {
                             v-model="searchQuery"
                             type="text"
                             placeholder="Caută după nume..."
-                            class="pl-9 pr-4 py-2 rounded-lg border-slate-300 text-sm focus:border-violet-500 focus:ring-violet-500 w-48"
+                            class="pl-9 pr-4 py-2 rounded-lg border-slate-300 text-sm focus:border-slate-900 focus:ring-rose-500 w-48"
                         />
                     </div>
                     <div class="flex items-center gap-x-2">
                         <span class="text-sm text-slate-500">Sortare:</span>
                         <select
                             v-model="sortBy"
-                            class="rounded-lg border-slate-300 text-sm focus:border-violet-500 focus:ring-violet-500"
+                            class="rounded-lg border-slate-300 text-sm focus:border-slate-900 focus:ring-rose-500"
                         >
                             <option value="date">Data încărcării</option>
                             <option value="name">Nume încărcător</option>
@@ -300,7 +300,7 @@ onUnmounted(() => {
                         @click="selectMode ? togglePhotoSelection(photo.id, $event) : openLightbox(photo, index)"
                         :class="[
                             'group relative aspect-square cursor-pointer overflow-hidden rounded-xl bg-slate-100',
-                            selectMode && selectedPhotos.has(photo.id) ? 'ring-4 ring-violet-500' : ''
+                            selectMode && selectedPhotos.has(photo.id) ? 'ring-4 ring-rose-500' : ''
                         ]"
                     >
                         <img
@@ -318,8 +318,8 @@ onUnmounted(() => {
                                 :class="[
                                     'h-6 w-6 rounded-full border-2 flex items-center justify-center transition-colors',
                                     selectedPhotos.has(photo.id)
-                                        ? 'bg-violet-500 border-violet-500'
-                                        : 'bg-white/80 border-slate-300 hover:border-violet-400'
+                                        ? 'bg-rose-500 border-rose-500'
+                                        : 'bg-white/80 border-slate-300 hover:border-rose-400'
                                 ]"
                             >
                                 <svg v-if="selectedPhotos.has(photo.id)" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">

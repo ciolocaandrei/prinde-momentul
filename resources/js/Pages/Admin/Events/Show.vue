@@ -193,7 +193,7 @@ const deleteWedding = () => {
                         <button
                             v-if="!editing"
                             @click="editing = true"
-                            class="text-sm font-medium text-violet-600 hover:text-violet-700 transition-colors"
+                            class="text-sm font-medium text-rose-500 hover:text-rose-600 transition-colors"
                         >
                             Editează
                         </button>
@@ -206,7 +206,7 @@ const deleteWedding = () => {
                                 id="couple_name"
                                 type="text"
                                 v-model="form.couple_name"
-                                class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
+                                class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-slate-900 focus:ring-slate-900 text-sm"
                             />
                         </div>
                         <div>
@@ -214,7 +214,7 @@ const deleteWedding = () => {
                             <select
                                 id="event_type"
                                 v-model="form.event_type"
-                                class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
+                                class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-slate-900 focus:ring-slate-900 text-sm"
                             >
                                 <option v-for="(label, value) in eventTypes" :key="value" :value="value">
                                     {{ label }}
@@ -227,14 +227,14 @@ const deleteWedding = () => {
                                 id="event_date"
                                 type="date"
                                 v-model="form.event_date"
-                                class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
+                                class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-slate-900 focus:ring-slate-900 text-sm"
                             />
                         </div>
                         <div class="flex items-center gap-x-3 pt-2">
                             <button
                                 type="submit"
                                 :disabled="form.processing"
-                                class="rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 hover:from-violet-700 hover:to-purple-700 transition-all"
+                                class="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-slate-900/25 hover:bg-slate-800 transition-all"
                             >
                                 Salvează
                             </button>
@@ -281,7 +281,7 @@ const deleteWedding = () => {
                         <Link
                             v-if="wedding.photos.length > 0"
                             :href="route('admin.events.gallery', wedding.id)"
-                            class="inline-flex items-center gap-x-1.5 text-sm font-medium text-violet-600 hover:text-violet-700 transition-colors"
+                            class="inline-flex items-center gap-x-1.5 text-sm font-medium text-rose-500 hover:text-rose-600 transition-colors"
                         >
                             Vezi Galeria
                             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -311,7 +311,7 @@ const deleteWedding = () => {
                         <div v-if="wedding.photos.length > 10" class="mt-4 text-center">
                             <Link
                                 :href="route('admin.events.gallery', wedding.id)"
-                                class="inline-flex items-center gap-x-2 text-sm font-medium text-violet-600 hover:text-violet-700 transition-colors"
+                                class="inline-flex items-center gap-x-2 text-sm font-medium text-rose-500 hover:text-rose-600 transition-colors"
                             >
                                 +{{ wedding.photos.length - 10 }} alte fotografii
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -352,7 +352,7 @@ const deleteWedding = () => {
                             <div class="flex gap-x-2">
                                 <button
                                     @click="copyUploadUrl"
-                                    class="flex-1 inline-flex items-center justify-center gap-x-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-4 py-2.5 text-sm font-semibold text-white hover:from-violet-700 hover:to-purple-700 transition-all"
+                                    class="flex-1 inline-flex items-center justify-center gap-x-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800 transition-all"
                                 >
                                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
@@ -452,7 +452,7 @@ const deleteWedding = () => {
                         <div class="mt-4 pt-4 border-t border-slate-200">
                             <button
                                 @click="copyCredentials"
-                                class="w-full inline-flex items-center justify-center gap-x-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-4 py-2.5 text-sm font-semibold text-white hover:from-violet-700 hover:to-purple-700 transition-all"
+                                class="w-full inline-flex items-center justify-center gap-x-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800 transition-all"
                             >
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
@@ -481,8 +481,8 @@ const deleteWedding = () => {
                             <button
                                 @click="toggleActive"
                                 :class="[
-                                    wedding.is_active ? 'bg-violet-600' : 'bg-slate-200',
-                                    'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2'
+                                    wedding.is_active ? 'bg-slate-900' : 'bg-slate-200',
+                                    'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2'
                                 ]"
                             >
                                 <span
@@ -497,16 +497,16 @@ const deleteWedding = () => {
                 </div>
 
                 <!-- Quick Stats -->
-                <div class="rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 p-6 text-white shadow-lg">
-                    <h3 class="text-sm font-medium text-violet-100">Statistici Rapide</h3>
+                <div class="rounded-2xl bg-slate-900 p-6 text-white shadow-lg">
+                    <h3 class="text-sm font-medium text-slate-300">Statistici Rapide</h3>
                     <div class="mt-4 grid grid-cols-2 gap-4">
                         <div>
                             <p class="text-3xl font-bold">{{ wedding.photos.length }}</p>
-                            <p class="text-xs text-violet-200">Fotografii</p>
+                            <p class="text-xs text-slate-400">Fotografii</p>
                         </div>
                         <div>
                             <p class="text-3xl font-bold">{{ formatFileSize(totalSize) }}</p>
-                            <p class="text-xs text-violet-200">Spațiu</p>
+                            <p class="text-xs text-slate-400">Spațiu</p>
                         </div>
                     </div>
                 </div>

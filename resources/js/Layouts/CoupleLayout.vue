@@ -15,19 +15,19 @@ const mobileMenuOpen = ref(false);
                     <div class="flex">
                         <div class="flex flex-shrink-0 items-center">
                             <div class="flex items-center gap-x-2">
-                                <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-purple-600">
+                                <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-900">
                                     <svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                                     </svg>
                                 </div>
-                                <span class="text-lg font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">Prinde Momentul</span>
+                                <span class="text-lg font-semibold text-slate-900">Prinde Momentul</span>
                             </div>
                         </div>
                         <div class="hidden sm:ml-8 sm:flex sm:space-x-1">
                             <Link
                                 :href="route('dashboard')"
-                                class="bg-violet-50 text-violet-700 rounded-lg px-4 py-2 text-sm font-medium"
+                                class="bg-slate-100 text-slate-900 rounded-lg px-4 py-2 text-sm font-medium"
                             >
                                 Fotografii
                             </Link>
@@ -41,7 +41,7 @@ const mobileMenuOpen = ref(false);
                                 <p class="text-sm font-medium text-slate-900">{{ $page.props.auth.user.name }}</p>
                                 <p class="text-xs text-slate-500">{{ $page.props.auth.user.email }}</p>
                             </div>
-                            <div class="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-purple-600 text-sm font-medium text-white">
+                            <div class="flex h-9 w-9 items-center justify-center rounded-full bg-slate-900 text-sm font-medium text-white">
                                 {{ $page.props.auth.user.name.charAt(0).toUpperCase() }}
                             </div>
                         </div>
@@ -97,14 +97,14 @@ const mobileMenuOpen = ref(false);
                     <div class="space-y-1 px-3 py-3">
                         <Link
                             :href="route('dashboard')"
-                            class="bg-violet-50 text-violet-700 block rounded-lg px-3 py-2.5 text-base font-medium"
+                            class="bg-slate-100 text-slate-900 block rounded-lg px-3 py-2.5 text-base font-medium"
                         >
                             Fotografii
                         </Link>
                     </div>
                     <div class="border-t border-slate-200 px-4 py-4">
                         <div class="flex items-center gap-x-3">
-                            <div class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-purple-600 text-sm font-medium text-white">
+                            <div class="flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-sm font-medium text-white">
                                 {{ $page.props.auth.user.name.charAt(0).toUpperCase() }}
                             </div>
                             <div>

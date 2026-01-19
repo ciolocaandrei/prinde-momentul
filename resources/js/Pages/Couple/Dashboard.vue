@@ -96,7 +96,7 @@ const navigatePhoto = (direction) => {
             <a
                 v-if="photos.length > 0"
                 :href="route('couple.download')"
-                class="inline-flex items-center gap-x-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 hover:from-violet-700 hover:to-purple-700 transition-all"
+                class="inline-flex items-center gap-x-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-slate-900/25 hover:bg-slate-800 transition-all"
             >
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -106,22 +106,22 @@ const navigatePhoto = (direction) => {
         </template>
 
         <!-- Share Card -->
-        <div class="rounded-2xl bg-gradient-to-r from-violet-500 to-purple-600 p-6 text-white shadow-lg mb-8">
+        <div class="rounded-2xl bg-slate-900 p-6 text-white shadow-lg mb-8">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                     <h2 class="text-lg font-semibold">Distribuie Invitaților</h2>
-                    <p class="mt-1 text-violet-100 text-sm">Trimite acest link pentru a încărca fotografii</p>
+                    <p class="mt-1 text-slate-300 text-sm">Trimite acest link pentru a încărca fotografii</p>
                 </div>
                 <div class="flex items-center gap-3">
                     <input
                         type="text"
                         :value="wedding.upload_url"
                         readonly
-                        class="w-full sm:w-80 rounded-xl border-0 bg-white/20 text-white placeholder-violet-200 text-sm focus:ring-2 focus:ring-white"
+                        class="w-full sm:w-80 rounded-xl border-0 bg-white/10 text-white placeholder-slate-400 text-sm focus:ring-2 focus:ring-white"
                     />
                     <button
                         @click="copyUploadUrl"
-                        class="inline-flex items-center gap-x-2 rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-violet-600 hover:bg-violet-50 transition-colors whitespace-nowrap"
+                        class="inline-flex items-center gap-x-2 rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-slate-900 hover:bg-slate-100 transition-colors whitespace-nowrap"
                     >
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
@@ -132,7 +132,7 @@ const navigatePhoto = (direction) => {
             </div>
             <div class="mt-4 flex items-center gap-x-2 text-sm">
                 <span :class="[wedding.is_active ? 'bg-emerald-400' : 'bg-red-400', 'h-2 w-2 rounded-full']" />
-                <span class="text-violet-100">{{ wedding.is_active ? 'Upload-ul este activ' : 'Upload-ul este oprit' }}</span>
+                <span class="text-slate-300">{{ wedding.is_active ? 'Upload-ul este activ' : 'Upload-ul este oprit' }}</span>
             </div>
         </div>
 
@@ -140,7 +140,7 @@ const navigatePhoto = (direction) => {
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-3 mb-8">
             <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-900/5">
                 <div class="flex items-center gap-x-4">
-                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-purple-600">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-900">
                         <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
@@ -186,7 +186,7 @@ const navigatePhoto = (direction) => {
                 <Link
                     v-if="photos.length > 0"
                     :href="route('couple.gallery')"
-                    class="inline-flex items-center gap-x-1.5 text-sm font-medium text-violet-600 hover:text-violet-700 transition-colors"
+                    class="inline-flex items-center gap-x-1.5 text-sm font-medium text-rose-500 hover:text-rose-600 transition-colors"
                 >
                     Vezi Galeria Completă
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

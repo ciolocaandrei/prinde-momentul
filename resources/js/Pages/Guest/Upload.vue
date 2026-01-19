@@ -192,12 +192,12 @@ const uploadMore = () => {
 <template>
     <Head :title="`Incarca Media - ${wedding.couple_name}`" />
 
-    <div class="min-h-screen bg-gradient-to-br from-violet-50 via-purple-50 to-fuchsia-50">
+    <div class="min-h-screen bg-slate-50">
         <!-- Header -->
         <div class="bg-white/80 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-10">
             <div class="mx-auto max-w-3xl px-4 py-4 sm:px-6">
                 <div class="flex items-center justify-center gap-x-3">
-                    <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-purple-600">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900">
                         <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -251,7 +251,7 @@ const uploadMore = () => {
                     </p>
                     <button
                         @click="uploadMore"
-                        class="mt-8 inline-flex items-center gap-x-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 hover:from-violet-700 hover:to-purple-700 transition-all"
+                        class="mt-8 inline-flex items-center gap-x-2 rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-900/25 hover:bg-slate-800 transition-all"
                     >
                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -278,7 +278,7 @@ const uploadMore = () => {
                                 type="text"
                                 v-model="guestName"
                                 placeholder="Introdu numele tau"
-                                class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
+                                class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-slate-900 focus:ring-slate-900 text-sm"
                                 required
                             />
                             <p v-if="errors.name" class="mt-2 text-sm text-red-600">{{ errors.name }}</p>
@@ -294,7 +294,7 @@ const uploadMore = () => {
                                 :class="[
                                     'relative rounded-xl border-2 border-dashed p-8 transition-all cursor-pointer',
                                     dragOver
-                                        ? 'border-violet-500 bg-violet-50'
+                                        ? 'border-rose-500 bg-rose-50'
                                         : 'border-slate-300 hover:border-slate-400 hover:bg-slate-50'
                                 ]"
                             >
@@ -306,13 +306,13 @@ const uploadMore = () => {
                                     class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                                 />
                                 <div class="text-center">
-                                    <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-violet-100">
-                                        <svg class="h-7 w-7 text-violet-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100">
+                                        <svg class="h-7 w-7 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                         </svg>
                                     </div>
                                     <p class="mt-4 text-sm font-medium text-slate-900">
-                                        <span class="text-violet-600">Click pentru a incarca</span> sau trage si plaseaza
+                                        <span class="text-rose-500">Click pentru a incarca</span> sau trage si plaseaza
                                     </p>
                                     <p class="mt-1 text-xs text-slate-500">Fotografii (PNG, JPG, GIF, WebP) pana la 2GB</p>
                                     <p class="text-xs text-slate-500">Videoclipuri (MP4, MOV, AVI, WebM) pana la 2GB</p>
@@ -352,12 +352,12 @@ const uploadMore = () => {
                                     <div class="flex items-center gap-x-3 min-w-0">
                                         <div :class="[
                                             'flex h-10 w-10 items-center justify-center rounded-lg',
-                                            fileData.isVideo ? 'bg-pink-100' : 'bg-violet-100'
+                                            fileData.isVideo ? 'bg-rose-100' : 'bg-slate-100'
                                         ]">
-                                            <svg v-if="fileData.isVideo" class="h-5 w-5 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <svg v-if="fileData.isVideo" class="h-5 w-5 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                                             </svg>
-                                            <svg v-else class="h-5 w-5 text-violet-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <svg v-else class="h-5 w-5 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                             </svg>
                                         </div>
@@ -365,7 +365,7 @@ const uploadMore = () => {
                                             <p class="text-sm font-medium text-slate-900 truncate">{{ fileData.name }}</p>
                                             <p class="text-xs text-slate-500">
                                                 {{ formatFileSize(fileData.size) }}
-                                                <span :class="fileData.isVideo ? 'text-pink-600' : 'text-violet-600'" class="ml-2">
+                                                <span :class="fileData.isVideo ? 'text-rose-600' : 'text-slate-600'" class="ml-2">
                                                     {{ fileData.isVideo ? 'Video' : 'Foto' }}
                                                 </span>
                                             </p>
@@ -378,7 +378,7 @@ const uploadMore = () => {
                                         >
                                             <div class="h-2 rounded-full bg-slate-200 overflow-hidden">
                                                 <div
-                                                    :class="fileData.isVideo ? 'bg-pink-500' : 'bg-violet-500'"
+                                                    :class="fileData.isVideo ? 'bg-rose-500' : 'bg-slate-700'"
                                                     class="h-full transition-all"
                                                     :style="{ width: `${uploadProgress[index]}%` }"
                                                 />
@@ -408,11 +408,11 @@ const uploadMore = () => {
                                 <input
                                     type="checkbox"
                                     v-model="acceptTerms"
-                                    class="mt-0.5 h-4 w-4 rounded border-slate-300 text-violet-600 focus:ring-violet-500"
+                                    class="mt-0.5 h-4 w-4 rounded border-slate-300 text-slate-900 focus:ring-slate-900"
                                 />
                                 <span class="text-sm text-slate-600">
                                     Am citit si sunt de acord cu
-                                    <Link href="/termeni" target="_blank" class="text-violet-600 hover:text-violet-700 underline">Termenii si Conditiile</Link>
+                                    <Link href="/termeni" target="_blank" class="text-rose-500 hover:text-rose-600 underline">Termenii si Conditiile</Link>
                                     de utilizare.
                                 </span>
                             </label>
@@ -421,11 +421,11 @@ const uploadMore = () => {
                                 <input
                                     type="checkbox"
                                     v-model="acceptGdpr"
-                                    class="mt-0.5 h-4 w-4 rounded border-slate-300 text-violet-600 focus:ring-violet-500"
+                                    class="mt-0.5 h-4 w-4 rounded border-slate-300 text-slate-900 focus:ring-slate-900"
                                 />
                                 <span class="text-sm text-slate-600">
                                     Am citit si sunt de acord cu
-                                    <Link href="/gdpr" target="_blank" class="text-violet-600 hover:text-violet-700 underline">Politica de Confidentialitate (GDPR)</Link>
+                                    <Link href="/gdpr" target="_blank" class="text-rose-500 hover:text-rose-600 underline">Politica de Confidentialitate (GDPR)</Link>
                                     si consimt la prelucrarea datelor mele personale.
                                 </span>
                             </label>
@@ -435,7 +435,7 @@ const uploadMore = () => {
                         <button
                             type="submit"
                             :disabled="uploading || !hasFiles || !guestName.trim() || !acceptTerms || !acceptGdpr"
-                            class="w-full inline-flex items-center justify-center gap-x-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-6 py-4 text-base font-semibold text-white shadow-lg shadow-violet-500/25 hover:from-violet-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                            class="w-full inline-flex items-center justify-center gap-x-2 rounded-xl bg-slate-900 px-6 py-4 text-base font-semibold text-white shadow-lg shadow-slate-900/25 hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                         >
                             <svg v-if="uploading" class="h-5 w-5 animate-spin" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

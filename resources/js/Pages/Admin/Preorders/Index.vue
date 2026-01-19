@@ -65,7 +65,7 @@ const deletePreorder = (preorder) => {
                     <tr v-for="preorder in preorders.data" :key="preorder.id" class="hover:bg-slate-50 transition-colors">
                         <td class="whitespace-nowrap py-5 pl-6 pr-3">
                             <div class="flex items-center gap-x-4">
-                                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 text-white text-sm font-bold">
+                                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-900 text-white text-sm font-bold">
                                     {{ preorder.contact_name.charAt(0).toUpperCase() }}
                                 </div>
                                 <div>
@@ -90,10 +90,10 @@ const deletePreorder = (preorder) => {
                         </td>
                         <td class="whitespace-nowrap px-3 py-5">
                             <div class="flex items-center gap-x-2">
-                                <span v-if="preorder.wants_print_package" class="inline-flex items-center rounded-full bg-violet-100 px-2 py-0.5 text-xs font-medium text-violet-700">
+                                <span v-if="preorder.wants_print_package" class="inline-flex items-center rounded-full bg-rose-100 px-2 py-0.5 text-xs font-medium text-rose-700">
                                     Print
                                 </span>
-                                <span v-if="preorder.wants_qr_card" class="inline-flex items-center rounded-full bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-700">
+                                <span v-if="preorder.wants_qr_card" class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700">
                                     QR ({{ preorder.qr_card_quantity }})
                                 </span>
                                 <span v-if="!preorder.wants_print_package && !preorder.wants_qr_card" class="text-sm text-slate-400">-</span>
@@ -116,7 +116,7 @@ const deletePreorder = (preorder) => {
                             <div class="flex items-center justify-end gap-x-3">
                                 <Link
                                     :href="route('admin.preorders.show', preorder.id)"
-                                    class="text-violet-600 hover:text-violet-800 font-medium transition-colors"
+                                    class="text-rose-500 hover:text-rose-600 font-medium transition-colors"
                                 >
                                     Vezi
                                 </Link>
@@ -158,7 +158,7 @@ const deletePreorder = (preorder) => {
                                 :href="link.url"
                                 :class="[
                                     link.active
-                                        ? 'bg-violet-600 text-white'
+                                        ? 'bg-slate-900 text-white'
                                         : 'bg-white text-slate-700 hover:bg-slate-50 ring-1 ring-inset ring-slate-300',
                                     'relative inline-flex items-center px-3.5 py-2 text-sm font-medium rounded-lg transition-colors'
                                 ]"
