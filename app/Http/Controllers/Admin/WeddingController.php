@@ -69,11 +69,17 @@ class WeddingController extends Controller
     {
         $wedding->load(['user', 'photos']);
 
+        $weddingData = $wedding->toArray();
+        $weddingData['event_type_label'] = $wedding->getEventTypeLabel();
+        $weddingData['photos'] = $wedding->photos->map(function ($photo) {
+            return array_merge($photo->toArray(), [
+                'url' => $photo->getUrl(),
+            ]);
+        });
+
         return Inertia::render('Admin/Events/Show', [
             'clientPassword' => $wedding->client_password,
-            'wedding' => array_merge($wedding->toArray(), [
-                'event_type_label' => $wedding->getEventTypeLabel(),
-            ]),
+            'wedding' => $weddingData,
             'uploadUrl' => $wedding->getUploadUrl(),
             'eventTypes' => Wedding::getEventTypeOptions(),
         ]);
@@ -125,7 +131,7 @@ class WeddingController extends Controller
         $photos = $wedding->photos->map(function ($photo) {
             return [
                 'id' => $photo->id,
-                'url' => Storage::url($photo->path),
+                'url' => $photo->getUrl(),
                 'path' => $photo->path,
                 'original_name' => $photo->original_name,
                 'size' => $photo->size,
@@ -154,9 +160,9 @@ class WeddingController extends Controller
             $zip->open($tempFile, ZipArchive::CREATE | ZipArchive::OVERWRITE);
 
             foreach ($wedding->photos as $photo) {
-                $filePath = Storage::disk('public')->path($photo->path);
-                if (file_exists($filePath)) {
-                    $zip->addFile($filePath, $photo->original_name);
+                if (Storage::disk('r2')->exists($photo->path)) {
+                    $content = Storage::disk('r2')->get($photo->path);
+                    $zip->addFromString($photo->original_name, $content);
                 }
             }
 
@@ -192,9 +198,9 @@ class WeddingController extends Controller
             $zip->open($tempFile, ZipArchive::CREATE | ZipArchive::OVERWRITE);
 
             foreach ($photos as $photo) {
-                $filePath = Storage::disk('public')->path($photo->path);
-                if (file_exists($filePath)) {
-                    $zip->addFile($filePath, $photo->original_name);
+                if (Storage::disk('r2')->exists($photo->path)) {
+                    $content = Storage::disk('r2')->get($photo->path);
+                    $zip->addFromString($photo->original_name, $content);
                 }
             }
 

@@ -102,9 +102,9 @@ class CoupleController extends Controller
             $zip->open($tempFile, ZipArchive::CREATE | ZipArchive::OVERWRITE);
 
             foreach ($photos as $photo) {
-                $filePath = Storage::disk('public')->path($photo->path);
-                if (file_exists($filePath)) {
-                    $zip->addFile($filePath, $photo->original_name);
+                if (Storage::disk('r2')->exists($photo->path)) {
+                    $content = Storage::disk('r2')->get($photo->path);
+                    $zip->addFromString($photo->original_name, $content);
                 }
             }
 
@@ -183,9 +183,9 @@ class CoupleController extends Controller
             $zip->open($tempFile, ZipArchive::CREATE | ZipArchive::OVERWRITE);
 
             foreach ($photos as $photo) {
-                $filePath = Storage::disk('public')->path($photo->path);
-                if (file_exists($filePath)) {
-                    $zip->addFile($filePath, $photo->original_name);
+                if (Storage::disk('r2')->exists($photo->path)) {
+                    $content = Storage::disk('r2')->get($photo->path);
+                    $zip->addFromString($photo->original_name, $content);
                 }
             }
 

@@ -284,7 +284,7 @@ const deleteWedding = () => {
                                 class="group relative aspect-square overflow-hidden rounded-xl bg-slate-100"
                             >
                                 <img
-                                    :src="`/storage/${photo.path}`"
+                                    :src="photo.url"
                                     :alt="photo.original_name"
                                     class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                                 />

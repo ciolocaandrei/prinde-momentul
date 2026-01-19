@@ -44,8 +44,8 @@ class GuestUploadController extends Controller
         $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
         $path = "weddings/{$wedding->id}/{$filename}";
 
-        // Store the file
-        $file->storeAs("weddings/{$wedding->id}", $filename, 'public');
+        // Store the file in Cloudflare R2
+        $file->storeAs("weddings/{$wedding->id}", $filename, 'r2');
 
         // Create photo record
         $photo = Photo::create([

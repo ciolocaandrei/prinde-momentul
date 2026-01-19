@@ -63,7 +63,10 @@ class Preorder extends Model
     public function getQrCardImageUrl(): ?string
     {
         if ($this->qr_card_image) {
-            return Storage::url($this->qr_card_image);
+            return Storage::disk('r2')->temporaryUrl(
+                $this->qr_card_image,
+                now()->addHours(24)
+            );
         }
         return null;
     }

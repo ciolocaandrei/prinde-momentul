@@ -52,7 +52,7 @@ class PreorderController extends Controller
     {
         // Delete associated image if exists
         if ($preorder->qr_card_image) {
-            Storage::disk('public')->delete($preorder->qr_card_image);
+            Storage::disk('r2')->delete($preorder->qr_card_image);
         }
 
         $preorder->delete();

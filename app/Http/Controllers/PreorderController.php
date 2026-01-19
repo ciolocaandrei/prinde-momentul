@@ -25,7 +25,7 @@ class PreorderController extends Controller
         // Handle image upload if provided
         if ($request->hasFile('qr_card_image')) {
             $validated['qr_card_image'] = $request->file('qr_card_image')
-                ->store('preorder-images', 'public');
+                ->store('preorder-images', 'r2');
         }
 
         Preorder::create($validated);

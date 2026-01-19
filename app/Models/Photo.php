@@ -27,6 +27,9 @@ class Photo extends Model
 
     public function getUrl(): string
     {
-        return Storage::url($this->path);
+        return Storage::disk('r2')->temporaryUrl(
+            $this->path,
+            now()->addHours(24)
+        );
     }
 }

@@ -304,7 +304,7 @@ onUnmounted(() => {
                         ]"
                     >
                         <img
-                            :src="photo.url || `/storage/${photo.path}`"
+                            :src="photo.url"
                             :alt="photo.original_name"
                             class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                         />
@@ -393,7 +393,7 @@ onUnmounted(() => {
                 <!-- Image and info -->
                 <div class="max-h-[90vh] max-w-[90vw] flex flex-col items-center">
                     <img
-                        :src="selectedPhoto.url || `/storage/${selectedPhoto.path}`"
+                        :src="selectedPhoto.url"
                         :alt="selectedPhoto.original_name"
                         class="max-h-[80vh] max-w-full object-contain rounded-xl"
                     />
