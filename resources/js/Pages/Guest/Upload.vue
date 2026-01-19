@@ -64,8 +64,8 @@ const handleDragLeave = () => {
 };
 
 const addFiles = (newFiles) => {
-    const maxPhotoSize = 500 * 1024 * 1024; // 500MB for photos
-    const maxVideoSize = 500 * 1024 * 1024; // 500MB for videos
+    const maxPhotoSize = 2 * 1024 * 1024 * 1024; // 2GB for photos
+    const maxVideoSize = 2 * 1024 * 1024 * 1024; // 2GB for videos
 
     let videosToAdd = 0;
 
@@ -79,11 +79,11 @@ const addFiles = (newFiles) => {
 
         // Check file size
         if (isVideo && file.size > maxVideoSize) {
-            errors.value.files = `Videoclipul ${file.name} depaseste limita de 500MB`;
+            errors.value.files = `Videoclipul ${file.name} depaseste limita de 2GB`;
             return false;
         }
         if (isImage && file.size > maxPhotoSize) {
-            errors.value.files = `Fotografia ${file.name} depaseste limita de 500MB`;
+            errors.value.files = `Fotografia ${file.name} depaseste limita de 2GB`;
             return false;
         }
 
@@ -312,8 +312,8 @@ const uploadMore = () => {
                                     <p class="mt-4 text-sm font-medium text-slate-900">
                                         <span class="text-violet-600">Click pentru a incarca</span> sau trage si plaseaza
                                     </p>
-                                    <p class="mt-1 text-xs text-slate-500">Fotografii (PNG, JPG, GIF, WebP) pana la 500MB</p>
-                                    <p class="text-xs text-slate-500">Videoclipuri (MP4, MOV, AVI, WebM) pana la 500MB</p>
+                                    <p class="mt-1 text-xs text-slate-500">Fotografii (PNG, JPG, GIF, WebP) pana la 2GB</p>
+                                    <p class="text-xs text-slate-500">Videoclipuri (MP4, MOV, AVI, WebM) pana la 2GB</p>
                                     <p v-if="canUploadMoreVideos" class="mt-2 text-xs text-amber-600 font-medium">
                                         Limita: {{ remainingVideoSlots }} videoclipuri ramase in aceasta sesiune
                                     </p>
