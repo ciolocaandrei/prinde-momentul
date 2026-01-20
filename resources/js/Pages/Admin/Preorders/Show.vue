@@ -246,6 +246,19 @@ const updateStatus = () => {
                                 <!-- Sample Image -->
                                 <div v-if="preorder.qr_card_sample">
                                     <p class="text-sm font-medium text-emerald-800 mb-2">Design din exemple:</p>
+
+                                    <!-- Sample Details -->
+                                    <div v-if="preorder.qr_card_sample_names || preorder.qr_card_sample_date" class="bg-white/50 rounded-lg p-3 mb-3 space-y-1">
+                                        <p v-if="preorder.qr_card_sample_names" class="text-sm">
+                                            <span class="font-medium text-emerald-800">Nume:</span>
+                                            <span class="text-emerald-700 ml-2">{{ preorder.qr_card_sample_names }}</span>
+                                        </p>
+                                        <p v-if="preorder.qr_card_sample_date" class="text-sm">
+                                            <span class="font-medium text-emerald-800">Data:</span>
+                                            <span class="text-emerald-700 ml-2">{{ preorder.qr_card_sample_date }}</span>
+                                        </p>
+                                    </div>
+
                                     <img
                                         :src="preorder.qr_card_sample"
                                         alt="QR Card Sample"

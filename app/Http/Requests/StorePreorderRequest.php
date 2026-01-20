@@ -24,6 +24,8 @@ class StorePreorderRequest extends FormRequest
             'qr_card_quantity' => 'nullable|integer|min:1|max:1000',
             'qr_card_image' => 'nullable|image|max:5120',
             'qr_card_sample' => 'nullable|string|max:255',
+            'qr_card_sample_names' => 'nullable|string|max:255',
+            'qr_card_sample_date' => 'nullable|string|max:255',
             'qr_card_theme' => 'nullable|string|max:500',
             'qr_card_design' => 'nullable',
             'notes' => 'nullable|string|max:1000',

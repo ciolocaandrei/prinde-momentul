@@ -124,6 +124,8 @@ const form = useForm({
     qr_card_quantity: 50,
     qr_card_image: null,
     qr_card_sample: null,
+    qr_card_sample_names: '',
+    qr_card_sample_date: '',
     qr_card_theme: '',
     qr_card_design: null,
     notes: '',
@@ -150,6 +152,8 @@ const showFullscreenPreview = ref(false);
 const selectedSampleId = ref(null);
 const showFullscreenSample = ref(false);
 const fullscreenSamplePath = ref(null);
+const sampleNames = ref('');
+const sampleDate = ref('');
 
 const selectedSample = computed(() => {
     if (!selectedSampleId.value) return null;
@@ -586,14 +590,14 @@ const submit = () => {
 
                                 <p class="text-sm font-medium text-slate-700">Personalizeaza cartonasul:</p>
 
-                                <!-- Samples vs Predesign vs Designer vs Image vs Theme Toggle -->
-                                <div class="grid grid-cols-2 gap-2">
+                                <!-- Samples vs Predesign vs Designer Toggle -->
+                                <div class="flex flex-wrap gap-2">
                                     <button
                                         v-if="sampleImages.length > 0"
                                         type="button"
                                         @click="useSamples = true"
                                         :class="[
-                                            'rounded-xl px-4 py-3 text-sm font-medium transition-all',
+                                            'rounded-xl px-4 py-3 text-sm font-medium transition-all flex-1',
                                             useSamples
                                                 ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/25'
                                                 : 'bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50'
@@ -605,7 +609,7 @@ const submit = () => {
                                         type="button"
                                         @click="usePredesign = true"
                                         :class="[
-                                            'rounded-xl px-4 py-3 text-sm font-medium transition-all',
+                                            'rounded-xl px-4 py-3 text-sm font-medium transition-all flex-1',
                                             usePredesign
                                                 ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/25'
                                                 : 'bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50'
@@ -617,7 +621,7 @@ const submit = () => {
                                         type="button"
                                         @click="useDesigner = true"
                                         :class="[
-                                            'rounded-xl px-4 py-3 text-sm font-medium transition-all',
+                                            'rounded-xl px-4 py-3 text-sm font-medium transition-all flex-1',
                                             useDesigner
                                                 ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/25'
                                                 : 'bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50'
@@ -625,34 +629,32 @@ const submit = () => {
                                     >
                                         Designer avansat
                                     </button>
-                                    <button
-                                        type="button"
-                                        @click="useSamples = false; usePredesign = false; useDesigner = false; useCustomImage = true"
-                                        :class="[
-                                            'rounded-xl px-4 py-3 text-sm font-medium transition-all',
-                                            !useSamples && !useDesigner && !usePredesign && useCustomImage
-                                                ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/25'
-                                                : 'bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50'
-                                        ]"
-                                    >
-                                        Incarca poza
-                                    </button>
-                                    <button
-                                        type="button"
-                                        :class="[
-                                            'rounded-xl px-4 py-3 text-sm font-medium transition-all col-span-2',
-                                            !useSamples && !useDesigner && !usePredesign && !useCustomImage
-                                                ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/25'
-                                                : 'bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50'
-                                        ]"
-                                        @click="useSamples = false; usePredesign = false; useDesigner = false; useCustomImage = false"
-                                    >
-                                        Descrie tema
-                                    </button>
                                 </div>
 
                                 <!-- Samples Option -->
                                 <div v-if="useSamples && sampleImages.length > 0" class="space-y-4">
+                                    <!-- Name and Date Inputs -->
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-slate-700 mb-1">Numele (ex: Ana & Mihai)</label>
+                                            <input
+                                                type="text"
+                                                v-model="form.qr_card_sample_names"
+                                                placeholder="Ana & Mihai"
+                                                class="w-full rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-slate-700 mb-1">Data evenimentului</label>
+                                            <input
+                                                type="text"
+                                                v-model="form.qr_card_sample_date"
+                                                placeholder="12 August 2026"
+                                                class="w-full rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
+                                            />
+                                        </div>
+                                    </div>
+
                                     <p class="text-sm text-slate-600">Alege unul din modelele noastre:</p>
                                     <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
                                         <div
@@ -678,15 +680,20 @@ const submit = () => {
                                                     </svg>
                                                 </div>
                                             </div>
-                                            <button
-                                                type="button"
-                                                @click="selectSample(sample)"
-                                                class="w-full p-2 bg-white text-center hover:bg-slate-50 transition-colors"
-                                            >
-                                                <div class="text-xs font-medium text-slate-800 truncate">
-                                                    {{ selectedSampleId === sample.id ? '✓ ' : '' }}{{ sample.name }}
-                                                </div>
-                                            </button>
+                                            <div class="p-2 bg-white">
+                                                <button
+                                                    type="button"
+                                                    @click="selectSample(sample)"
+                                                    :class="[
+                                                        'w-full py-1.5 px-3 text-xs font-medium rounded-lg transition-colors',
+                                                        selectedSampleId === sample.id
+                                                            ? 'bg-emerald-500 text-white'
+                                                            : 'bg-violet-100 text-violet-700 hover:bg-violet-200'
+                                                    ]"
+                                                >
+                                                    {{ selectedSampleId === sample.id ? '✓ Selectat' : 'Selectează' }}
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -697,7 +704,7 @@ const submit = () => {
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                             </svg>
                                             <span class="text-sm font-medium text-emerald-800">
-                                                Ai selectat: {{ selectedSample.name }}
+                                                Ai selectat o variantă
                                             </span>
                                         </div>
                                     </div>
@@ -855,59 +862,6 @@ const submit = () => {
                                     </button>
                                 </div>
 
-                                <!-- Image Upload -->
-                                <div v-else-if="!usePredesign && !useDesigner && useCustomImage" class="space-y-4">
-                                    <div
-                                        v-if="!imagePreview"
-                                        class="relative border-2 border-dashed border-slate-300 rounded-xl p-8 text-center hover:border-violet-400 transition-colors cursor-pointer"
-                                        @click="$refs.imageInput.click()"
-                                    >
-                                        <svg class="mx-auto h-12 w-12 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                        </svg>
-                                        <p class="mt-4 text-sm font-medium text-slate-900">Apasa pentru a incarca o imagine</p>
-                                        <p class="mt-1 text-xs text-slate-500">PNG, JPG pana la 5MB</p>
-                                        <input
-                                            ref="imageInput"
-                                            type="file"
-                                            accept="image/*"
-                                            class="hidden"
-                                            @change="handleImageChange"
-                                        />
-                                    </div>
-
-                                    <!-- Image Preview -->
-                                    <div v-else class="relative">
-                                        <img
-                                            :src="imagePreview"
-                                            alt="Preview"
-                                            class="w-full h-48 object-cover rounded-xl"
-                                        />
-                                        <button
-                                            type="button"
-                                            @click="removeImage"
-                                            class="absolute top-2 right-2 p-2 rounded-full bg-red-500 text-white hover:bg-red-600 transition-colors"
-                                        >
-                                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                    <p v-if="form.errors.qr_card_image" class="text-sm text-red-600">{{ form.errors.qr_card_image }}</p>
-                                </div>
-
-                                <!-- Theme Description -->
-                                <div v-else>
-                                    <label for="qr_card_theme" class="block text-sm font-medium text-slate-700">Descrie tema / paleta de culori dorita</label>
-                                    <textarea
-                                        id="qr_card_theme"
-                                        v-model="form.qr_card_theme"
-                                        rows="3"
-                                        placeholder="ex: Tema florala cu nuante de roz pastel si auriu, cu elemente de eucalipt..."
-                                        class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
-                                    ></textarea>
-                                    <p v-if="form.errors.qr_card_theme" class="mt-2 text-sm text-red-600">{{ form.errors.qr_card_theme }}</p>
-                                </div>
                             </div>
                         </div>
                     </div>

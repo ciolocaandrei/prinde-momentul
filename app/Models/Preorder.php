@@ -37,6 +37,8 @@ class Preorder extends Model
         'qr_card_quantity',
         'qr_card_image',
         'qr_card_sample',
+        'qr_card_sample_names',
+        'qr_card_sample_date',
         'qr_card_theme',
         'qr_card_design',
         'qr_card_pdf',
