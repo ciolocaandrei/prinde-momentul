@@ -88,7 +88,7 @@ const navigatePhoto = (direction) => {
     <CoupleLayout>
         <template #header>
             <div>
-                <h1 class="text-2xl font-bold text-slate-900">{{ wedding.couple_name }}</h1>
+                <h1 class="text-xl sm:text-2xl font-bold text-slate-900">{{ wedding.couple_name }}</h1>
                 <p class="mt-1 text-sm text-slate-500">
                     {{ new Date(wedding.event_date).toLocaleDateString('ro-RO', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) }}
                 </p>
@@ -96,7 +96,7 @@ const navigatePhoto = (direction) => {
             <a
                 v-if="photos.length > 0"
                 :href="route('couple.download')"
-                class="inline-flex items-center gap-x-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 hover:from-violet-700 hover:to-purple-700 transition-all"
+                class="w-full sm:w-auto inline-flex items-center justify-center gap-x-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 hover:from-violet-700 hover:to-purple-700 transition-all"
             >
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -106,22 +106,22 @@ const navigatePhoto = (direction) => {
         </template>
 
         <!-- Share Card -->
-        <div class="rounded-2xl bg-gradient-to-r from-violet-500 to-purple-600 p-6 text-white shadow-lg mb-8">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div class="rounded-2xl bg-gradient-to-r from-violet-500 to-purple-600 p-4 sm:p-6 text-white shadow-lg mb-8">
+            <div class="flex flex-col gap-4">
                 <div>
                     <h2 class="text-lg font-semibold">Distribuie Invitaților</h2>
                     <p class="mt-1 text-violet-100 text-sm">Trimite acest link pentru a încărca fotografii</p>
                 </div>
-                <div class="flex items-center gap-3">
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                     <input
                         type="text"
                         :value="wedding.upload_url"
                         readonly
-                        class="w-full sm:w-80 rounded-xl border-0 bg-white/20 text-white placeholder-violet-200 text-sm focus:ring-2 focus:ring-white"
+                        class="flex-1 rounded-xl border-0 bg-white/20 text-white placeholder-violet-200 text-sm focus:ring-2 focus:ring-white py-2.5 px-4"
                     />
                     <button
                         @click="copyUploadUrl"
-                        class="inline-flex items-center gap-x-2 rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-violet-600 hover:bg-violet-50 transition-colors whitespace-nowrap"
+                        class="inline-flex items-center justify-center gap-x-2 rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-violet-600 hover:bg-violet-50 transition-colors whitespace-nowrap"
                     >
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
@@ -137,7 +137,7 @@ const navigatePhoto = (direction) => {
         </div>
 
         <!-- Stats -->
-        <div class="grid grid-cols-1 gap-6 sm:grid-cols-3 mb-8">
+        <div class="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-3 mb-8">
             <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-900/5">
                 <div class="flex items-center gap-x-4">
                     <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-purple-600">
@@ -181,7 +181,7 @@ const navigatePhoto = (direction) => {
 
         <!-- Photo Gallery -->
         <div class="rounded-2xl bg-white shadow-sm ring-1 ring-slate-900/5">
-            <div class="flex items-center justify-between border-b border-slate-200 px-6 py-5">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-200 px-4 sm:px-6 py-4 sm:py-5">
                 <h2 class="text-lg font-semibold text-slate-900">Galerie Foto</h2>
                 <Link
                     v-if="photos.length > 0"
@@ -194,8 +194,8 @@ const navigatePhoto = (direction) => {
                     </svg>
                 </Link>
             </div>
-            <div class="p-6">
-                <div v-if="photos.length > 0" class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+            <div class="p-4 sm:p-6">
+                <div v-if="photos.length > 0" class="grid grid-cols-2 gap-2 sm:gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
                     <div
                         v-for="photo in photos"
                         :key="photo.id"
@@ -240,17 +240,17 @@ const navigatePhoto = (direction) => {
                 <!-- Close button -->
                 <button
                     @click="closeLightbox"
-                    class="absolute right-4 top-4 rounded-full bg-white/10 p-2.5 text-white hover:bg-white/20 transition-colors z-10"
+                    class="absolute right-2 sm:right-4 top-2 sm:top-4 rounded-full bg-white/10 p-3 sm:p-2.5 text-white hover:bg-white/20 transition-colors z-10"
                 >
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
 
-                <!-- Navigation arrows -->
+                <!-- Navigation arrows - hidden on mobile -->
                 <button
                     @click="navigatePhoto(-1)"
-                    class="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-3.5 text-white hover:bg-white/20 transition-colors"
+                    class="hidden sm:block absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-3.5 text-white hover:bg-white/20 transition-colors"
                 >
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -258,19 +258,39 @@ const navigatePhoto = (direction) => {
                 </button>
                 <button
                     @click="navigatePhoto(1)"
-                    class="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-3.5 text-white hover:bg-white/20 transition-colors"
+                    class="hidden sm:block absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-3.5 text-white hover:bg-white/20 transition-colors"
                 >
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                     </svg>
                 </button>
 
+                <!-- Mobile navigation buttons at bottom -->
+                <div class="sm:hidden absolute bottom-24 left-0 right-0 flex justify-center gap-8">
+                    <button
+                        @click="navigatePhoto(-1)"
+                        class="rounded-full bg-white/20 p-4 text-white active:bg-white/30 transition-colors"
+                    >
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <button
+                        @click="navigatePhoto(1)"
+                        class="rounded-full bg-white/20 p-4 text-white active:bg-white/30 transition-colors"
+                    >
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+
                 <!-- Image and info -->
-                <div class="max-h-[90vh] max-w-[90vw] flex flex-col items-center">
+                <div class="max-h-[85vh] sm:max-h-[90vh] max-w-[95vw] sm:max-w-[90vw] flex flex-col items-center px-2 sm:px-0">
                     <img
                         :src="selectedPhoto.url"
                         :alt="selectedPhoto.original_name"
-                        class="max-h-[80vh] max-w-full object-contain rounded-xl"
+                        class="max-h-[70vh] sm:max-h-[80vh] max-w-full object-contain rounded-xl"
                     />
                     <div class="mt-4 text-center">
                         <p class="text-white font-medium">Încărcat de {{ selectedPhoto.uploaded_by_name }}</p>

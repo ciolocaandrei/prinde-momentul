@@ -1,11 +1,14 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 defineProps({
     canLogin: {
         type: Boolean,
     },
 });
+
+const mobileMenuOpen = ref(false);
 </script>
 
 <template>
@@ -28,7 +31,8 @@ defineProps({
                         </span>
                     </div>
 
-                    <div class="flex items-center gap-x-4">
+                    <!-- Desktop Navigation -->
+                    <div class="hidden sm:flex items-center gap-x-4">
                         <Link
                             :href="route('preorder.create')"
                             class="text-sm font-medium text-slate-600 hover:text-violet-600 transition-colors"
@@ -50,8 +54,56 @@ defineProps({
                             Autentificare
                         </Link>
                     </div>
+
+                    <!-- Mobile menu button -->
+                    <button
+                        @click="mobileMenuOpen = !mobileMenuOpen"
+                        class="sm:hidden inline-flex items-center justify-center rounded-lg p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-700"
+                    >
+                        <svg v-if="!mobileMenuOpen" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg v-else class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
                 </div>
             </div>
+
+            <!-- Mobile menu -->
+            <Transition
+                enter-active-class="transition duration-200 ease-out"
+                enter-from-class="opacity-0 -translate-y-1"
+                enter-to-class="opacity-100 translate-y-0"
+                leave-active-class="transition duration-150 ease-in"
+                leave-from-class="opacity-100 translate-y-0"
+                leave-to-class="opacity-0 -translate-y-1"
+            >
+                <div v-if="mobileMenuOpen" class="sm:hidden bg-white/95 backdrop-blur-lg border-t border-slate-200/50">
+                    <div class="px-4 py-4 space-y-3">
+                        <Link
+                            :href="route('preorder.create')"
+                            class="block rounded-xl bg-slate-50 px-4 py-3 text-base font-medium text-slate-700 hover:bg-slate-100"
+                        >
+                            Comanda acum
+                        </Link>
+                        <Link
+                            v-if="canLogin && $page.props.auth.user"
+                            :href="$page.props.auth.user.role === 'admin' ? route('admin.dashboard') : route('dashboard')"
+                            class="block rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-4 py-3 text-base font-semibold text-white text-center"
+                        >
+                            Dashboard
+                        </Link>
+                        <Link
+                            v-else-if="canLogin"
+                            :href="route('login')"
+                            class="block rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-4 py-3 text-base font-semibold text-white text-center"
+                        >
+                            Autentificare
+                        </Link>
+                    </div>
+                </div>
+            </Transition>
         </nav>
 
         <!-- Hero Section -->

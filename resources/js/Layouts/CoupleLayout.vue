@@ -135,8 +135,8 @@ const mobileMenuOpen = ref(false);
 
         <!-- Page Header -->
         <header class="bg-white border-b border-slate-200" v-if="$slots.header">
-            <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between">
+            <div class="mx-auto max-w-7xl px-4 py-4 sm:py-6 sm:px-6 lg:px-8">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <slot name="header" />
                 </div>
             </div>
