@@ -18,23 +18,73 @@ use ZipArchive;
 
 class WeddingController extends Controller
 {
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $weddings = Wedding::with('user')
-            ->withCount('photos')
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+        $query = Wedding::with('user')->withCount('photos');
+
+        // Search filter
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('couple_name', 'like', "%{$search}%")
+                    ->orWhereHas('user', function ($userQuery) use ($search) {
+                        $userQuery->where('email', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        // Event type filter
+        if ($request->filled('event_type')) {
+            $query->where('event_type', $request->input('event_type'));
+        }
+
+        // Status filter
+        if ($request->filled('status')) {
+            $isActive = $request->input('status') === 'active';
+            $query->where('is_active', $isActive);
+        }
+
+        // Sorting
+        $sortField = $request->input('sort', 'created_at');
+        $sortDirection = $request->input('direction', 'desc');
+        $allowedSorts = ['created_at', 'event_date', 'couple_name'];
+
+        if (in_array($sortField, $allowedSorts)) {
+            $query->orderBy($sortField, $sortDirection === 'asc' ? 'asc' : 'desc');
+        }
+
+        $weddings = $query->paginate(10)->withQueryString();
 
         return Inertia::render('Admin/Events/Index', [
             'weddings' => $weddings,
             'eventTypes' => Wedding::getEventTypeOptions(),
+            'filters' => [
+                'search' => $request->input('search', ''),
+                'event_type' => $request->input('event_type', ''),
+                'status' => $request->input('status', ''),
+                'sort' => $sortField,
+                'direction' => $sortDirection,
+            ],
         ]);
     }
 
-    public function create(): Response
+    public function create(Request $request): Response
     {
+        $prefill = null;
+
+        if ($request->filled('from_preorder')) {
+            $prefill = [
+                'from_preorder' => $request->input('from_preorder'),
+                'couple_name' => $request->input('name', ''),
+                'event_type' => $request->input('event_type', 'nunta'),
+                'event_date' => $request->input('event_date', ''),
+                'email' => $request->input('email', ''),
+            ];
+        }
+
         return Inertia::render('Admin/Events/Create', [
             'eventTypes' => Wedding::getEventTypeOptions(),
+            'prefill' => $prefill,
         ]);
     }
 

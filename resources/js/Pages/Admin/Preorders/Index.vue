@@ -1,11 +1,14 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
+import { ref, watch } from 'vue';
+import { useDebounceFn } from '@vueuse/core';
 
-defineProps({
+const props = defineProps({
     preorders: Object,
     eventTypes: Object,
     statuses: Object,
+    filters: Object,
 });
 
 const statusColors = {
@@ -13,6 +16,43 @@ const statusColors = {
     confirmed: 'bg-blue-50 text-blue-700 ring-blue-600/20',
     completed: 'bg-emerald-50 text-emerald-700 ring-emerald-600/20',
     cancelled: 'bg-red-50 text-red-700 ring-red-600/20',
+};
+
+const search = ref(props.filters?.search || '');
+const eventType = ref(props.filters?.event_type || '');
+const status = ref(props.filters?.status || '');
+const sort = ref(props.filters?.sort || 'created_at');
+const direction = ref(props.filters?.direction || 'desc');
+
+const applyFilters = () => {
+    router.get(route('admin.preorders.index'), {
+        search: search.value || undefined,
+        event_type: eventType.value || undefined,
+        status: status.value || undefined,
+        sort: sort.value,
+        direction: direction.value,
+    }, {
+        preserveState: true,
+        replace: true,
+    });
+};
+
+const debouncedSearch = useDebounceFn(applyFilters, 300);
+
+watch(search, debouncedSearch);
+watch([eventType, status, sort, direction], applyFilters);
+
+const clearFilters = () => {
+    search.value = '';
+    eventType.value = '';
+    status.value = '';
+    sort.value = 'created_at';
+    direction.value = 'desc';
+    applyFilters();
+};
+
+const hasActiveFilters = () => {
+    return search.value || eventType.value || status.value || sort.value !== 'created_at' || direction.value !== 'desc';
 };
 
 const deletePreorder = (preorder) => {
@@ -32,6 +72,84 @@ const deletePreorder = (preorder) => {
                 <p class="mt-1 text-sm text-slate-500">Gestioneaza toate precomenzile primite</p>
             </div>
         </template>
+
+        <!-- Filters -->
+        <div class="mb-6 rounded-2xl bg-white shadow-sm ring-1 ring-slate-900/5 p-4">
+            <div class="flex flex-wrap items-center gap-4">
+                <!-- Search -->
+                <div class="flex-1 min-w-[200px]">
+                    <div class="relative">
+                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input
+                            v-model="search"
+                            type="text"
+                            placeholder="Cauta dupa nume, email sau telefon..."
+                            class="w-full pl-10 pr-4 py-2 rounded-xl border-slate-300 text-sm focus:border-violet-500 focus:ring-violet-500"
+                        />
+                    </div>
+                </div>
+
+                <!-- Event Type -->
+                <select
+                    v-model="eventType"
+                    class="rounded-xl border-slate-300 text-sm focus:border-violet-500 focus:ring-violet-500"
+                >
+                    <option value="">Toate tipurile</option>
+                    <option v-for="(label, value) in eventTypes" :key="value" :value="value">
+                        {{ label }}
+                    </option>
+                </select>
+
+                <!-- Status -->
+                <select
+                    v-model="status"
+                    class="rounded-xl border-slate-300 text-sm focus:border-violet-500 focus:ring-violet-500"
+                >
+                    <option value="">Orice status</option>
+                    <option v-for="(label, value) in statuses" :key="value" :value="value">
+                        {{ label }}
+                    </option>
+                </select>
+
+                <!-- Sort -->
+                <select
+                    v-model="sort"
+                    class="rounded-xl border-slate-300 text-sm focus:border-violet-500 focus:ring-violet-500"
+                >
+                    <option value="created_at">Data creare</option>
+                    <option value="event_date">Data eveniment</option>
+                    <option value="contact_name">Nume</option>
+                </select>
+
+                <!-- Direction -->
+                <button
+                    @click="direction = direction === 'desc' ? 'asc' : 'desc'"
+                    class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-300 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                    :title="direction === 'desc' ? 'Descrescator' : 'Crescator'"
+                >
+                    <svg v-if="direction === 'desc'" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
+                    </svg>
+                    <svg v-else class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4" />
+                    </svg>
+                </button>
+
+                <!-- Clear Filters -->
+                <button
+                    v-if="hasActiveFilters()"
+                    @click="clearFilters"
+                    class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm text-slate-600 hover:text-slate-800 hover:bg-slate-100 transition-colors"
+                >
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    Reseteaza
+                </button>
+            </div>
+        </div>
 
         <!-- Table -->
         <div class="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-900/5">

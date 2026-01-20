@@ -12,15 +12,52 @@ use Inertia\Response;
 
 class PreorderController extends Controller
 {
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $preorders = Preorder::orderBy('created_at', 'desc')
-            ->paginate(15);
+        $query = Preorder::query();
+
+        // Search filter
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('contact_name', 'like', "%{$search}%")
+                    ->orWhere('contact_email', 'like', "%{$search}%")
+                    ->orWhere('contact_phone', 'like', "%{$search}%");
+            });
+        }
+
+        // Event type filter
+        if ($request->filled('event_type')) {
+            $query->where('event_type', $request->input('event_type'));
+        }
+
+        // Status filter
+        if ($request->filled('status')) {
+            $query->where('status', $request->input('status'));
+        }
+
+        // Sorting
+        $sortField = $request->input('sort', 'created_at');
+        $sortDirection = $request->input('direction', 'desc');
+        $allowedSorts = ['created_at', 'event_date', 'contact_name'];
+
+        if (in_array($sortField, $allowedSorts)) {
+            $query->orderBy($sortField, $sortDirection === 'asc' ? 'asc' : 'desc');
+        }
+
+        $preorders = $query->paginate(15)->withQueryString();
 
         return Inertia::render('Admin/Preorders/Index', [
             'preorders' => $preorders,
             'eventTypes' => Preorder::getEventTypeOptions(),
             'statuses' => Preorder::getStatusOptions(),
+            'filters' => [
+                'search' => $request->input('search', ''),
+                'event_type' => $request->input('event_type', ''),
+                'status' => $request->input('status', ''),
+                'sort' => $sortField,
+                'direction' => $sortDirection,
+            ],
         ]);
     }
 

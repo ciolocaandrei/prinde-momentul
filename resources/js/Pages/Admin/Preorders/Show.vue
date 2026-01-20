@@ -153,8 +153,23 @@ const updateStatus = () => {
 
             <!-- Event Details -->
             <div class="rounded-2xl bg-white shadow-sm ring-1 ring-slate-900/5">
-                <div class="border-b border-slate-200 px-6 py-5">
+                <div class="border-b border-slate-200 px-6 py-5 flex items-center justify-between">
                     <h2 class="text-lg font-semibold text-slate-900">Detalii Eveniment</h2>
+                    <Link
+                        :href="route('admin.events.create', {
+                            from_preorder: preorder.id,
+                            name: preorder.contact_name,
+                            event_type: preorder.event_type,
+                            event_date: preorder.event_date,
+                            email: preorder.contact_email
+                        })"
+                        class="inline-flex items-center gap-x-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 hover:from-violet-700 hover:to-purple-700 transition-all"
+                    >
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        Creeaza Eveniment
+                    </Link>
                 </div>
                 <div class="px-6 py-6">
                     <dl class="grid grid-cols-1 md:grid-cols-2 gap-6">
