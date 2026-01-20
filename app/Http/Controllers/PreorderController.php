@@ -23,28 +23,36 @@ class PreorderController extends Controller
     private function getSampleImages(): array
     {
         $samplesPath = public_path('samples');
-        $samples = [];
+        $categories = [
+            'nunta' => ['name' => 'Nuntă', 'samples' => []],
+            'botez' => ['name' => 'Botez', 'samples' => []],
+            'majorat' => ['name' => 'Majorat', 'samples' => []],
+        ];
 
-        if (File::isDirectory($samplesPath)) {
-            $files = File::files($samplesPath);
-            foreach ($files as $file) {
-                $extension = strtolower($file->getExtension());
-                if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp'])) {
-                    $samples[] = [
-                        'id' => $file->getFilenameWithoutExtension(),
-                        'name' => ucwords(str_replace(['-', '_'], ' ', $file->getFilenameWithoutExtension())),
-                        'path' => '/samples/' . $file->getFilename(),
-                    ];
+        foreach (array_keys($categories) as $category) {
+            $categoryPath = $samplesPath . '/' . $category;
+
+            if (File::isDirectory($categoryPath)) {
+                $files = File::files($categoryPath);
+                foreach ($files as $file) {
+                    $extension = strtolower($file->getExtension());
+                    if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp'])) {
+                        $categories[$category]['samples'][] = [
+                            'id' => $category . '_' . $file->getFilenameWithoutExtension(),
+                            'path' => '/samples/' . $category . '/' . $file->getFilename(),
+                        ];
+                    }
                 }
+
+                // Sort numerically
+                usort($categories[$category]['samples'], function ($a, $b) {
+                    return strnatcmp($a['id'], $b['id']);
+                });
             }
         }
 
-        // Sort numerically by id (natural sort: 1, 2, 10 instead of 1, 10, 2)
-        usort($samples, function ($a, $b) {
-            return strnatcmp($a['id'], $b['id']);
-        });
-
-        return $samples;
+        // Remove empty categories
+        return array_filter($categories, fn($cat) => count($cat['samples']) > 0);
     }
 
     public function store(StorePreorderRequest $request): RedirectResponse

@@ -24,8 +24,8 @@ import '@fontsource/lora/700.css';
 const props = defineProps({
     eventTypes: Object,
     sampleImages: {
-        type: Array,
-        default: () => [],
+        type: Object,
+        default: () => ({}),
     },
     designerTemplates: {
         type: Array,
@@ -133,9 +133,11 @@ const form = useForm({
 
 const useCustomImage = ref(false);
 const useDesigner = ref(false);
+// Check if there are any samples
+const hasSamples = computed(() => Object.keys(props.sampleImages).length > 0);
 // Default to predesign when no samples available
-const usePredesign = ref(props.sampleImages.length === 0);
-const useSamples = ref(props.sampleImages.length > 0);
+const usePredesign = ref(Object.keys(props.sampleImages).length === 0);
+const useSamples = ref(Object.keys(props.sampleImages).length > 0);
 const imagePreview = ref(null);
 const showDesignerModal = ref(false);
 const hasCustomDesign = ref(false);
@@ -150,14 +152,26 @@ const showFullscreenPreview = ref(false);
 
 // Samples state
 const selectedSampleId = ref(null);
+const selectedSampleCategory = ref('');
 const showFullscreenSample = ref(false);
 const fullscreenSamplePath = ref(null);
 const sampleNames = ref('');
 const sampleDate = ref('');
 
+const samplesInSelectedCategory = computed(() => {
+    if (!selectedSampleCategory.value || !props.sampleImages[selectedSampleCategory.value]) {
+        return [];
+    }
+    return props.sampleImages[selectedSampleCategory.value].samples;
+});
+
 const selectedSample = computed(() => {
     if (!selectedSampleId.value) return null;
-    return props.sampleImages.find(s => s.id === selectedSampleId.value);
+    for (const category of Object.values(props.sampleImages)) {
+        const found = category.samples.find(s => s.id === selectedSampleId.value);
+        if (found) return found;
+    }
+    return null;
 });
 
 const showQrOptions = computed(() => form.wants_qr_card);
@@ -593,7 +607,7 @@ const submit = () => {
                                 <!-- Samples vs Predesign vs Designer Toggle -->
                                 <div class="flex flex-wrap gap-2">
                                     <button
-                                        v-if="sampleImages.length > 0"
+                                        v-if="hasSamples"
                                         type="button"
                                         @click="useSamples = true"
                                         :class="[
@@ -632,7 +646,7 @@ const submit = () => {
                                 </div>
 
                                 <!-- Samples Option -->
-                                <div v-if="useSamples && sampleImages.length > 0" class="space-y-4">
+                                <div v-if="useSamples && hasSamples" class="space-y-4">
                                     <!-- Name and Date Inputs -->
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
@@ -655,44 +669,61 @@ const submit = () => {
                                         </div>
                                     </div>
 
-                                    <p class="text-sm text-slate-600">Alege unul din modelele noastre:</p>
-                                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                        <div
-                                            v-for="sample in sampleImages"
-                                            :key="sample.id"
-                                            class="rounded-xl overflow-hidden transition-all hover:scale-[1.02]"
-                                            :class="[
-                                                selectedSampleId === sample.id
-                                                    ? 'ring-2 ring-violet-500 ring-offset-2 shadow-lg'
-                                                    : 'ring-1 ring-slate-200 hover:ring-slate-300 shadow-sm'
-                                            ]"
+                                    <!-- Category Select -->
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1">Tip eveniment</label>
+                                        <select
+                                            v-model="selectedSampleCategory"
+                                            class="w-full rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
                                         >
-                                            <div class="relative group cursor-pointer" @click="fullscreenSamplePath = sample.path; showFullscreenSample = true">
-                                                <img
-                                                    :src="sample.path"
-                                                    :alt="sample.name"
-                                                    class="w-full aspect-[85/55] object-cover"
-                                                />
-                                                <!-- Fullscreen overlay icon -->
-                                                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
-                                                    <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-                                                    </svg>
+                                            <option value="">Alege categoria</option>
+                                            <option v-for="(category, key) in sampleImages" :key="key" :value="key">
+                                                {{ category.name }}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Samples Grid -->
+                                    <div v-if="samplesInSelectedCategory.length > 0" class="space-y-3">
+                                        <p class="text-sm text-slate-600">Alege un model:</p>
+                                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                            <div
+                                                v-for="sample in samplesInSelectedCategory"
+                                                :key="sample.id"
+                                                class="rounded-xl overflow-hidden transition-all hover:scale-[1.02]"
+                                                :class="[
+                                                    selectedSampleId === sample.id
+                                                        ? 'ring-2 ring-violet-500 ring-offset-2 shadow-lg'
+                                                        : 'ring-1 ring-slate-200 hover:ring-slate-300 shadow-sm'
+                                                ]"
+                                            >
+                                                <div class="relative group cursor-pointer" @click="fullscreenSamplePath = sample.path; showFullscreenSample = true">
+                                                    <img
+                                                        :src="sample.path"
+                                                        :alt="sample.id"
+                                                        class="w-full aspect-[85/55] object-cover"
+                                                    />
+                                                    <!-- Fullscreen overlay icon -->
+                                                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                                                        <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                                                        </svg>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="p-2 bg-white">
-                                                <button
-                                                    type="button"
-                                                    @click="selectSample(sample)"
-                                                    :class="[
-                                                        'w-full py-1.5 px-3 text-xs font-medium rounded-lg transition-colors',
-                                                        selectedSampleId === sample.id
-                                                            ? 'bg-emerald-500 text-white'
-                                                            : 'bg-violet-100 text-violet-700 hover:bg-violet-200'
-                                                    ]"
-                                                >
-                                                    {{ selectedSampleId === sample.id ? '✓ Selectat' : 'Selectează' }}
-                                                </button>
+                                                <div class="p-2 bg-white">
+                                                    <button
+                                                        type="button"
+                                                        @click="selectSample(sample)"
+                                                        :class="[
+                                                            'w-full py-1.5 px-3 text-xs font-medium rounded-lg transition-colors',
+                                                            selectedSampleId === sample.id
+                                                                ? 'bg-emerald-500 text-white'
+                                                                : 'bg-violet-100 text-violet-700 hover:bg-violet-200'
+                                                        ]"
+                                                    >
+                                                        {{ selectedSampleId === sample.id ? '✓ Selectat' : 'Selectează' }}
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
