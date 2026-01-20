@@ -152,17 +152,28 @@ const showFullscreenPreview = ref(false);
 
 // Samples state
 const selectedSampleId = ref(null);
-const selectedSampleCategory = ref('');
 const showFullscreenSample = ref(false);
 const fullscreenSamplePath = ref(null);
 const sampleNames = ref('');
 const sampleDate = ref('');
 
-const samplesInSelectedCategory = computed(() => {
-    if (!selectedSampleCategory.value || !props.sampleImages[selectedSampleCategory.value]) {
+// Map event types to sample categories
+const eventTypeToCategory = {
+    'nunta': 'nunta',
+    'botez': 'botez',
+    'majorat': 'majorat',
+};
+
+const currentSampleCategory = computed(() => {
+    return eventTypeToCategory[form.event_type] || 'nunta';
+});
+
+const samplesForEventType = computed(() => {
+    const category = currentSampleCategory.value;
+    if (!props.sampleImages[category]) {
         return [];
     }
-    return props.sampleImages[selectedSampleCategory.value].samples;
+    return props.sampleImages[category].samples;
 });
 
 const selectedSample = computed(() => {
@@ -669,26 +680,12 @@ const submit = () => {
                                         </div>
                                     </div>
 
-                                    <!-- Category Select -->
-                                    <div>
-                                        <label class="block text-sm font-medium text-slate-700 mb-1">Tip eveniment</label>
-                                        <select
-                                            v-model="selectedSampleCategory"
-                                            class="w-full rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
-                                        >
-                                            <option value="">Alege categoria</option>
-                                            <option v-for="(category, key) in sampleImages" :key="key" :value="key">
-                                                {{ category.name }}
-                                            </option>
-                                        </select>
-                                    </div>
-
                                     <!-- Samples Grid -->
-                                    <div v-if="samplesInSelectedCategory.length > 0" class="space-y-3">
-                                        <p class="text-sm text-slate-600">Alege un model:</p>
+                                    <div v-if="samplesForEventType.length > 0" class="space-y-3">
+                                        <p class="text-sm text-slate-600">Alege un model pentru {{ eventTypes[form.event_type] || 'evenimentul tău' }}:</p>
                                         <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
                                             <div
-                                                v-for="sample in samplesInSelectedCategory"
+                                                v-for="sample in samplesForEventType"
                                                 :key="sample.id"
                                                 class="rounded-xl overflow-hidden transition-all hover:scale-[1.02]"
                                                 :class="[

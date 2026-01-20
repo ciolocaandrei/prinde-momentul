@@ -13,10 +13,7 @@ class Preorder extends Model
     public const EVENT_TYPES = [
         'nunta' => 'Nuntă',
         'majorat' => 'Majorat',
-        'zi_de_nastere' => 'Zi de Naștere',
         'botez' => 'Botez',
-        'corporate' => 'Eveniment Corporate',
-        'altele' => 'Alt Eveniment',
     ];
 
     public const STATUSES = [

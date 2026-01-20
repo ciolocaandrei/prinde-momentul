@@ -17,7 +17,7 @@ class StorePreorderRequest extends FormRequest
             'contact_name' => 'required|string|max:255',
             'contact_email' => 'required|email|max:255',
             'contact_phone' => 'nullable|string|max:20',
-            'event_type' => 'required|in:nunta,majorat,zi_de_nastere,botez,corporate,altele',
+            'event_type' => 'required|in:nunta,majorat,botez',
             'event_date' => 'nullable|date|after_or_equal:today',
             'wants_print_package' => 'boolean',
             'wants_qr_card' => 'boolean',
