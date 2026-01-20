@@ -39,6 +39,11 @@ class PreorderController extends Controller
             }
         }
 
+        // Sort numerically by id (natural sort: 1, 2, 10 instead of 1, 10, 2)
+        usort($samples, function ($a, $b) {
+            return strnatcmp($a['id'], $b['id']);
+        });
+
         return $samples;
     }
 

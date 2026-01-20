@@ -148,6 +148,8 @@ const showFullscreenPreview = ref(false);
 
 // Samples state
 const selectedSampleId = ref(null);
+const showFullscreenSample = ref(false);
+const fullscreenSamplePath = ref(null);
 
 const selectedSample = computed(() => {
     if (!selectedSampleId.value) return null;
@@ -653,11 +655,9 @@ const submit = () => {
                                 <div v-if="useSamples && sampleImages.length > 0" class="space-y-4">
                                     <p class="text-sm text-slate-600">Alege unul din modelele noastre:</p>
                                     <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                        <button
+                                        <div
                                             v-for="sample in sampleImages"
                                             :key="sample.id"
-                                            type="button"
-                                            @click="selectSample(sample)"
                                             class="rounded-xl overflow-hidden transition-all hover:scale-[1.02]"
                                             :class="[
                                                 selectedSampleId === sample.id
@@ -665,15 +665,29 @@ const submit = () => {
                                                     : 'ring-1 ring-slate-200 hover:ring-slate-300 shadow-sm'
                                             ]"
                                         >
-                                            <img
-                                                :src="sample.path"
-                                                :alt="sample.name"
-                                                class="w-full aspect-[85/55] object-cover"
-                                            />
-                                            <div class="p-2 bg-white text-center">
-                                                <div class="text-xs font-medium text-slate-800 truncate">{{ sample.name }}</div>
+                                            <div class="relative group cursor-pointer" @click="fullscreenSamplePath = sample.path; showFullscreenSample = true">
+                                                <img
+                                                    :src="sample.path"
+                                                    :alt="sample.name"
+                                                    class="w-full aspect-[85/55] object-cover"
+                                                />
+                                                <!-- Fullscreen overlay icon -->
+                                                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                                                    <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                                                    </svg>
+                                                </div>
                                             </div>
-                                        </button>
+                                            <button
+                                                type="button"
+                                                @click="selectSample(sample)"
+                                                class="w-full p-2 bg-white text-center hover:bg-slate-50 transition-colors"
+                                            >
+                                                <div class="text-xs font-medium text-slate-800 truncate">
+                                                    {{ selectedSampleId === sample.id ? '✓ ' : '' }}{{ sample.name }}
+                                                </div>
+                                            </button>
+                                        </div>
                                     </div>
 
                                     <!-- Selected Sample Preview -->
@@ -1100,6 +1114,47 @@ const submit = () => {
                             {{ cardDesign.dimensions.width }} x {{ cardDesign.dimensions.height }} {{ cardDesign.dimensions.unit }}
                         </p>
                         <p class="text-white/50 text-xs mt-1">Click afara sau apasa X pentru a inchide</p>
+                    </div>
+                </div>
+            </Transition>
+        </Teleport>
+
+        <!-- Fullscreen Sample Image Modal -->
+        <Teleport to="body">
+            <Transition
+                enter-active-class="transition ease-out duration-200"
+                enter-from-class="opacity-0"
+                enter-to-class="opacity-100"
+                leave-active-class="transition ease-in duration-150"
+                leave-from-class="opacity-100"
+                leave-to-class="opacity-0"
+            >
+                <div
+                    v-if="showFullscreenSample"
+                    class="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4"
+                    @click.self="showFullscreenSample = false"
+                >
+                    <!-- Close Button -->
+                    <button
+                        type="button"
+                        @click="showFullscreenSample = false"
+                        class="absolute top-4 right-4 p-2 text-white/70 hover:text-white transition-colors z-10"
+                    >
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+
+                    <!-- Sample Image -->
+                    <img
+                        :src="fullscreenSamplePath"
+                        alt="Sample preview"
+                        class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+                    />
+
+                    <!-- Info -->
+                    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 text-center">
+                        <p class="text-white/50 text-xs">Click afara sau apasa X pentru a inchide</p>
                     </div>
                 </div>
             </Transition>
