@@ -36,7 +36,10 @@ class Preorder extends Model
         'wants_qr_card',
         'qr_card_quantity',
         'qr_card_image',
+        'qr_card_sample',
         'qr_card_theme',
+        'qr_card_design',
+        'qr_card_pdf',
         'notes',
         'status',
     ];
@@ -47,6 +50,7 @@ class Preorder extends Model
             'event_date' => 'date',
             'wants_print_package' => 'boolean',
             'wants_qr_card' => 'boolean',
+            'qr_card_design' => 'array',
         ];
     }
 
@@ -63,10 +67,7 @@ class Preorder extends Model
     public function getQrCardImageUrl(): ?string
     {
         if ($this->qr_card_image) {
-            return Storage::disk('r2')->temporaryUrl(
-                $this->qr_card_image,
-                now()->addHours(24)
-            );
+            return asset('storage/' . $this->qr_card_image);
         }
         return null;
     }

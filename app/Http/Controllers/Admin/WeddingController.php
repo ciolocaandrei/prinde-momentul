@@ -22,7 +22,7 @@ class WeddingController extends Controller
     {
         $weddings = Wedding::with('user')
             ->withCount('photos')
-            ->orderBy('event_date', 'desc')
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
 
         return Inertia::render('Admin/Events/Index', [

@@ -1,12 +1,51 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
+import CardCanvas from '@/Components/CardDesigner/CardCanvas.vue';
+import { usePdfExport } from '@/composables/usePdfExport';
+
+// Font imports for card designer
+import '@fontsource-variable/playfair-display';
+import '@fontsource-variable/cormorant';
+import '@fontsource/great-vibes';
+import '@fontsource/dancing-script';
+import '@fontsource/montserrat/400.css';
+import '@fontsource/montserrat/500.css';
+import '@fontsource/montserrat/600.css';
+import '@fontsource/montserrat/700.css';
+import '@fontsource/lora/400.css';
+import '@fontsource/lora/500.css';
+import '@fontsource/lora/600.css';
+import '@fontsource/lora/700.css';
 
 const props = defineProps({
     preorder: Object,
     eventTypes: Object,
     statuses: Object,
 });
+
+const cardCanvasRef = ref(null);
+const { isExporting, exportToPdf, exportToPng } = usePdfExport();
+
+const downloadPdf = async () => {
+    if (cardCanvasRef.value?.canvasRef && props.preorder.qr_card_design) {
+        await exportToPdf(
+            cardCanvasRef.value.canvasRef,
+            props.preorder.qr_card_design,
+            `qr-card-${props.preorder.contact_name.replace(/\s+/g, '-')}`
+        );
+    }
+};
+
+const downloadPng = async () => {
+    if (cardCanvasRef.value?.canvasRef) {
+        await exportToPng(
+            cardCanvasRef.value.canvasRef,
+            `qr-card-${props.preorder.contact_name.replace(/\s+/g, '-')}`
+        );
+    }
+};
 
 const statusColors = {
     pending: 'bg-amber-50 text-amber-700 ring-amber-600/20',
@@ -204,12 +243,87 @@ const updateStatus = () => {
                                     />
                                 </div>
 
+                                <!-- Sample Image -->
+                                <div v-if="preorder.qr_card_sample">
+                                    <p class="text-sm font-medium text-emerald-800 mb-2">Design din exemple:</p>
+                                    <img
+                                        :src="preorder.qr_card_sample"
+                                        alt="QR Card Sample"
+                                        class="w-full max-w-sm rounded-xl shadow-md"
+                                    />
+                                    <a
+                                        :href="preorder.qr_card_sample"
+                                        download
+                                        class="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-violet-600 text-white text-sm font-medium rounded-xl hover:bg-violet-700 transition-colors"
+                                    >
+                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
+                                        Descarca imaginea
+                                    </a>
+                                </div>
+
                                 <!-- Theme -->
                                 <div v-if="preorder.qr_card_theme">
                                     <p class="text-sm font-medium text-emerald-800 mb-2">Tema descrisa:</p>
                                     <p class="text-sm text-emerald-700 bg-white/50 rounded-lg p-3">
                                         {{ preorder.qr_card_theme }}
                                     </p>
+                                </div>
+
+                                <!-- Custom Card Design -->
+                                <div v-if="preorder.qr_card_design">
+                                    <p class="text-sm font-medium text-emerald-800 mb-3">Design personalizat:</p>
+
+                                    <!-- Card Preview -->
+                                    <div class="bg-white/50 rounded-xl p-4 mb-4">
+                                        <div class="flex justify-center">
+                                            <CardCanvas
+                                                ref="cardCanvasRef"
+                                                :design="preorder.qr_card_design"
+                                                :qr-url="`https://nunta360.ro/upload/${preorder.id}`"
+                                                :scale="2.5"
+                                                :interactive="false"
+                                            />
+                                        </div>
+                                        <p class="text-center text-xs text-emerald-600 mt-3">
+                                            {{ preorder.qr_card_design.dimensions.width }} × {{ preorder.qr_card_design.dimensions.height }} {{ preorder.qr_card_design.dimensions.unit }}
+                                        </p>
+                                    </div>
+
+                                    <!-- Download Buttons -->
+                                    <div class="flex gap-3">
+                                        <button
+                                            type="button"
+                                            @click="downloadPdf"
+                                            :disabled="isExporting"
+                                            class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-violet-600 text-white text-sm font-medium rounded-xl hover:bg-violet-700 disabled:opacity-50 transition-colors"
+                                        >
+                                            <svg v-if="isExporting" class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                            <svg v-else class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                            </svg>
+                                            Descarca PDF
+                                        </button>
+                                        <button
+                                            type="button"
+                                            @click="downloadPng"
+                                            :disabled="isExporting"
+                                            class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white text-emerald-700 text-sm font-medium rounded-xl border border-emerald-200 hover:bg-emerald-50 disabled:opacity-50 transition-colors"
+                                        >
+                                            <svg v-if="isExporting" class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                            <svg v-else class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                            Descarca PNG
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

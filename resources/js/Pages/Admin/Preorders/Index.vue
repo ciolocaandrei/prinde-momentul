@@ -93,7 +93,10 @@ const deletePreorder = (preorder) => {
                                 <span v-if="preorder.wants_print_package" class="inline-flex items-center rounded-full bg-violet-100 px-2 py-0.5 text-xs font-medium text-violet-700">
                                     Print
                                 </span>
-                                <span v-if="preorder.wants_qr_card" class="inline-flex items-center rounded-full bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-700">
+                                <span v-if="preorder.wants_qr_card" class="inline-flex items-center gap-1 rounded-full bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-700">
+                                    <svg v-if="preorder.qr_card_design" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" title="Design personalizat">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+                                    </svg>
                                     QR ({{ preorder.qr_card_quantity }})
                                 </span>
                                 <span v-if="!preorder.wants_print_package && !preorder.wants_qr_card" class="text-sm text-slate-400">-</span>

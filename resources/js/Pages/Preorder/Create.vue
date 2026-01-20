@@ -1,9 +1,116 @@
 <script setup>
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { ref, computed, watch } from 'vue';
+import { useCardDesign } from '@/composables/useCardDesign';
+import CardCanvas from '@/Components/CardDesigner/CardCanvas.vue';
+import DesignToolbar from '@/Components/CardDesigner/DesignToolbar.vue';
+import ExportModal from '@/Components/CardDesigner/ExportModal.vue';
+import { usePdfExport } from '@/composables/usePdfExport';
 
-defineProps({
+// Font imports for card designer
+import '@fontsource-variable/playfair-display';
+import '@fontsource-variable/cormorant';
+import '@fontsource/great-vibes';
+import '@fontsource/dancing-script';
+import '@fontsource/montserrat/400.css';
+import '@fontsource/montserrat/500.css';
+import '@fontsource/montserrat/600.css';
+import '@fontsource/montserrat/700.css';
+import '@fontsource/lora/400.css';
+import '@fontsource/lora/500.css';
+import '@fontsource/lora/600.css';
+import '@fontsource/lora/700.css';
+
+const props = defineProps({
     eventTypes: Object,
+    sampleImages: {
+        type: Array,
+        default: () => [],
+    },
+    designerTemplates: {
+        type: Array,
+        default: () => [
+            {
+                id: 'elegant_gold',
+                name: 'Elegant Gold',
+                style: 'Clasic',
+                background: { type: 'gradient', colors: ['#FFFEF7', '#F5F0E1'], direction: '135deg' },
+                primaryFont: 'Playfair Display',
+                secondaryFont: 'Montserrat',
+                textColor: '#2C2C2C',
+                accentColor: '#C9A959',
+            },
+            {
+                id: 'modern_minimal',
+                name: 'Modern Minimal',
+                style: 'Minimalist',
+                background: { type: 'solid', color: '#FFFFFF' },
+                primaryFont: 'Montserrat',
+                secondaryFont: 'Montserrat',
+                textColor: '#1A1A1A',
+                accentColor: '#666666',
+            },
+            {
+                id: 'romantic_blush',
+                name: 'Romantic Blush',
+                style: 'Romantic',
+                background: { type: 'gradient', colors: ['#FDF2F8', '#EDE9FE'], direction: '135deg' },
+                primaryFont: 'Great Vibes',
+                secondaryFont: 'Lora',
+                textColor: '#4A3728',
+                accentColor: '#D4A5A5',
+            },
+            {
+                id: 'garden_party',
+                name: 'Garden Party',
+                style: 'Natural',
+                background: { type: 'solid', color: '#F0F4F0' },
+                primaryFont: 'Cormorant',
+                secondaryFont: 'Montserrat',
+                textColor: '#2D4A3E',
+                accentColor: '#7C9A8D',
+            },
+            {
+                id: 'classic_navy',
+                name: 'Classic Navy',
+                style: 'Sofisticat',
+                background: { type: 'solid', color: '#1E3A5F' },
+                primaryFont: 'Playfair Display',
+                secondaryFont: 'Montserrat',
+                textColor: '#FFFFFF',
+                accentColor: '#C9A959',
+            },
+            {
+                id: 'rustic_charm',
+                name: 'Rustic Charm',
+                style: 'Rustic',
+                background: { type: 'solid', color: '#FAF6F1' },
+                primaryFont: 'Dancing Script',
+                secondaryFont: 'Lora',
+                textColor: '#5C4033',
+                accentColor: '#8B7355',
+            },
+        ],
+    },
+    designerFonts: {
+        type: Array,
+        default: () => [
+            { id: 'Playfair Display', name: 'Playfair Display', category: 'Serif' },
+            { id: 'Montserrat', name: 'Montserrat', category: 'Sans-serif' },
+            { id: 'Great Vibes', name: 'Great Vibes', category: 'Script' },
+            { id: 'Dancing Script', name: 'Dancing Script', category: 'Script' },
+            { id: 'Cormorant', name: 'Cormorant', category: 'Serif' },
+            { id: 'Lora', name: 'Lora', category: 'Serif' },
+        ],
+    },
+    designerSizes: {
+        type: Array,
+        default: () => [
+            { id: 'business_card', name: 'Business Card', width: 85, height: 55, unit: 'mm' },
+            { id: 'a7', name: 'A7', width: 74, height: 105, unit: 'mm' },
+            { id: 'a6', name: 'A6', width: 105, height: 148, unit: 'mm' },
+        ],
+    },
 });
 
 const form = useForm({
@@ -16,14 +123,173 @@ const form = useForm({
     wants_qr_card: false,
     qr_card_quantity: 50,
     qr_card_image: null,
+    qr_card_sample: null,
     qr_card_theme: '',
+    qr_card_design: null,
     notes: '',
 });
 
-const useCustomImage = ref(true);
+const useCustomImage = ref(false);
+const useDesigner = ref(false);
+// Default to predesign when no samples available
+const usePredesign = ref(props.sampleImages.length === 0);
+const useSamples = ref(props.sampleImages.length > 0);
 const imagePreview = ref(null);
+const showDesignerModal = ref(false);
+const hasCustomDesign = ref(false);
+const designPreviewRef = ref(null);
+
+// Predesign state
+const selectedPredesignId = ref(null);
+const predesignNames = ref('');
+const predesignDate = ref('');
+const predesignPreviewRef = ref(null);
+const showFullscreenPreview = ref(false);
+
+// Samples state
+const selectedSampleId = ref(null);
+
+const selectedSample = computed(() => {
+    if (!selectedSampleId.value) return null;
+    return props.sampleImages.find(s => s.id === selectedSampleId.value);
+});
 
 const showQrOptions = computed(() => form.wants_qr_card);
+
+const selectedPredesign = computed(() => {
+    if (!selectedPredesignId.value) return null;
+    return props.designerTemplates.find(t => t.id === selectedPredesignId.value);
+});
+
+// Card Designer Setup
+const {
+    design: cardDesign,
+    selectedElementId,
+    setDimensions,
+    setBackgroundType,
+    setBackgroundColor,
+    setGradientColors,
+    setGradientDirection,
+    selectElement,
+    deselectElement,
+    updateTextContent,
+    updateTextStyle,
+    updateTextPosition,
+    updateQrPosition,
+    updateQrSize,
+    updateQrColors,
+    applyTemplate,
+    exportDesign,
+    importDesign,
+} = useCardDesign();
+
+const { isExporting, exportToPdf, exportToPng } = usePdfExport();
+
+const selectedTemplateId = ref(null);
+const showExportModal = ref(false);
+const cardCanvasRef = ref(null);
+
+const qrUrl = computed(() => 'https://nunta360.ro/upload/DEMO');
+
+const openDesigner = () => {
+    showDesignerModal.value = true;
+};
+
+const closeDesigner = () => {
+    showDesignerModal.value = false;
+};
+
+const handleSelectElement = (id) => {
+    if (id) {
+        selectElement(id);
+    } else {
+        deselectElement();
+    }
+};
+
+const handleUpdateDimensions = (preset, width, height, unit) => {
+    setDimensions(preset, width, height, unit);
+};
+
+const handleUpdateBackground = (background) => {
+    setBackgroundType(background.type);
+    if (background.type === 'solid') {
+        setBackgroundColor(background.color);
+    } else {
+        setGradientColors(background.gradient.colors);
+        setGradientDirection(background.gradient.direction);
+    }
+};
+
+const handleApplyTemplate = (template) => {
+    selectedTemplateId.value = template.id;
+    applyTemplate(template);
+};
+
+const saveDesign = () => {
+    const designData = exportDesign();
+    form.qr_card_design = designData;
+    hasCustomDesign.value = true;
+    showDesignerModal.value = false;
+};
+
+const handleExport = () => {
+    showExportModal.value = true;
+};
+
+const handleExportPdf = async () => {
+    if (cardCanvasRef.value?.canvasRef) {
+        await exportToPdf(cardCanvasRef.value.canvasRef, cardDesign, 'qr-card');
+        showExportModal.value = false;
+    }
+};
+
+const handleExportPng = async () => {
+    if (cardCanvasRef.value?.canvasRef) {
+        await exportToPng(cardCanvasRef.value.canvasRef, 'qr-card');
+        showExportModal.value = false;
+    }
+};
+
+// Predesign functions
+const selectPredesign = (template) => {
+    selectedPredesignId.value = template.id;
+    applyTemplate(template);
+    // Update names if already entered
+    if (predesignNames.value) {
+        updateTextContent('names', predesignNames.value);
+    }
+    if (predesignDate.value) {
+        updateTextContent('date', predesignDate.value);
+    }
+};
+
+const updatePredesignNames = () => {
+    if (selectedPredesignId.value && predesignNames.value) {
+        updateTextContent('names', predesignNames.value);
+    }
+};
+
+const updatePredesignDate = () => {
+    if (selectedPredesignId.value && predesignDate.value) {
+        updateTextContent('date', predesignDate.value);
+    }
+};
+
+const savePredesign = () => {
+    if (selectedPredesignId.value) {
+        const designData = exportDesign();
+        form.qr_card_design = designData;
+        hasCustomDesign.value = true;
+    }
+};
+
+// Auto-save predesign when names or template changes
+watch([selectedPredesignId, predesignNames, predesignDate], () => {
+    if (selectedPredesignId.value) {
+        savePredesign();
+    }
+}, { deep: true });
 
 const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -51,10 +317,78 @@ watch(useCustomImage, (newVal) => {
     }
 });
 
+watch(useDesigner, (newVal) => {
+    if (newVal) {
+        // Using designer - clear image and theme
+        form.qr_card_image = null;
+        form.qr_card_theme = '';
+        imagePreview.value = null;
+        useCustomImage.value = false;
+        usePredesign.value = false;
+    } else if (!usePredesign.value) {
+        // Not using designer or predesign - clear design
+        form.qr_card_design = null;
+        hasCustomDesign.value = false;
+    }
+});
+
+watch(usePredesign, (newVal) => {
+    if (newVal) {
+        // Using predesign - clear image, theme, sample
+        form.qr_card_image = null;
+        form.qr_card_theme = '';
+        form.qr_card_sample = null;
+        imagePreview.value = null;
+        useCustomImage.value = false;
+        useDesigner.value = false;
+        useSamples.value = false;
+        selectedSampleId.value = null;
+    } else if (!useDesigner.value && !useSamples.value) {
+        // Not using predesign or designer or samples - clear design
+        form.qr_card_design = null;
+        hasCustomDesign.value = false;
+        selectedPredesignId.value = null;
+    }
+});
+
+watch(useSamples, (newVal) => {
+    if (newVal) {
+        // Using samples - clear image, theme, design
+        form.qr_card_image = null;
+        form.qr_card_theme = '';
+        form.qr_card_design = null;
+        imagePreview.value = null;
+        useCustomImage.value = false;
+        useDesigner.value = false;
+        usePredesign.value = false;
+        hasCustomDesign.value = false;
+        selectedPredesignId.value = null;
+    } else {
+        // Not using samples - clear sample
+        form.qr_card_sample = null;
+        selectedSampleId.value = null;
+    }
+});
+
+const selectSample = (sample) => {
+    selectedSampleId.value = sample.id;
+    form.qr_card_sample = sample.path;
+};
+
 const submit = () => {
-    form.post(route('preorder.store'), {
-        forceFormData: true,
-    });
+    // Stringify qr_card_design for FormData compatibility
+    if (form.qr_card_design) {
+        form.transform((data) => ({
+            ...data,
+            qr_card_design: JSON.stringify(data.qr_card_design),
+        })).post(route('preorder.store'), {
+            forceFormData: true,
+        });
+    } else {
+        form.post(route('preorder.store'), {
+            forceFormData: true,
+        });
+    }
 };
 </script>
 
@@ -250,36 +584,265 @@ const submit = () => {
 
                                 <p class="text-sm font-medium text-slate-700">Personalizeaza cartonasul:</p>
 
-                                <!-- Image vs Theme Toggle -->
-                                <div class="flex gap-x-4">
+                                <!-- Samples vs Predesign vs Designer vs Image vs Theme Toggle -->
+                                <div class="grid grid-cols-2 gap-2">
                                     <button
+                                        v-if="sampleImages.length > 0"
                                         type="button"
-                                        @click="useCustomImage = true"
+                                        @click="useSamples = true"
                                         :class="[
-                                            'flex-1 rounded-xl px-4 py-3 text-sm font-medium transition-all',
-                                            useCustomImage
+                                            'rounded-xl px-4 py-3 text-sm font-medium transition-all',
+                                            useSamples
                                                 ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/25'
                                                 : 'bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50'
                                         ]"
                                     >
-                                        Incarca o poza
+                                        Din exemple
                                     </button>
                                     <button
                                         type="button"
-                                        @click="useCustomImage = false"
+                                        @click="usePredesign = true"
                                         :class="[
-                                            'flex-1 rounded-xl px-4 py-3 text-sm font-medium transition-all',
-                                            !useCustomImage
+                                            'rounded-xl px-4 py-3 text-sm font-medium transition-all',
+                                            usePredesign
                                                 ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/25'
                                                 : 'bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50'
                                         ]"
                                     >
-                                        Descrie o tema
+                                        Alege design
+                                    </button>
+                                    <button
+                                        type="button"
+                                        @click="useDesigner = true"
+                                        :class="[
+                                            'rounded-xl px-4 py-3 text-sm font-medium transition-all',
+                                            useDesigner
+                                                ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/25'
+                                                : 'bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50'
+                                        ]"
+                                    >
+                                        Designer avansat
+                                    </button>
+                                    <button
+                                        type="button"
+                                        @click="useSamples = false; usePredesign = false; useDesigner = false; useCustomImage = true"
+                                        :class="[
+                                            'rounded-xl px-4 py-3 text-sm font-medium transition-all',
+                                            !useSamples && !useDesigner && !usePredesign && useCustomImage
+                                                ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/25'
+                                                : 'bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50'
+                                        ]"
+                                    >
+                                        Incarca poza
+                                    </button>
+                                    <button
+                                        type="button"
+                                        :class="[
+                                            'rounded-xl px-4 py-3 text-sm font-medium transition-all col-span-2',
+                                            !useSamples && !useDesigner && !usePredesign && !useCustomImage
+                                                ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/25'
+                                                : 'bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50'
+                                        ]"
+                                        @click="useSamples = false; usePredesign = false; useDesigner = false; useCustomImage = false"
+                                    >
+                                        Descrie tema
+                                    </button>
+                                </div>
+
+                                <!-- Samples Option -->
+                                <div v-if="useSamples && sampleImages.length > 0" class="space-y-4">
+                                    <p class="text-sm text-slate-600">Alege unul din modelele noastre:</p>
+                                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                        <button
+                                            v-for="sample in sampleImages"
+                                            :key="sample.id"
+                                            type="button"
+                                            @click="selectSample(sample)"
+                                            class="rounded-xl overflow-hidden transition-all hover:scale-[1.02]"
+                                            :class="[
+                                                selectedSampleId === sample.id
+                                                    ? 'ring-2 ring-violet-500 ring-offset-2 shadow-lg'
+                                                    : 'ring-1 ring-slate-200 hover:ring-slate-300 shadow-sm'
+                                            ]"
+                                        >
+                                            <img
+                                                :src="sample.path"
+                                                :alt="sample.name"
+                                                class="w-full aspect-[85/55] object-cover"
+                                            />
+                                            <div class="p-2 bg-white text-center">
+                                                <div class="text-xs font-medium text-slate-800 truncate">{{ sample.name }}</div>
+                                            </div>
+                                        </button>
+                                    </div>
+
+                                    <!-- Selected Sample Preview -->
+                                    <div v-if="selectedSample" class="p-4 bg-emerald-50 rounded-xl">
+                                        <div class="flex items-center gap-3">
+                                            <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                            </svg>
+                                            <span class="text-sm font-medium text-emerald-800">
+                                                Ai selectat: {{ selectedSample.name }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Predesign Option -->
+                                <div v-else-if="usePredesign" class="space-y-4">
+                                    <!-- Name and Date Inputs -->
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-slate-700 mb-1">Numele (ex: Ana & Mihai)</label>
+                                            <input
+                                                type="text"
+                                                v-model="predesignNames"
+                                                @input="updatePredesignNames"
+                                                placeholder="Ana & Mihai"
+                                                class="w-full rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-slate-700 mb-1">Data evenimentului</label>
+                                            <input
+                                                type="text"
+                                                v-model="predesignDate"
+                                                @input="updatePredesignDate"
+                                                placeholder="12 August 2026"
+                                                class="w-full rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <!-- Template Selection -->
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-2">Alege un design:</label>
+                                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                            <button
+                                                v-for="template in designerTemplates"
+                                                :key="template.id"
+                                                type="button"
+                                                @click="selectPredesign(template)"
+                                                class="rounded-xl overflow-hidden transition-all hover:scale-[1.02]"
+                                                :class="[
+                                                    selectedPredesignId === template.id
+                                                        ? 'ring-2 ring-violet-500 ring-offset-2 shadow-lg'
+                                                        : 'ring-1 ring-slate-200 hover:ring-slate-300 shadow-sm'
+                                                ]"
+                                            >
+                                                <div
+                                                    class="aspect-[85/55] p-2 flex items-center"
+                                                    :style="template.background.type === 'gradient'
+                                                        ? { background: `linear-gradient(${template.background.direction}, ${template.background.colors[0]}, ${template.background.colors[1]})` }
+                                                        : { backgroundColor: template.background.color }"
+                                                >
+                                                    <div class="flex-1 flex flex-col items-center justify-center gap-0.5">
+                                                        <div
+                                                            class="text-[9px] font-semibold truncate"
+                                                            :style="{ color: template.textColor, fontFamily: template.primaryFont }"
+                                                        >
+                                                            {{ predesignNames || 'Ana & Mihai' }}
+                                                        </div>
+                                                        <div
+                                                            class="text-[6px] truncate"
+                                                            :style="{ color: template.accentColor, fontFamily: template.secondaryFont }"
+                                                        >
+                                                            {{ predesignDate || '12 August 2026' }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex flex-col items-center gap-0.5">
+                                                        <div
+                                                            class="w-6 h-6 rounded flex items-center justify-center text-[5px]"
+                                                            :style="{ backgroundColor: template.background.type === 'solid' && template.textColor === '#FFFFFF' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.1)', color: template.textColor }"
+                                                        >
+                                                            QR
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="p-2 bg-white text-center">
+                                                    <div class="text-xs font-medium text-slate-800">{{ template.name }}</div>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Preview -->
+                                    <div v-if="selectedPredesignId" class="p-4 bg-slate-50 rounded-xl">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <p class="text-sm font-medium text-slate-700">Preview:</p>
+                                            <button
+                                                type="button"
+                                                @click="showFullscreenPreview = true"
+                                                class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-violet-600 hover:text-violet-700 hover:bg-violet-50 rounded-lg transition-colors"
+                                            >
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                                                </svg>
+                                                Ecran complet
+                                            </button>
+                                        </div>
+                                        <div class="flex justify-center">
+                                            <CardCanvas
+                                                ref="predesignPreviewRef"
+                                                :design="cardDesign"
+                                                :qr-url="qrUrl"
+                                                :scale="2"
+                                                :interactive="false"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Designer Option -->
+                                <div v-else-if="useDesigner" class="space-y-4">
+                                    <!-- Design Preview (if has design) -->
+                                    <div v-if="hasCustomDesign" class="relative p-4 bg-slate-50 rounded-xl">
+                                        <div class="flex items-center gap-4">
+                                            <div class="flex-shrink-0">
+                                                <CardCanvas
+                                                    ref="designPreviewRef"
+                                                    :design="cardDesign"
+                                                    :qr-url="qrUrl"
+                                                    :scale="1"
+                                                    :interactive="false"
+                                                />
+                                            </div>
+                                            <div class="flex-1">
+                                                <p class="text-sm font-medium text-slate-900">Design personalizat</p>
+                                                <p class="text-xs text-slate-500 mt-1">
+                                                    {{ cardDesign.dimensions.width }} × {{ cardDesign.dimensions.height }} {{ cardDesign.dimensions.unit }}
+                                                </p>
+                                            </div>
+                                            <button
+                                                type="button"
+                                                @click="openDesigner"
+                                                class="px-3 py-1.5 text-sm text-violet-600 hover:text-violet-700 hover:bg-violet-50 rounded-lg transition-colors"
+                                            >
+                                                Editeaza
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Open Designer Button -->
+                                    <button
+                                        v-else
+                                        type="button"
+                                        @click="openDesigner"
+                                        class="w-full p-6 border-2 border-dashed border-violet-300 rounded-xl text-center hover:border-violet-400 hover:bg-violet-50/50 transition-all group"
+                                    >
+                                        <div class="w-12 h-12 mx-auto rounded-full bg-violet-100 flex items-center justify-center group-hover:bg-violet-200 transition-colors">
+                                            <svg class="w-6 h-6 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+                                        </div>
+                                        <p class="mt-3 text-sm font-semibold text-violet-600">Deschide Designer-ul</p>
+                                        <p class="mt-1 text-xs text-slate-500">Creeaza un design unic pentru cartonasul tau QR</p>
                                     </button>
                                 </div>
 
                                 <!-- Image Upload -->
-                                <div v-if="useCustomImage" class="space-y-4">
+                                <div v-else-if="!usePredesign && !useDesigner && useCustomImage" class="space-y-4">
                                     <div
                                         v-if="!imagePreview"
                                         class="relative border-2 border-dashed border-slate-300 rounded-xl p-8 text-center hover:border-violet-400 transition-colors cursor-pointer"
@@ -383,5 +946,163 @@ const submit = () => {
                 <p>&copy; {{ new Date().getFullYear() }} Prinde Momentul. Toate drepturile rezervate.</p>
             </div>
         </footer>
+
+        <!-- Fullscreen Card Designer Modal -->
+        <Teleport to="body">
+            <Transition
+                enter-active-class="transition ease-out duration-200"
+                enter-from-class="opacity-0"
+                enter-to-class="opacity-100"
+                leave-active-class="transition ease-in duration-150"
+                leave-from-class="opacity-100"
+                leave-to-class="opacity-0"
+            >
+                <div
+                    v-if="showDesignerModal"
+                    class="fixed inset-0 z-[100] bg-gray-100"
+                >
+                    <!-- Designer Header -->
+                    <header class="bg-white border-b border-gray-200 px-4 py-3">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <button
+                                    type="button"
+                                    @click="closeDesigner"
+                                    class="text-gray-500 hover:text-gray-700 transition-colors"
+                                >
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                                <h1 class="text-lg font-semibold text-gray-900">
+                                    Designer Cartonas QR
+                                </h1>
+                            </div>
+
+                            <div class="flex items-center gap-3">
+                                <button
+                                    type="button"
+                                    class="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                                    @click="handleExport"
+                                >
+                                    Export PDF
+                                </button>
+                                <button
+                                    type="button"
+                                    class="px-4 py-2 text-sm bg-gradient-to-r from-violet-600 to-purple-600 text-white rounded-lg hover:from-violet-700 hover:to-purple-700 transition-colors"
+                                    @click="saveDesign"
+                                >
+                                    Salveaza Design
+                                </button>
+                            </div>
+                        </div>
+                    </header>
+
+                    <!-- Designer Content -->
+                    <div class="flex h-[calc(100vh-65px)]">
+                        <!-- Sidebar -->
+                        <aside class="w-80 flex-shrink-0 border-r border-gray-200 bg-white overflow-hidden">
+                            <DesignToolbar
+                                :design="cardDesign"
+                                :templates="designerTemplates"
+                                :fonts="designerFonts"
+                                :sizes="designerSizes"
+                                :selected-element-id="selectedElementId"
+                                :selected-template="selectedTemplateId"
+                                @update-dimensions="handleUpdateDimensions"
+                                @update-background="handleUpdateBackground"
+                                @update-text-content="updateTextContent"
+                                @update-text-style="updateTextStyle"
+                                @update-text-position="updateTextPosition"
+                                @update-qr-position="updateQrPosition"
+                                @update-qr-size="updateQrSize"
+                                @update-qr-colors="updateQrColors"
+                                @apply-template="handleApplyTemplate"
+                                @select-element="handleSelectElement"
+                                @save="saveDesign"
+                                @export="handleExport"
+                            />
+                        </aside>
+
+                        <!-- Canvas Area -->
+                        <main class="flex-1 flex items-center justify-center p-8 bg-gray-100">
+                            <div class="relative">
+                                <div class="bg-white p-8 rounded-2xl shadow-xl">
+                                    <CardCanvas
+                                        ref="cardCanvasRef"
+                                        :design="cardDesign"
+                                        :qr-url="qrUrl"
+                                        :scale="3"
+                                        :selected-element-id="selectedElementId"
+                                        :interactive="true"
+                                        @select-element="handleSelectElement"
+                                    />
+                                </div>
+                                <div class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs text-gray-500">
+                                    {{ cardDesign.dimensions.width }} x {{ cardDesign.dimensions.height }} {{ cardDesign.dimensions.unit }}
+                                </div>
+                            </div>
+                        </main>
+                    </div>
+
+                    <!-- Export Modal -->
+                    <ExportModal
+                        :show="showExportModal"
+                        :is-exporting="isExporting"
+                        :design="cardDesign"
+                        @close="showExportModal = false"
+                        @export-pdf="handleExportPdf"
+                        @export-png="handleExportPng"
+                    />
+                </div>
+            </Transition>
+        </Teleport>
+
+        <!-- Fullscreen Preview Modal -->
+        <Teleport to="body">
+            <Transition
+                enter-active-class="transition ease-out duration-200"
+                enter-from-class="opacity-0"
+                enter-to-class="opacity-100"
+                leave-active-class="transition ease-in duration-150"
+                leave-from-class="opacity-100"
+                leave-to-class="opacity-0"
+            >
+                <div
+                    v-if="showFullscreenPreview"
+                    class="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4"
+                    @click.self="showFullscreenPreview = false"
+                >
+                    <!-- Close Button -->
+                    <button
+                        type="button"
+                        @click="showFullscreenPreview = false"
+                        class="absolute top-4 right-4 p-2 text-white/70 hover:text-white transition-colors"
+                    >
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+
+                    <!-- Card Preview -->
+                    <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-2xl max-w-full overflow-auto">
+                        <CardCanvas
+                            :design="cardDesign"
+                            :qr-url="qrUrl"
+                            :scale="4"
+                            :interactive="false"
+                        />
+                    </div>
+
+                    <!-- Info -->
+                    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 text-center">
+                        <p class="text-white/70 text-sm">
+                            {{ cardDesign.dimensions.width }} x {{ cardDesign.dimensions.height }} {{ cardDesign.dimensions.unit }}
+                        </p>
+                        <p class="text-white/50 text-xs mt-1">Click afara sau apasa X pentru a inchide</p>
+                    </div>
+                </div>
+            </Transition>
+        </Teleport>
     </div>
 </template>

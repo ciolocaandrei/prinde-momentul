@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccessController;
+use App\Http\Controllers\CardDesignerController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\PreorderController as AdminPreorderController;
 use App\Http\Controllers\Admin\WeddingController;
@@ -32,6 +33,10 @@ Route::get('/access/{code}', [AccessController::class, 'login'])->name('access.l
 Route::get('/precomanda', [PreorderController::class, 'create'])->name('preorder.create');
 Route::post('/precomanda', [PreorderController::class, 'store'])->name('preorder.store');
 Route::get('/precomanda/succes', [PreorderController::class, 'success'])->name('preorder.success');
+
+// Card Designer Routes (Public)
+Route::get('/card-designer', [CardDesignerController::class, 'index'])->name('card-designer.index');
+Route::post('/card-designer/save', [CardDesignerController::class, 'save'])->name('card-designer.save');
 
 // Admin Routes
 Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
