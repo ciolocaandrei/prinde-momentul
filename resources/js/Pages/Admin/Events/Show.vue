@@ -9,7 +9,6 @@ const props = defineProps({
     uploadUrl: String,
     accessUrl: String,
     eventTypes: Object,
-    clientPassword: String,
 });
 
 const eventTypeLabels = {
@@ -259,9 +258,9 @@ const deleteWedding = () => {
                                 {{ new Date(wedding.event_date).toLocaleDateString('ro-RO', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) }}
                             </dd>
                         </div>
-                        <div class="flex items-center justify-between">
-                            <dt class="text-sm text-slate-500">Email Cont</dt>
-                            <dd class="text-sm font-medium text-slate-900">{{ wedding.user.email }}</dd>
+                        <div v-if="wedding.email" class="flex items-center justify-between">
+                            <dt class="text-sm text-slate-500">Email Contact</dt>
+                            <dd class="text-sm font-medium text-slate-900">{{ wedding.email }}</dd>
                         </div>
                         <div class="flex items-center justify-between">
                             <dt class="text-sm text-slate-500">Total Fotografii</dt>

@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreWeddingRequest;
-use App\Models\User;
 use App\Models\Wedding;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -20,16 +18,14 @@ class WeddingController extends Controller
 {
     public function index(Request $request): Response
     {
-        $query = Wedding::with('user')->withCount('photos');
+        $query = Wedding::withCount('photos');
 
         // Search filter
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q->where('couple_name', 'like', "%{$search}%")
-                    ->orWhereHas('user', function ($userQuery) use ($search) {
-                        $userQuery->where('email', 'like', "%{$search}%");
-                    });
+                    ->orWhere('email', 'like', "%{$search}%");
             });
         }
 
@@ -92,23 +88,13 @@ class WeddingController extends Controller
     {
         $validated = $request->validated();
 
-        // Create couple user account
-        $user = User::create([
-            'name' => $validated['couple_name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'role' => 'couple',
-        ]);
-
-        // Create wedding/event
         $wedding = Wedding::create([
             'couple_name' => $validated['couple_name'],
             'event_type' => $validated['event_type'],
             'event_date' => $validated['event_date'],
+            'email' => $validated['email'] ?? null,
             'upload_code' => $this->generateUniqueCode(),
             'access_code' => $this->generateUniqueAccessCode(),
-            'client_password' => $validated['password'],
-            'user_id' => $user->id,
             'is_active' => $validated['is_active'] ?? true,
         ]);
 
@@ -118,7 +104,7 @@ class WeddingController extends Controller
 
     public function show(Wedding $wedding): Response
     {
-        $wedding->load(['user', 'photos']);
+        $wedding->load('photos');
 
         $weddingData = $wedding->toArray();
         $weddingData['event_type_label'] = $wedding->getEventTypeLabel();
@@ -129,7 +115,6 @@ class WeddingController extends Controller
         });
 
         return Inertia::render('Admin/Events/Show', [
-            'clientPassword' => $wedding->client_password,
             'wedding' => $weddingData,
             'uploadUrl' => $wedding->getUploadUrl(),
             'accessUrl' => $wedding->getAccessUrl(),
@@ -148,23 +133,15 @@ class WeddingController extends Controller
 
         $wedding->update($validated);
 
-        // Also update the associated user's name if couple_name changed
-        if (isset($validated['couple_name'])) {
-            $wedding->user->update(['name' => $validated['couple_name']]);
-        }
-
         return redirect()->back()->with('success', 'Eveniment actualizat cu succes.');
     }
 
     public function destroy(Wedding $wedding): RedirectResponse
     {
-        // Delete associated user account
-        $wedding->user->delete();
-
-        // Wedding will be cascade deleted due to foreign key constraint
+        $wedding->delete();
 
         return redirect()->route('admin.events.index')
-            ->with('success', 'Eveniment și cont asociat șterse.');
+            ->with('success', 'Eveniment sters cu succes.');
     }
 
     public function regenerateCode(Wedding $wedding): RedirectResponse

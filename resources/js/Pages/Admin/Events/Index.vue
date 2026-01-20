@@ -193,7 +193,7 @@ const deleteWedding = (wedding) => {
                                 </div>
                                 <div>
                                     <div class="font-semibold text-slate-900">{{ wedding.couple_name }}</div>
-                                    <div class="text-sm text-slate-500">{{ wedding.user.email }}</div>
+                                    <div v-if="wedding.email" class="text-sm text-slate-500">{{ wedding.email }}</div>
                                 </div>
                             </div>
                         </td>

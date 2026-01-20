@@ -11,6 +11,7 @@ const form = useForm({
     couple_name: props.prefill?.couple_name || '',
     event_type: props.prefill?.event_type || 'nunta',
     event_date: props.prefill?.event_date || '',
+    email: props.prefill?.email || '',
     is_active: true,
 });
 
@@ -104,6 +105,18 @@ const submit = () => {
                             <p v-if="form.errors.event_date" class="mt-2 text-sm text-red-600">{{ form.errors.event_date }}</p>
                         </div>
 
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-slate-700">Email Contact (optional)</label>
+                            <input
+                                id="email"
+                                type="email"
+                                v-model="form.email"
+                                placeholder="email@exemplu.com"
+                                class="mt-2 block w-full rounded-xl border-slate-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 text-sm"
+                            />
+                            <p v-if="form.errors.email" class="mt-2 text-sm text-red-600">{{ form.errors.email }}</p>
+                        </div>
+
                         <div class="flex items-center gap-x-3">
                             <input
                                 id="is_active"
@@ -112,7 +125,7 @@ const submit = () => {
                                 class="h-4 w-4 rounded border-slate-300 text-violet-600 focus:ring-violet-500"
                             />
                             <label for="is_active" class="text-sm font-medium text-slate-700">
-                                Activează upload-ul de fotografii imediat
+                                Activeaza upload-ul de fotografii imediat
                             </label>
                         </div>
                     </div>

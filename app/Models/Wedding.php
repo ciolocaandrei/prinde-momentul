@@ -23,11 +23,11 @@ class Wedding extends Model
         'couple_name',
         'event_type',
         'event_date',
+        'email',
         'upload_code',
         'access_code',
-        'client_password',
-        'user_id',
         'is_active',
+        'user_id',
     ];
 
     protected function casts(): array

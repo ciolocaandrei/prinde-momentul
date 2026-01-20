@@ -17,8 +17,7 @@ class StoreWeddingRequest extends FormRequest
             'couple_name' => 'required|string|max:255',
             'event_type' => 'required|in:nunta,majorat,zi_de_nastere,botez,altele',
             'event_date' => 'required|date',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8',
+            'email' => 'nullable|email|max:255',
             'is_active' => 'boolean',
         ];
     }
@@ -26,14 +25,11 @@ class StoreWeddingRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'couple_name.required' => 'Te rugăm să introduci numele.',
-            'event_type.required' => 'Te rugăm să selectezi tipul evenimentului.',
+            'couple_name.required' => 'Te rugam sa introduci numele.',
+            'event_type.required' => 'Te rugam sa selectezi tipul evenimentului.',
             'event_type.in' => 'Tipul evenimentului selectat nu este valid.',
-            'event_date.required' => 'Te rugăm să selectezi data evenimentului.',
-            'email.required' => 'Te rugăm să introduci un email.',
-            'email.unique' => 'Acest email este deja înregistrat.',
-            'password.required' => 'Te rugăm să introduci o parolă.',
-            'password.min' => 'Parola trebuie să aibă cel puțin 8 caractere.',
+            'event_date.required' => 'Te rugam sa selectezi data evenimentului.',
+            'email.email' => 'Te rugam sa introduci un email valid.',
         ];
     }
 }
