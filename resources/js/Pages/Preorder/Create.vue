@@ -350,14 +350,17 @@ watch(useCustomImage, (newVal) => {
 
 watch(useDesigner, (newVal) => {
     if (newVal) {
-        // Using designer - clear image and theme
+        // Using designer - clear other options
         form.qr_card_image = null;
         form.qr_card_theme = '';
+        form.qr_card_sample = null;
         imagePreview.value = null;
         useCustomImage.value = false;
         usePredesign.value = false;
-    } else if (!usePredesign.value) {
-        // Not using designer or predesign - clear design
+        useSamples.value = false;
+        selectedSampleId.value = null;
+    } else if (!usePredesign.value && !useSamples.value) {
+        // Not using designer or predesign or samples - clear design
         form.qr_card_design = null;
         hasCustomDesign.value = false;
     }
@@ -406,7 +409,41 @@ const selectSample = (sample) => {
     form.qr_card_sample = sample.path;
 };
 
+// Check if QR card design is valid
+const hasValidCardDesign = computed(() => {
+    if (!form.wants_qr_card) return true;
+    return form.qr_card_sample || form.qr_card_design;
+});
+
+const cardDesignError = ref('');
+
 const submit = () => {
+    // Validate card design if QR card is selected
+    if (form.wants_qr_card) {
+        // Check if sample or design is selected
+        if (!form.qr_card_sample && !form.qr_card_design) {
+            cardDesignError.value = 'Te rugăm să alegi un model din exemple sau să creezi un design personalizat.';
+            return;
+        }
+
+        // If using samples, require name and date
+        if (useSamples.value && form.qr_card_sample) {
+            if (!form.qr_card_sample_names || !form.qr_card_sample_date) {
+                cardDesignError.value = 'Te rugăm să completezi numele și data evenimentului.';
+                return;
+            }
+        }
+
+        // If using predesign, require name and date
+        if (usePredesign.value && form.qr_card_design) {
+            if (!predesignNames.value || !predesignDate.value) {
+                cardDesignError.value = 'Te rugăm să completezi numele și data evenimentului.';
+                return;
+            }
+        }
+    }
+    cardDesignError.value = '';
+
     // Stringify qr_card_design for FormData compatibility
     if (form.qr_card_design) {
         form.transform((data) => ({
@@ -888,6 +925,16 @@ const submit = () => {
                                         <p class="mt-3 text-sm font-semibold text-violet-600">Deschide Designer-ul</p>
                                         <p class="mt-1 text-xs text-slate-500">Creeaza un design unic pentru cartonasul tau QR</p>
                                     </button>
+                                </div>
+
+                                <!-- Card Design Error -->
+                                <div v-if="cardDesignError" class="p-4 bg-red-50 rounded-xl">
+                                    <div class="flex items-center gap-3">
+                                        <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        <span class="text-sm font-medium text-red-700">{{ cardDesignError }}</span>
+                                    </div>
                                 </div>
 
                             </div>
