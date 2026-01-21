@@ -216,9 +216,9 @@ const mobileMenuOpen = ref(false);
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                                 </svg>
                             </div>
-                            <h3 class="mt-6 text-xl font-semibold text-slate-900">Distribuie Linkul</h3>
+                            <h3 class="mt-6 text-xl font-semibold text-slate-900">Distribuie QR Code-ul</h3>
                             <p class="mt-3 text-slate-600 leading-relaxed">
-                                Primești un link unic pe care il trimiți invitaților. Pot accesa pagina de upload direct de pe telefon.
+                                Primesti un QR code unic pe care il distribui invitatilor. Scaneaza si acceseaza pagina de upload direct de pe telefon.
                             </p>
                         </div>
                     </div>
@@ -376,6 +376,12 @@ const mobileMenuOpen = ref(false);
                                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                             </svg>
                                             <span class="text-slate-700">Link unic pentru upload fotografii</span>
+                                        </li>
+                                        <li class="flex items-center gap-x-3">
+                                            <svg class="h-5 w-5 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                            </svg>
+                                            <span class="text-slate-700">QR code digital pentru distribuire rapida</span>
                                         </li>
                                         <li class="flex items-center gap-x-3">
                                             <svg class="h-5 w-5 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
