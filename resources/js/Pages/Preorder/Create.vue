@@ -129,6 +129,7 @@ const form = useForm({
     qr_card_theme: '',
     qr_card_design: null,
     notes: '',
+    terms_accepted: false,
 });
 
 const useCustomImage = ref(false);
@@ -417,6 +418,48 @@ const hasValidCardDesign = computed(() => {
 
 const cardDesignError = ref('');
 
+// Price calculation
+const PRICE_BASE = 299.99;
+const PRICE_PER_QR_CARD = 1.99;
+const PRICE_PER_PHOTO = 1.49;
+const PRINT_PACKAGE_PHOTOS = 50;
+
+const priceBreakdown = computed(() => {
+    const items = [];
+    let total = PRICE_BASE;
+
+    items.push({
+        label: 'Pachet standard eveniment',
+        quantity: 1,
+        unitPrice: PRICE_BASE,
+        subtotal: PRICE_BASE,
+    });
+
+    if (form.wants_qr_card && form.qr_card_quantity > 0) {
+        const qrSubtotal = form.qr_card_quantity * PRICE_PER_QR_CARD;
+        items.push({
+            label: 'Cartonașe QR imprimate',
+            quantity: form.qr_card_quantity,
+            unitPrice: PRICE_PER_QR_CARD,
+            subtotal: qrSubtotal,
+        });
+        total += qrSubtotal;
+    }
+
+    if (form.wants_print_package) {
+        const printSubtotal = PRINT_PACKAGE_PHOTOS * PRICE_PER_PHOTO;
+        items.push({
+            label: 'Pachet printare fotografii',
+            quantity: PRINT_PACKAGE_PHOTOS,
+            unitPrice: PRICE_PER_PHOTO,
+            subtotal: printSubtotal,
+        });
+        total += printSubtotal;
+    }
+
+    return { items, total };
+});
+
 const submit = () => {
     // Validate card design if QR card is selected
     if (form.wants_qr_card) {
@@ -603,10 +646,9 @@ const submit = () => {
                                     Primesti 50 de fotografii printate profesional, gata de oferit invitatilor tai.
                                 </p>
                             </div>
-                            <div class="flex-shrink-0">
-                                <span class="inline-flex items-center rounded-full bg-violet-100 px-3 py-1 text-sm font-medium text-violet-700">
-                                    Popular
-                                </span>
+                            <div class="flex-shrink-0 text-right">
+                                <span class="block text-lg font-bold text-violet-600">74.50 lei</span>
+                                <span class="text-xs text-slate-500">50 x 1.49 lei</span>
                             </div>
                         </div>
 
@@ -627,6 +669,10 @@ const submit = () => {
                                         Cartonas fizic cu QR-code pentru invitatii tai sa poata incarca fotografii direct in galerie.
                                     </p>
                                 </div>
+                                <div class="flex-shrink-0 text-right">
+                                    <span class="block text-lg font-bold text-violet-600">1.99 lei</span>
+                                    <span class="text-xs text-slate-500">per bucata</span>
+                                </div>
                             </div>
 
                             <!-- QR Card Customization (shown only when QR card is selected) -->
@@ -645,6 +691,7 @@ const submit = () => {
                                             required
                                         />
                                         <span class="text-sm text-slate-500">bucati</span>
+                                        <span class="text-sm font-medium text-violet-600">= {{ (form.qr_card_quantity * 1.99).toFixed(2) }} lei</span>
                                     </div>
                                     <p class="mt-2 text-xs text-slate-500">Cate cartonase doresti sa printam? (minim 1, maxim 1000)</p>
                                     <p v-if="form.errors.qr_card_quantity" class="mt-2 text-sm text-red-600">{{ form.errors.qr_card_quantity }}</p>
@@ -960,6 +1007,68 @@ const submit = () => {
                     </div>
                 </div>
 
+                <!-- Price Summary -->
+                <div class="rounded-2xl bg-white shadow-sm ring-1 ring-slate-900/5">
+                    <div class="border-b border-slate-200 px-6 py-5">
+                        <h2 class="text-lg font-semibold text-slate-900">Sumar Pret</h2>
+                        <p class="mt-1 text-sm text-slate-500">Pretul estimat in functie de selectiile tale.</p>
+                    </div>
+                    <div class="px-6 py-6">
+                        <div class="space-y-3">
+                            <div
+                                v-for="(item, index) in priceBreakdown.items"
+                                :key="index"
+                                class="flex items-center justify-between text-sm"
+                            >
+                                <div class="flex-1">
+                                    <span class="text-slate-700">{{ item.label }}</span>
+                                    <span v-if="item.quantity > 1" class="text-slate-500 ml-1">
+                                        ({{ item.quantity }} x {{ item.unitPrice }} lei)
+                                    </span>
+                                </div>
+                                <span class="font-medium text-slate-900">{{ item.subtotal.toFixed(2) }} lei</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t border-slate-200">
+                            <div class="flex items-center justify-between">
+                                <span class="text-base font-semibold text-slate-900">Total estimat</span>
+                                <span class="text-2xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+                                    {{ priceBreakdown.total.toFixed(2) }} lei
+                                </span>
+                            </div>
+                            <p class="mt-2 text-xs text-slate-500">
+                                * Pretul final poate varia in functie de cerintele specifice. Te vom contacta pentru confirmare.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Terms and Conditions -->
+                <div class="rounded-2xl bg-white shadow-sm ring-1 ring-slate-900/5 p-6">
+                    <div class="flex items-start gap-x-4">
+                        <input
+                            id="terms_accepted"
+                            type="checkbox"
+                            v-model="form.terms_accepted"
+                            class="mt-1 h-5 w-5 rounded border-slate-300 text-violet-600 focus:ring-violet-500"
+                            required
+                        />
+                        <div class="flex-1">
+                            <label for="terms_accepted" class="block text-sm font-medium text-slate-900 cursor-pointer">
+                                Accept termenii si conditiile *
+                            </label>
+                            <p class="mt-1 text-sm text-slate-500">
+                                Sunt de acord cu
+                                <a href="#" class="text-violet-600 hover:text-violet-700 underline">termenii si conditiile</a>
+                                si cu
+                                <a href="#" class="text-violet-600 hover:text-violet-700 underline">politica de confidentialitate</a>.
+                            </p>
+                            <p v-if="form.errors.terms_accepted" class="mt-2 text-sm text-red-600">{{ form.errors.terms_accepted }}</p>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Submit Button -->
                 <div class="flex items-center justify-end gap-x-4 pt-4">
                     <Link
@@ -970,8 +1079,8 @@ const submit = () => {
                     </Link>
                     <button
                         type="submit"
-                        :disabled="form.processing"
-                        class="inline-flex items-center gap-x-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 hover:from-violet-700 hover:to-purple-700 disabled:opacity-50 transition-all"
+                        :disabled="form.processing || !form.terms_accepted"
+                        class="inline-flex items-center gap-x-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 hover:from-violet-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                     >
                         <svg v-if="form.processing" class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

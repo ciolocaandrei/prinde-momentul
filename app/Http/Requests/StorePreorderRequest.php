@@ -29,6 +29,7 @@ class StorePreorderRequest extends FormRequest
             'qr_card_theme' => 'nullable|string|max:500',
             'qr_card_design' => 'nullable',
             'notes' => 'nullable|string|max:1000',
+            'terms_accepted' => 'accepted',
         ];
     }
 
@@ -45,6 +46,7 @@ class StorePreorderRequest extends FormRequest
             'qr_card_image.max' => 'Imaginea nu poate depăși 5MB.',
             'qr_card_theme.max' => 'Descrierea temei nu poate depăși 500 de caractere.',
             'notes.max' => 'Observațiile nu pot depăși 1000 de caractere.',
+            'terms_accepted.accepted' => 'Trebuie să accepți termenii și condițiile.',
         ];
     }
 }

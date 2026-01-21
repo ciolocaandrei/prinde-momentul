@@ -334,6 +334,115 @@ const mobileMenuOpen = ref(false);
             </div>
         </section>
 
+        <!-- Pricing Section -->
+        <section class="py-20 lg:py-32 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-slate-900">
+                        Preturi simple si transparente
+                    </h2>
+                    <p class="mt-4 text-lg text-slate-600">
+                        Fara costuri ascunse. Platesti doar pentru ce ai nevoie.
+                    </p>
+                </div>
+
+                <div class="max-w-4xl mx-auto">
+                    <!-- Main Price Card -->
+                    <div class="relative group">
+                        <div class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-violet-600 to-purple-600 opacity-20 blur-lg group-hover:opacity-30 transition-opacity"></div>
+                        <div class="relative rounded-3xl bg-white p-8 lg:p-12 ring-2 ring-violet-200 shadow-xl">
+                            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+                                <!-- Price -->
+                                <div class="text-center lg:text-left">
+                                    <div class="inline-flex items-center gap-x-2 rounded-full bg-violet-100 px-4 py-2 text-sm font-medium text-violet-700 mb-4">
+                                        <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        Pachet Standard
+                                    </div>
+                                    <div class="flex items-baseline justify-center lg:justify-start gap-x-2">
+                                        <span class="text-5xl lg:text-6xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">299.99</span>
+                                        <span class="text-2xl font-semibold text-slate-500">lei</span>
+                                    </div>
+                                    <p class="mt-2 text-slate-600">Pret de baza pentru eveniment</p>
+                                </div>
+
+                                <!-- Included Features -->
+                                <div class="flex-1 lg:border-l lg:border-slate-200 lg:pl-8">
+                                    <h4 class="text-sm font-semibold text-slate-900 uppercase tracking-wider mb-4">Include:</h4>
+                                    <ul class="space-y-3">
+                                        <li class="flex items-center gap-x-3">
+                                            <svg class="h-5 w-5 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                            </svg>
+                                            <span class="text-slate-700">Link unic pentru upload fotografii</span>
+                                        </li>
+                                        <li class="flex items-center gap-x-3">
+                                            <svg class="h-5 w-5 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                            </svg>
+                                            <span class="text-slate-700">Galerie privata cu toate pozele</span>
+                                        </li>
+                                        <li class="flex items-center gap-x-3">
+                                            <svg class="h-5 w-5 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                            </svg>
+                                            <span class="text-slate-700">Descarcare nelimitata</span>
+                                        </li>
+                                        <li class="flex items-center gap-x-3">
+                                            <svg class="h-5 w-5 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                            </svg>
+                                            <span class="text-slate-700">Suport dedicat</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Costs -->
+                    <div class="mt-8 grid md:grid-cols-2 gap-6">
+                        <!-- Per Card -->
+                        <div class="rounded-2xl bg-slate-50 p-6 ring-1 ring-slate-200/50">
+                            <div class="flex items-center gap-x-4">
+                                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 shadow-lg shadow-pink-500/30">
+                                    <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="flex items-baseline gap-x-1">
+                                        <span class="text-3xl font-bold text-slate-900">1.99</span>
+                                        <span class="text-lg font-semibold text-slate-500">lei</span>
+                                    </div>
+                                    <p class="text-sm text-slate-600">per cartonas QR imprimat</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Per Photo -->
+                        <div class="rounded-2xl bg-slate-50 p-6 ring-1 ring-slate-200/50">
+                            <div class="flex items-center gap-x-4">
+                                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 shadow-lg shadow-emerald-500/30">
+                                    <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="flex items-baseline gap-x-1">
+                                        <span class="text-3xl font-bold text-slate-900">1.49</span>
+                                        <span class="text-lg font-semibold text-slate-500">lei</span>
+                                    </div>
+                                    <p class="text-sm text-slate-600">per fotografie imprimata</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- CTA Section -->
         <section class="py-20 lg:py-32">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
