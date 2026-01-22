@@ -12,7 +12,16 @@ const mobileMenuOpen = ref(false);
 </script>
 
 <template>
-    <Head title="Prinde Momentul - Fotografii de la Evenimente" />
+    <Head>
+        <title>Prinde Momentul - Colecteaza Fotografii de la Nunta, Botez, Majorat</title>
+        <meta name="description" content="Aduna toate fotografiile de la evenimentul tau intr-un singur loc. Invitații incarca pozele prin QR code, tu le vezi instant in galeria privata. Nunta, botez, majorat." />
+        <meta name="keywords" content="fotografii nunta, fotografii botez, fotografii majorat, QR code eveniment, galerie foto nunta, upload fotografii invitati, poze nunta, album digital nunta" />
+        <meta property="og:title" content="Prinde Momentul - Colecteaza Fotografii de la Evenimente" />
+        <meta property="og:description" content="Aduna toate fotografiile de la evenimentul tau. Invitații incarca pozele prin QR code, tu le vezi instant." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://prindemomentul.ro" />
+        <link rel="canonical" href="https://prindemomentul.ro" />
+    </Head>
 
     <div class="min-h-screen bg-slate-50">
         <!-- Navigation -->

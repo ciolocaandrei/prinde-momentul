@@ -504,7 +504,14 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Precomanda - Prinde Momentul" />
+    <Head>
+        <title>Precomanda Servicii Foto Eveniment - Prinde Momentul</title>
+        <meta name="description" content="Rezerva acum serviciul de colectare fotografii pentru nunta, botez sau majorat. Pret de la 299.99 lei. QR code personalizat si galerie privata." />
+        <meta name="keywords" content="precomanda fotografii nunta, rezervare serviciu foto, QR code nunta pret, galerie foto eveniment" />
+        <meta property="og:title" content="Precomanda Servicii Foto - Prinde Momentul" />
+        <meta property="og:description" content="Rezerva serviciul de colectare fotografii pentru evenimentul tau. Pret de la 299.99 lei." />
+        <link rel="canonical" href="https://prindemomentul.ro/precomanda" />
+    </Head>
 
     <div class="min-h-screen bg-gradient-to-br from-violet-50 via-white to-purple-50">
         <!-- Header -->

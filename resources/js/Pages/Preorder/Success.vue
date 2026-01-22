@@ -3,7 +3,10 @@ import { Head, Link } from '@inertiajs/vue3';
 </script>
 
 <template>
-    <Head title="Precomanda Trimisa - Prinde Momentul" />
+    <Head>
+        <title>Precomanda Trimisa cu Succes - Prinde Momentul</title>
+        <meta name="robots" content="noindex, nofollow" />
+    </Head>
 
     <div class="min-h-screen bg-gradient-to-br from-violet-50 via-white to-purple-50 flex flex-col">
         <!-- Header -->

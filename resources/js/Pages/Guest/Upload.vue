@@ -188,7 +188,11 @@ const uploadMore = () => {
 </script>
 
 <template>
-    <Head :title="`Incarca Media - ${wedding.couple_name}`" />
+    <Head>
+        <title>Incarca Fotografii - {{ wedding.couple_name }}</title>
+        <meta name="robots" content="noindex, nofollow" />
+        <meta name="description" :content="`Incarca fotografii pentru evenimentul ${wedding.couple_name}`" />
+    </Head>
 
     <div class="min-h-screen bg-gradient-to-br from-violet-50 via-purple-50 to-fuchsia-50">
         <!-- Header -->

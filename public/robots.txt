@@ -1,2 +1,24 @@
+# Prinde Momentul - robots.txt
+
 User-agent: *
-Disallow:
+Allow: /
+Allow: /precomanda
+
+# Disallow private/admin areas
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /login
+Disallow: /register
+Disallow: /profile
+Disallow: /upload/
+Disallow: /access/
+Disallow: /precomanda/succes
+
+# Disallow API and system routes
+Disallow: /api/
+Disallow: /_debugbar/
+Disallow: /sanctum/
+Disallow: /storage/
+
+# Sitemap
+Sitemap: https://prindemomentul.ro/sitemap.xml

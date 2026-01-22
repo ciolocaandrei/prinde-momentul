@@ -4,11 +4,102 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <title inertia>{{ config('app.name', 'Prinde Momentul') }}</title>
+
+        <!-- SEO Meta Tags -->
+        <meta name="description" content="Prinde Momentul - Platforma pentru colectarea fotografiilor de la evenimente. Nunta, botez, majorat - toate fotografiile intr-un singur loc." inertia>
+        <meta name="keywords" content="fotografii nunta, fotografii botez, fotografii eveniment, QR code nunta, galerie foto nunta, upload fotografii invitati" inertia>
+        <meta name="author" content="Prinde Momentul">
+        <meta name="robots" content="index, follow">
+        <link rel="canonical" href="{{ url()->current() }}" inertia>
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" inertia>
+        <meta property="og:url" content="{{ url()->current() }}" inertia>
+        <meta property="og:title" content="{{ config('app.name', 'Prinde Momentul') }}" inertia>
+        <meta property="og:description" content="Platforma pentru colectarea fotografiilor de la evenimente. Nunta, botez, majorat - toate fotografiile intr-un singur loc." inertia>
+        <meta property="og:image" content="{{ asset('images/og-image.jpg') }}" inertia>
+        <meta property="og:locale" content="ro_RO">
+        <meta property="og:site_name" content="Prinde Momentul">
+
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary_large_image" inertia>
+        <meta name="twitter:url" content="{{ url()->current() }}" inertia>
+        <meta name="twitter:title" content="{{ config('app.name', 'Prinde Momentul') }}" inertia>
+        <meta name="twitter:description" content="Platforma pentru colectarea fotografiilor de la evenimente. Nunta, botez, majorat." inertia>
+        <meta name="twitter:image" content="{{ asset('images/og-image.jpg') }}" inertia>
+
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+        <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
+
+        <!-- Theme Color -->
+        <meta name="theme-color" content="#7c3aed">
+        <meta name="msapplication-TileColor" content="#7c3aed">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
+        <!-- Structured Data -->
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Prinde Momentul",
+            "url": "https://prindemomentul.ro",
+            "logo": "{{ asset('images/logo.png') }}",
+            "description": "Platforma pentru colectarea fotografiilor de la evenimente - nunta, botez, majorat",
+            "address": {
+                "@type": "PostalAddress",
+                "addressCountry": "RO"
+            },
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "contactType": "customer service"
+            },
+            "sameAs": []
+        }
+        </script>
+
+        @if(isset($page['component']) && $page['component'] === 'Welcome')
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Service",
+            "name": "Serviciu Colectare Fotografii Evenimente",
+            "provider": {
+                "@type": "Organization",
+                "name": "Prinde Momentul"
+            },
+            "description": "Colectam fotografiile de la nunta, botez, majorat intr-o galerie privata accesibila prin QR code",
+            "areaServed": "Romania",
+            "offers": [
+                {
+                    "@type": "Offer",
+                    "name": "Pachet Standard Eveniment",
+                    "price": "299.99",
+                    "priceCurrency": "RON",
+                    "description": "Include link unic, QR code digital, galerie privata, descarcare nelimitata"
+                },
+                {
+                    "@type": "Offer",
+                    "name": "Cartonas QR Imprimat",
+                    "price": "1.99",
+                    "priceCurrency": "RON",
+                    "description": "Cartonas fizic cu QR code personalizat"
+                },
+                {
+                    "@type": "Offer",
+                    "name": "Fotografie Imprimata",
+                    "price": "1.49",
+                    "priceCurrency": "RON",
+                    "description": "Printare profesionala fotografii"
+                }
+            ]
+        }
+        </script>
+        @endif
 
         <!-- Scripts -->
         @routes
