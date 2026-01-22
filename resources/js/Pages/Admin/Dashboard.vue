@@ -5,6 +5,7 @@ import { Head, Link } from '@inertiajs/vue3';
 defineProps({
     stats: Object,
     recentWeddings: Array,
+    recentPreorders: Array,
 });
 
 const eventTypeLabels = {
@@ -37,7 +38,7 @@ const eventTypeLabels = {
         </template>
 
         <!-- Stats Grid -->
-        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
             <div class="relative overflow-hidden rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-900/5">
                 <div class="flex items-center gap-x-4">
                     <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-purple-600">
@@ -92,6 +93,122 @@ const eventTypeLabels = {
                         <p class="text-sm text-slate-500">Utilizatori Înregistrați</p>
                     </div>
                 </div>
+            </div>
+
+            <div class="relative overflow-hidden rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-900/5">
+                <div class="flex items-center gap-x-4">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600">
+                        <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-bold text-slate-900">{{ stats.total_preorders }}</p>
+                        <p class="text-sm text-slate-500">Total Precomenzi</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative overflow-hidden rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-900/5">
+                <div class="flex items-center gap-x-4">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-yellow-500">
+                        <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-bold text-slate-900">{{ stats.pending_preorders }}</p>
+                        <p class="text-sm text-slate-500">Precomenzi În Așteptare</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Preorders -->
+        <div class="mt-8">
+            <div class="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-900/5">
+                <div class="border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-slate-900">Precomenzi Recente</h3>
+                    <Link
+                        :href="route('admin.preorders.index')"
+                        class="text-sm font-medium text-violet-600 hover:text-violet-700"
+                    >
+                        Vezi toate
+                    </Link>
+                </div>
+                <ul role="list" class="divide-y divide-slate-100">
+                    <li
+                        v-for="preorder in recentPreorders"
+                        :key="preorder.id"
+                        class="relative"
+                    >
+                        <Link
+                            :href="route('admin.preorders.show', preorder.id)"
+                            class="flex items-center justify-between gap-x-6 px-6 py-5 hover:bg-slate-50 transition-colors"
+                        >
+                            <div class="flex min-w-0 gap-x-4">
+                                <div
+                                    class="flex h-12 w-12 items-center justify-center rounded-xl text-white font-bold text-lg"
+                                    :class="{
+                                        'bg-gradient-to-br from-pink-500 to-rose-600': preorder.event_type === 'nunta',
+                                        'bg-gradient-to-br from-sky-500 to-blue-600': preorder.event_type === 'botez',
+                                        'bg-gradient-to-br from-purple-500 to-violet-600': preorder.event_type === 'majorat',
+                                    }"
+                                >
+                                    {{ preorder.contact_name.charAt(0).toUpperCase() }}
+                                </div>
+                                <div class="min-w-0 flex-auto">
+                                    <p class="text-sm font-semibold text-slate-900">
+                                        {{ preorder.contact_name }}
+                                    </p>
+                                    <div class="mt-1 flex items-center gap-x-3 text-xs text-slate-500">
+                                        <span class="inline-flex items-center rounded-md bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">
+                                            {{ preorder.event_type_label }}
+                                        </span>
+                                        <span v-if="preorder.event_date" class="flex items-center gap-x-1">
+                                            <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                            {{ preorder.event_date }}
+                                        </span>
+                                        <span class="text-slate-400">{{ preorder.created_at }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-x-4">
+                                <div class="hidden sm:flex sm:flex-col sm:items-end">
+                                    <p class="text-sm text-slate-600">{{ preorder.contact_email }}</p>
+                                    <span
+                                        :class="[
+                                            preorder.status === 'pending'
+                                                ? 'bg-amber-50 text-amber-700 ring-amber-600/20'
+                                                : preorder.status === 'confirmed'
+                                                ? 'bg-emerald-50 text-emerald-700 ring-emerald-600/20'
+                                                : preorder.status === 'completed'
+                                                ? 'bg-blue-50 text-blue-700 ring-blue-600/20'
+                                                : 'bg-slate-100 text-slate-600 ring-slate-500/10',
+                                            'mt-1 inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ring-1 ring-inset'
+                                        ]"
+                                    >
+                                        {{ preorder.status_label }}
+                                    </span>
+                                </div>
+                                <svg class="h-5 w-5 flex-none text-slate-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </Link>
+                    </li>
+                    <li v-if="recentPreorders.length === 0" class="px-6 py-16 text-center">
+                        <div class="flex h-16 w-16 mx-auto items-center justify-center rounded-full bg-slate-100">
+                            <svg class="h-8 w-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                        </div>
+                        <h3 class="mt-4 text-base font-semibold text-slate-900">Nicio precomandă încă</h3>
+                        <p class="mt-2 text-sm text-slate-500">Precomenzile noi vor apărea aici.</p>
+                    </li>
+                </ul>
             </div>
         </div>
 
