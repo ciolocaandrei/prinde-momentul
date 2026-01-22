@@ -56,61 +56,65 @@
 
         <!-- Structured Data -->
         <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            "name": "Prinde Momentul",
-            "url": "https://prindemomentul.ro",
-            "logo": "{{ asset('images/logo.png') }}",
-            "description": "Platforma pentru colectarea fotografiilor de la evenimente - nunta, botez, majorat",
-            "address": {
-                "@type": "PostalAddress",
-                "addressCountry": "RO"
-            },
-            "contactPoint": {
-                "@type": "ContactPoint",
-                "contactType": "customer service"
-            },
-            "sameAs": []
-        }
+        @php
+        echo json_encode([
+            "@context" => "https://schema.org",
+            "@type" => "Organization",
+            "name" => "Prinde Momentul",
+            "url" => "https://prindemomentul.ro",
+            "logo" => asset('images/logo.png'),
+            "description" => "Platforma pentru colectarea fotografiilor de la evenimente - nunta, botez, majorat",
+            "address" => [
+                "@type" => "PostalAddress",
+                "addressCountry" => "RO"
+            ],
+            "contactPoint" => [
+                "@type" => "ContactPoint",
+                "contactType" => "customer service"
+            ],
+            "sameAs" => []
+        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        @endphp
         </script>
 
         @if(isset($page['component']) && $page['component'] === 'Welcome')
         <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "Service",
-            "name": "Serviciu Colectare Fotografii Evenimente",
-            "provider": {
-                "@type": "Organization",
-                "name": "Prinde Momentul"
-            },
-            "description": "Colectam fotografiile de la nunta, botez, majorat intr-o galerie privata accesibila prin QR code",
-            "areaServed": "Romania",
-            "offers": [
-                {
-                    "@type": "Offer",
-                    "name": "Pachet Standard Eveniment",
-                    "price": "299.99",
-                    "priceCurrency": "RON",
-                    "description": "Include link unic, QR code digital, galerie privata, descarcare nelimitata"
-                },
-                {
-                    "@type": "Offer",
-                    "name": "Cartonas QR Imprimat",
-                    "price": "1.99",
-                    "priceCurrency": "RON",
-                    "description": "Cartonas fizic cu QR code personalizat"
-                },
-                {
-                    "@type": "Offer",
-                    "name": "Fotografie Imprimata",
-                    "price": "1.49",
-                    "priceCurrency": "RON",
-                    "description": "Printare profesionala fotografii"
-                }
+        @php
+        echo json_encode([
+            "@context" => "https://schema.org",
+            "@type" => "Service",
+            "name" => "Serviciu Colectare Fotografii Evenimente",
+            "provider" => [
+                "@type" => "Organization",
+                "name" => "Prinde Momentul"
+            ],
+            "description" => "Colectam fotografiile de la nunta, botez, majorat intr-o galerie privata accesibila prin QR code",
+            "areaServed" => "Romania",
+            "offers" => [
+                [
+                    "@type" => "Offer",
+                    "name" => "Pachet Standard Eveniment",
+                    "price" => "299.99",
+                    "priceCurrency" => "RON",
+                    "description" => "Include link unic, QR code digital, galerie privata, descarcare nelimitata"
+                ],
+                [
+                    "@type" => "Offer",
+                    "name" => "Cartonas QR Imprimat",
+                    "price" => "1.99",
+                    "priceCurrency" => "RON",
+                    "description" => "Cartonas fizic cu QR code personalizat"
+                ],
+                [
+                    "@type" => "Offer",
+                    "name" => "Fotografie Imprimata",
+                    "price" => "1.49",
+                    "priceCurrency" => "RON",
+                    "description" => "Printare profesionala fotografii"
+                ]
             ]
-        }
+        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        @endphp
         </script>
         @endif
 
