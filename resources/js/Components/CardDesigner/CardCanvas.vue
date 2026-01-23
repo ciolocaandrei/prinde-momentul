@@ -56,6 +56,19 @@ const backgroundStyle = computed(() => {
 
 const getTextStyle = (element) => {
     const { style, position } = element
+    // Calculate max-width to prevent text from overlapping QR code
+    const qrX = props.design.qrCode.position.x
+    const textX = position.x
+    // If text is to the left of QR, limit width to not reach QR area
+    let maxWidth = '90%'
+    if (textX < qrX) {
+        // Text is on the left side, limit to area before QR
+        maxWidth = `${Math.max(20, (qrX - 15) * 2)}%`
+    } else if (textX > qrX) {
+        // Text is on the right side, limit to area after QR
+        maxWidth = `${Math.max(20, (100 - qrX - 15) * 2)}%`
+    }
+
     return {
         position: 'absolute',
         left: `${position.x}%`,
@@ -67,6 +80,9 @@ const getTextStyle = (element) => {
         color: style.color,
         textAlign: style.textAlign,
         whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        maxWidth: maxWidth,
         cursor: props.interactive ? 'pointer' : 'default',
         userSelect: 'none',
     }
@@ -166,9 +182,32 @@ defineExpose({
 .card-canvas {
     box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     border-radius: 4px;
+    touch-action: manipulation;
+}
+
+.text-element {
+    /* Increase touch target for mobile */
+    min-height: 24px;
+    padding: 4px;
+    margin: -4px;
 }
 
 .text-element:hover {
     opacity: 0.9;
+}
+
+.qr-code {
+    /* Improve touch target for QR code */
+    min-width: 40px;
+    min-height: 40px;
+}
+
+/* Better touch feedback */
+@media (hover: none) {
+    .text-element:active,
+    .qr-code:active {
+        opacity: 0.7;
+        transform: translate(-50%, -50%) scale(0.98);
+    }
 }
 </style>

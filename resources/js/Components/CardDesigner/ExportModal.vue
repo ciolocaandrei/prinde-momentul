@@ -52,14 +52,14 @@ const handleExport = () => {
 
 <template>
     <Modal :show="show" max-width="md" @close="emit('close')">
-        <div class="p-6">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-lg font-semibold text-gray-900">
+        <div class="p-4 sm:p-6">
+            <div class="flex items-center justify-between mb-4 sm:mb-6">
+                <h3 class="text-base sm:text-lg font-semibold text-gray-900">
                     Exportă Design
                 </h3>
                 <button
                     type="button"
-                    class="text-gray-400 hover:text-gray-500"
+                    class="text-gray-400 hover:text-gray-500 p-1"
                     @click="emit('close')"
                 >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -69,16 +69,16 @@ const handleExport = () => {
             </div>
 
             <!-- Format Selection -->
-            <div class="space-y-3 mb-6">
-                <label class="block text-sm font-medium text-gray-700">
+            <div class="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
+                <label class="block text-xs sm:text-sm font-medium text-gray-700">
                     Alege formatul
                 </label>
-                <div class="grid grid-cols-2 gap-3">
+                <div class="grid grid-cols-2 gap-2 sm:gap-3">
                     <button
                         v-for="format in formatOptions"
                         :key="format.id"
                         type="button"
-                        class="p-4 rounded-xl border-2 text-left transition-all"
+                        class="p-3 sm:p-4 rounded-xl border-2 text-left transition-all"
                         :class="[
                             selectedFormat === format.id
                                 ? 'border-violet-500 bg-violet-50'
@@ -86,17 +86,17 @@ const handleExport = () => {
                         ]"
                         @click="selectedFormat = format.id"
                     >
-                        <div class="text-2xl mb-2">{{ format.icon }}</div>
-                        <div class="font-medium text-gray-900">{{ format.name }}</div>
-                        <div class="text-xs text-gray-500 mt-1">{{ format.description }}</div>
+                        <div class="text-xl sm:text-2xl mb-1 sm:mb-2">{{ format.icon }}</div>
+                        <div class="text-sm sm:text-base font-medium text-gray-900">{{ format.name }}</div>
+                        <div class="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1">{{ format.description }}</div>
                     </button>
                 </div>
             </div>
 
             <!-- Info -->
-            <div class="bg-gray-50 rounded-lg p-4 mb-6">
-                <h4 class="text-sm font-medium text-gray-700 mb-2">Detalii export</h4>
-                <ul class="space-y-1 text-sm text-gray-600">
+            <div class="bg-gray-50 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
+                <h4 class="text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">Detalii export</h4>
+                <ul class="space-y-0.5 sm:space-y-1 text-xs sm:text-sm text-gray-600">
                     <li>Dimensiune: <strong>{{ dimensionInfo }}</strong></li>
                     <li>Calitate: <strong>Înaltă (300 DPI)</strong></li>
                     <li v-if="selectedFormat === 'pdf'">
@@ -109,17 +109,17 @@ const handleExport = () => {
             </div>
 
             <!-- Actions -->
-            <div class="flex gap-3">
+            <div class="flex gap-2 sm:gap-3">
                 <button
                     type="button"
-                    class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                    class="flex-1 px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
                     @click="emit('close')"
                 >
                     Anulează
                 </button>
                 <button
                     type="button"
-                    class="flex-1 px-4 py-2 bg-gradient-to-r from-violet-600 to-purple-600 text-white rounded-lg hover:from-violet-700 hover:to-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    class="flex-1 px-3 sm:px-4 py-2 text-sm bg-gradient-to-r from-violet-600 to-purple-600 text-white rounded-lg hover:from-violet-700 hover:to-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     :disabled="isExporting"
                     @click="handleExport"
                 >

@@ -10,6 +10,10 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    compact: {
+        type: Boolean,
+        default: false,
+    },
 })
 
 const emit = defineEmits(['select'])
@@ -108,11 +112,11 @@ function isColorDark(color) {
         </div>
 
         <!-- Template Info -->
-        <div class="p-2 bg-white border-t border-gray-100">
-            <div class="text-sm font-medium text-gray-800 truncate">
+        <div class="p-1.5 sm:p-2 bg-white border-t border-gray-100">
+            <div class="text-[10px] sm:text-sm font-medium text-gray-800 truncate">
                 {{ template.name }}
             </div>
-            <div class="text-xs text-gray-500">
+            <div v-if="!compact" class="text-xs text-gray-500">
                 {{ template.style }}
             </div>
         </div>

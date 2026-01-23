@@ -141,11 +141,14 @@ const usePredesign = ref(Object.keys(props.sampleImages).length === 0);
 const useSamples = ref(Object.keys(props.sampleImages).length > 0);
 const imagePreview = ref(null);
 const showDesignerModal = ref(false);
+const showMobileToolbar = ref(false);
+const mobileCanvasScale = ref(1.5);
 const hasCustomDesign = ref(false);
 const designPreviewRef = ref(null);
 
 // Predesign state
 const selectedPredesignId = ref(null);
+const selectedPredesignSize = ref('business_card');
 const predesignNames = ref('');
 const predesignDate = ref('');
 const predesignPreviewRef = ref(null);
@@ -229,6 +232,7 @@ const openDesigner = () => {
 
 const closeDesigner = () => {
     showDesignerModal.value = false;
+    showMobileToolbar.value = false;
 };
 
 const handleSelectElement = (id) => {
@@ -308,6 +312,12 @@ const updatePredesignDate = () => {
     }
 };
 
+const selectPredesignSize = (size) => {
+    selectedPredesignSize.value = size.id;
+    setDimensions(size.id, size.width, size.height, size.unit);
+    savePredesign();
+};
+
 const savePredesign = () => {
     if (selectedPredesignId.value) {
         const designData = exportDesign();
@@ -316,8 +326,8 @@ const savePredesign = () => {
     }
 };
 
-// Auto-save predesign when names or template changes
-watch([selectedPredesignId, predesignNames, predesignDate], () => {
+// Auto-save predesign when names, template, or size changes
+watch([selectedPredesignId, predesignNames, predesignDate, selectedPredesignSize], () => {
     if (selectedPredesignId.value) {
         savePredesign();
     }
@@ -855,6 +865,28 @@ const submit = () => {
                                         </div>
                                     </div>
 
+                                    <!-- Size Selection -->
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-2">Dimensiune cartonaș:</label>
+                                        <div class="flex flex-wrap gap-2">
+                                            <button
+                                                v-for="size in designerSizes"
+                                                :key="size.id"
+                                                type="button"
+                                                @click="selectPredesignSize(size)"
+                                                class="px-3 py-2 rounded-lg text-sm font-medium transition-all"
+                                                :class="[
+                                                    selectedPredesignSize === size.id
+                                                        ? 'bg-violet-600 text-white shadow-md'
+                                                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                                                ]"
+                                            >
+                                                {{ size.name }}
+                                                <span class="text-xs opacity-75 ml-1">({{ size.width }}×{{ size.height }}mm)</span>
+                                            </button>
+                                        </div>
+                                    </div>
+
                                     <!-- Template Selection -->
                                     <div>
                                         <label class="block text-sm font-medium text-slate-700 mb-2">Alege un design:</label>
@@ -872,26 +904,26 @@ const submit = () => {
                                                 ]"
                                             >
                                                 <div
-                                                    class="aspect-[85/55] p-2 flex items-center"
+                                                    class="aspect-[85/55] p-2 flex items-center gap-1 overflow-hidden"
                                                     :style="template.background.type === 'gradient'
                                                         ? { background: `linear-gradient(${template.background.direction}, ${template.background.colors[0]}, ${template.background.colors[1]})` }
                                                         : { backgroundColor: template.background.color }"
                                                 >
-                                                    <div class="flex-1 flex flex-col items-center justify-center gap-0.5">
+                                                    <div class="flex-1 min-w-0 flex flex-col items-center justify-center gap-0.5">
                                                         <div
-                                                            class="text-[9px] font-semibold truncate"
+                                                            class="text-[9px] font-semibold truncate max-w-full px-1"
                                                             :style="{ color: template.textColor, fontFamily: template.primaryFont }"
                                                         >
                                                             {{ predesignNames || 'Ana & Mihai' }}
                                                         </div>
                                                         <div
-                                                            class="text-[6px] truncate"
+                                                            class="text-[6px] truncate max-w-full px-1"
                                                             :style="{ color: template.accentColor, fontFamily: template.secondaryFont }"
                                                         >
                                                             {{ predesignDate || '12 August 2026' }}
                                                         </div>
                                                     </div>
-                                                    <div class="flex flex-col items-center gap-0.5">
+                                                    <div class="flex-shrink-0 flex flex-col items-center gap-0.5">
                                                         <div
                                                             class="w-6 h-6 rounded flex items-center justify-center text-[5px]"
                                                             :style="{ backgroundColor: template.background.type === 'solid' && template.textColor === '#FFFFFF' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.1)', color: template.textColor }"
@@ -907,59 +939,49 @@ const submit = () => {
                                         </div>
                                     </div>
 
-                                    <!-- Preview -->
-                                    <div v-if="selectedPredesignId" class="p-4 bg-slate-50 rounded-xl">
-                                        <div class="flex items-center justify-between mb-3">
-                                            <p class="text-sm font-medium text-slate-700">Preview:</p>
+                                    <!-- Confirmation -->
+                                    <div v-if="selectedPredesignId" class="p-4 bg-emerald-50 rounded-xl">
+                                        <div class="flex items-center gap-3">
+                                            <div class="flex-shrink-0 w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center">
+                                                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                                </svg>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <p class="text-sm font-medium text-emerald-800">Design selectat</p>
+                                                <p class="text-xs text-emerald-600 truncate">{{ selectedPredesign?.name }}</p>
+                                            </div>
                                             <button
                                                 type="button"
-                                                @click="showFullscreenPreview = true"
-                                                class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-violet-600 hover:text-violet-700 hover:bg-violet-50 rounded-lg transition-colors"
+                                                @click="openDesigner"
+                                                class="flex-shrink-0 px-3 py-1.5 text-xs font-medium text-emerald-700 bg-emerald-100 hover:bg-emerald-200 rounded-lg transition-colors"
                                             >
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-                                                </svg>
-                                                Ecran complet
+                                                Previzualizare
                                             </button>
-                                        </div>
-                                        <div class="flex justify-center">
-                                            <CardCanvas
-                                                ref="predesignPreviewRef"
-                                                :design="cardDesign"
-                                                :qr-url="qrUrl"
-                                                :scale="2"
-                                                :interactive="false"
-                                            />
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- Designer Option -->
                                 <div v-else-if="useDesigner" class="space-y-4">
-                                    <!-- Design Preview (if has design) -->
-                                    <div v-if="hasCustomDesign" class="relative p-4 bg-slate-50 rounded-xl">
-                                        <div class="flex items-center gap-4">
-                                            <div class="flex-shrink-0">
-                                                <CardCanvas
-                                                    ref="designPreviewRef"
-                                                    :design="cardDesign"
-                                                    :qr-url="qrUrl"
-                                                    :scale="1"
-                                                    :interactive="false"
-                                                />
+                                    <!-- Confirmation (if has design) -->
+                                    <div v-if="hasCustomDesign" class="p-4 bg-emerald-50 rounded-xl">
+                                        <div class="flex items-center gap-3">
+                                            <div class="flex-shrink-0 w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center">
+                                                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                                </svg>
                                             </div>
-                                            <div class="flex-1">
-                                                <p class="text-sm font-medium text-slate-900">Design personalizat</p>
-                                                <p class="text-xs text-slate-500 mt-1">
-                                                    {{ cardDesign.dimensions.width }} × {{ cardDesign.dimensions.height }} {{ cardDesign.dimensions.unit }}
-                                                </p>
+                                            <div class="flex-1 min-w-0">
+                                                <p class="text-sm font-medium text-emerald-800">Design personalizat creat</p>
+                                                <p class="text-xs text-emerald-600">{{ cardDesign.dimensions.width }}×{{ cardDesign.dimensions.height }} {{ cardDesign.dimensions.unit }}</p>
                                             </div>
                                             <button
                                                 type="button"
                                                 @click="openDesigner"
-                                                class="px-3 py-1.5 text-sm text-violet-600 hover:text-violet-700 hover:bg-violet-50 rounded-lg transition-colors"
+                                                class="flex-shrink-0 px-3 py-1.5 text-xs font-medium text-emerald-700 bg-emerald-100 hover:bg-emerald-200 rounded-lg transition-colors"
                                             >
-                                                Editeaza
+                                                Editează
                                             </button>
                                         </div>
                                     </div>
@@ -969,15 +991,15 @@ const submit = () => {
                                         v-else
                                         type="button"
                                         @click="openDesigner"
-                                        class="w-full p-6 border-2 border-dashed border-violet-300 rounded-xl text-center hover:border-violet-400 hover:bg-violet-50/50 transition-all group"
+                                        class="w-full p-5 border-2 border-dashed border-violet-300 rounded-xl text-center hover:border-violet-400 hover:bg-violet-50/50 transition-all group"
                                     >
-                                        <div class="w-12 h-12 mx-auto rounded-full bg-violet-100 flex items-center justify-center group-hover:bg-violet-200 transition-colors">
-                                            <svg class="w-6 h-6 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div class="w-10 h-10 mx-auto rounded-full bg-violet-100 flex items-center justify-center group-hover:bg-violet-200 transition-colors">
+                                            <svg class="w-5 h-5 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                             </svg>
                                         </div>
-                                        <p class="mt-3 text-sm font-semibold text-violet-600">Deschide Designer-ul</p>
-                                        <p class="mt-1 text-xs text-slate-500">Creeaza un design unic pentru cartonasul tau QR</p>
+                                        <p class="mt-2 text-sm font-semibold text-violet-600">Deschide Designer-ul</p>
+                                        <p class="mt-1 text-xs text-slate-500">Creează un design unic</p>
                                     </button>
                                 </div>
 
@@ -1121,44 +1143,44 @@ const submit = () => {
                     class="fixed inset-0 z-[100] bg-gray-100"
                 >
                     <!-- Designer Header -->
-                    <header class="bg-white border-b border-gray-200 px-4 py-3">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-4">
+                    <header class="bg-white border-b border-gray-200 px-3 sm:px-4 py-2 sm:py-3">
+                        <div class="flex items-center justify-between gap-2">
+                            <div class="flex items-center gap-2 sm:gap-4 min-w-0">
                                 <button
                                     type="button"
                                     @click="closeDesigner"
-                                    class="text-gray-500 hover:text-gray-700 transition-colors"
+                                    class="flex-shrink-0 p-1 text-gray-500 hover:text-gray-700 transition-colors"
                                 >
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                 </button>
-                                <h1 class="text-lg font-semibold text-gray-900">
+                                <h1 class="text-sm sm:text-lg font-semibold text-gray-900 truncate">
                                     Designer Cartonas QR
                                 </h1>
                             </div>
 
-                            <div class="flex items-center gap-3">
+                            <div class="flex items-center gap-1 sm:gap-3 flex-shrink-0">
                                 <button
                                     type="button"
-                                    class="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                                    class="hidden sm:block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
                                     @click="handleExport"
                                 >
                                     Export PDF
                                 </button>
                                 <button
                                     type="button"
-                                    class="px-4 py-2 text-sm bg-gradient-to-r from-violet-600 to-purple-600 text-white rounded-lg hover:from-violet-700 hover:to-purple-700 transition-colors"
+                                    class="px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-gradient-to-r from-violet-600 to-purple-600 text-white rounded-lg hover:from-violet-700 hover:to-purple-700 transition-colors whitespace-nowrap"
                                     @click="saveDesign"
                                 >
-                                    Salveaza Design
+                                    Salveaza
                                 </button>
                             </div>
                         </div>
                     </header>
 
-                    <!-- Designer Content -->
-                    <div class="flex h-[calc(100vh-65px)]">
+                    <!-- Designer Content - Desktop Layout -->
+                    <div class="hidden md:flex h-[calc(100vh-57px)]">
                         <!-- Sidebar -->
                         <aside class="w-80 flex-shrink-0 border-r border-gray-200 bg-white overflow-hidden">
                             <DesignToolbar
@@ -1202,6 +1224,126 @@ const submit = () => {
                                 </div>
                             </div>
                         </main>
+                    </div>
+
+                    <!-- Designer Content - Mobile Layout -->
+                    <div class="md:hidden flex flex-col h-[calc(100vh-49px)]">
+                        <!-- Canvas Area - Scrollable -->
+                        <div class="flex-1 overflow-auto bg-gradient-to-b from-gray-50 to-gray-100">
+                            <!-- Zoom Controls - Fixed at top -->
+                            <div class="sticky top-0 z-10 flex items-center justify-center gap-2 py-2 bg-white/80 backdrop-blur-sm border-b border-gray-200">
+                                <button
+                                    type="button"
+                                    @click="mobileCanvasScale = Math.max(1, mobileCanvasScale - 0.5)"
+                                    class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-lg text-gray-600 active:bg-gray-200"
+                                    :disabled="mobileCanvasScale <= 1"
+                                    :class="{ 'opacity-40': mobileCanvasScale <= 1 }"
+                                >
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                                    </svg>
+                                </button>
+                                <span class="text-xs font-medium text-gray-600 min-w-[4rem] text-center">Zoom {{ Math.round(mobileCanvasScale * 100 / 3) }}%</span>
+                                <button
+                                    type="button"
+                                    @click="mobileCanvasScale = Math.min(3.5, mobileCanvasScale + 0.5)"
+                                    class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-lg text-gray-600 active:bg-gray-200"
+                                    :disabled="mobileCanvasScale >= 3.5"
+                                    :class="{ 'opacity-40': mobileCanvasScale >= 3.5 }"
+                                >
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <!-- Scrollable Card Container -->
+                            <div class="p-4 overflow-x-auto">
+                                <div class="flex flex-col items-center min-w-fit">
+                                    <!-- Card Preview -->
+                                    <div class="bg-white p-3 rounded-xl shadow-lg">
+                                        <CardCanvas
+                                            ref="cardCanvasRef"
+                                            :design="cardDesign"
+                                            :qr-url="qrUrl"
+                                            :scale="mobileCanvasScale"
+                                            :selected-element-id="selectedElementId"
+                                            :interactive="true"
+                                            @select-element="handleSelectElement"
+                                        />
+                                    </div>
+
+                                    <!-- Dimensions & Hint -->
+                                    <div class="text-center mt-3">
+                                        <div class="text-xs text-gray-500">
+                                            {{ cardDesign.dimensions.width }} × {{ cardDesign.dimensions.height }} {{ cardDesign.dimensions.unit }}
+                                        </div>
+                                        <div class="text-[10px] text-gray-400 mt-1">
+                                            Atinge un element pentru a-l edita
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mobile Toolbar Toggle Button -->
+                        <button
+                            type="button"
+                            @click="showMobileToolbar = !showMobileToolbar"
+                            class="flex items-center justify-center gap-2 py-3.5 bg-white border-t border-gray-200 text-sm font-medium shadow-[0_-2px_10px_rgba(0,0,0,0.1)]"
+                            :class="showMobileToolbar ? 'text-violet-600' : 'text-gray-700'"
+                        >
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                            </svg>
+                            {{ showMobileToolbar ? 'Ascunde opțiuni' : 'Personalizează' }}
+                            <svg
+                                class="w-4 h-4 transition-transform"
+                                :class="{ 'rotate-180': showMobileToolbar }"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                            </svg>
+                        </button>
+
+                        <!-- Mobile Bottom Sheet Toolbar -->
+                        <Transition
+                            enter-active-class="transition ease-out duration-200"
+                            enter-from-class="translate-y-full"
+                            enter-to-class="translate-y-0"
+                            leave-active-class="transition ease-in duration-150"
+                            leave-from-class="translate-y-0"
+                            leave-to-class="translate-y-full"
+                        >
+                            <div
+                                v-if="showMobileToolbar"
+                                class="bg-white border-t border-gray-200 max-h-[60vh] overflow-hidden flex flex-col"
+                            >
+                                <DesignToolbar
+                                    :design="cardDesign"
+                                    :templates="designerTemplates"
+                                    :fonts="designerFonts"
+                                    :sizes="designerSizes"
+                                    :selected-element-id="selectedElementId"
+                                    :selected-template="selectedTemplateId"
+                                    :mobile="true"
+                                    @update-dimensions="handleUpdateDimensions"
+                                    @update-background="handleUpdateBackground"
+                                    @update-text-content="updateTextContent"
+                                    @update-text-style="updateTextStyle"
+                                    @update-text-position="updateTextPosition"
+                                    @update-qr-position="updateQrPosition"
+                                    @update-qr-size="updateQrSize"
+                                    @update-qr-colors="updateQrColors"
+                                    @apply-template="handleApplyTemplate"
+                                    @select-element="handleSelectElement"
+                                    @save="saveDesign"
+                                    @export="handleExport"
+                                />
+                            </div>
+                        </Transition>
                     </div>
 
                     <!-- Export Modal -->

@@ -92,23 +92,23 @@ const gradientPreviewStyle = computed(() => {
 
 <template>
     <div class="color-picker">
-        <label class="block text-sm font-medium text-gray-700 mb-2">
+        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
             {{ label }}
         </label>
 
         <!-- Type Toggle -->
-        <div v-if="showGradient" class="flex rounded-lg bg-gray-100 p-1 mb-4">
+        <div v-if="showGradient" class="flex rounded-lg bg-gray-100 p-0.5 sm:p-1 mb-3 sm:mb-4">
             <button
                 type="button"
-                class="flex-1 py-2 px-3 text-sm font-medium rounded-md transition-all"
+                class="flex-1 py-1.5 sm:py-2 px-2 sm:px-3 text-[10px] sm:text-sm font-medium rounded-md transition-all"
                 :class="localType === 'solid' ? 'bg-white shadow text-gray-900' : 'text-gray-600 hover:text-gray-900'"
                 @click="setType('solid')"
             >
-                Culoare solidă
+                Culoare
             </button>
             <button
                 type="button"
-                class="flex-1 py-2 px-3 text-sm font-medium rounded-md transition-all"
+                class="flex-1 py-1.5 sm:py-2 px-2 sm:px-3 text-[10px] sm:text-sm font-medium rounded-md transition-all"
                 :class="localType === 'gradient' ? 'bg-white shadow text-gray-900' : 'text-gray-600 hover:text-gray-900'"
                 @click="setType('gradient')"
             >
@@ -117,14 +117,14 @@ const gradientPreviewStyle = computed(() => {
         </div>
 
         <!-- Solid Color Picker -->
-        <div v-if="localType === 'solid'" class="space-y-3">
+        <div v-if="localType === 'solid'" class="space-y-2 sm:space-y-3">
             <!-- Preset Colors -->
-            <div class="grid grid-cols-6 gap-2">
+            <div class="grid grid-cols-6 gap-1.5 sm:gap-2">
                 <button
                     v-for="color in presetColors"
                     :key="color"
                     type="button"
-                    class="w-8 h-8 rounded-lg border-2 transition-all hover:scale-110"
+                    class="w-6 h-6 sm:w-8 sm:h-8 rounded-lg border-2 transition-all hover:scale-110"
                     :class="localColor === color ? 'border-violet-500 ring-2 ring-violet-200' : 'border-gray-200'"
                     :style="{ backgroundColor: color }"
                     @click="selectPresetColor(color)"
@@ -136,26 +136,26 @@ const gradientPreviewStyle = computed(() => {
                 <input
                     type="color"
                     v-model="localColor"
-                    class="w-10 h-10 rounded cursor-pointer border-0"
+                    class="w-8 h-8 sm:w-10 sm:h-10 rounded cursor-pointer border-0"
                 />
                 <input
                     type="text"
                     v-model="localColor"
-                    class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
+                    class="flex-1 px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
                     placeholder="#FFFFFF"
                 />
             </div>
         </div>
 
         <!-- Gradient Picker -->
-        <div v-else class="space-y-3">
+        <div v-else class="space-y-2 sm:space-y-3">
             <!-- Gradient Presets -->
-            <div class="grid grid-cols-4 gap-2">
+            <div class="grid grid-cols-4 gap-1.5 sm:gap-2">
                 <button
                     v-for="preset in gradientPresets"
                     :key="preset.name"
                     type="button"
-                    class="h-10 rounded-lg border-2 transition-all hover:scale-105"
+                    class="h-8 sm:h-10 rounded-lg border-2 transition-all hover:scale-105"
                     :class="
                         localGradientColor1 === preset.colors[0] && localGradientColor2 === preset.colors[1]
                             ? 'border-violet-500 ring-2 ring-violet-200'
@@ -168,38 +168,38 @@ const gradientPreviewStyle = computed(() => {
             </div>
 
             <!-- Custom Gradient Colors -->
-            <div class="flex items-center gap-3">
-                <div class="flex items-center gap-1">
+            <div class="flex items-center gap-2 sm:gap-3">
+                <div class="flex items-center gap-0.5 sm:gap-1">
                     <input
                         type="color"
                         v-model="localGradientColor1"
-                        class="w-8 h-8 rounded cursor-pointer border-0"
+                        class="w-6 h-6 sm:w-8 sm:h-8 rounded cursor-pointer border-0"
                     />
-                    <span class="text-xs text-gray-500">Start</span>
+                    <span class="text-[10px] sm:text-xs text-gray-500">Start</span>
                 </div>
                 <div
-                    class="flex-1 h-6 rounded"
+                    class="flex-1 h-5 sm:h-6 rounded"
                     :style="gradientPreviewStyle"
                 />
-                <div class="flex items-center gap-1">
-                    <span class="text-xs text-gray-500">End</span>
+                <div class="flex items-center gap-0.5 sm:gap-1">
+                    <span class="text-[10px] sm:text-xs text-gray-500">End</span>
                     <input
                         type="color"
                         v-model="localGradientColor2"
-                        class="w-8 h-8 rounded cursor-pointer border-0"
+                        class="w-6 h-6 sm:w-8 sm:h-8 rounded cursor-pointer border-0"
                     />
                 </div>
             </div>
 
             <!-- Gradient Direction -->
             <div>
-                <span class="text-xs text-gray-500 mb-1 block">Direcție gradient</span>
-                <div class="flex gap-1 flex-wrap">
+                <span class="text-[10px] sm:text-xs text-gray-500 mb-1 block">Direcție gradient</span>
+                <div class="flex gap-0.5 sm:gap-1 flex-wrap">
                     <button
                         v-for="dir in gradientDirections"
                         :key="dir.value"
                         type="button"
-                        class="w-8 h-8 rounded border text-sm transition-all"
+                        class="w-6 h-6 sm:w-8 sm:h-8 rounded border text-xs sm:text-sm transition-all"
                         :class="
                             localGradientDirection === dir.value
                                 ? 'border-violet-500 bg-violet-50 text-violet-700'

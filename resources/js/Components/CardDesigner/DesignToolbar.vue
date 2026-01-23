@@ -31,6 +31,10 @@ const props = defineProps({
         type: String,
         default: null,
     },
+    mobile: {
+        type: Boolean,
+        default: false,
+    },
 })
 
 const emit = defineEmits([
@@ -83,14 +87,14 @@ const handleTemplateSelect = (template) => {
 </script>
 
 <template>
-    <div class="design-toolbar h-full flex flex-col bg-white">
+    <div class="design-toolbar h-full flex flex-col bg-white" :class="{ 'max-h-[60vh]': mobile }">
         <!-- Tabs -->
-        <div class="flex border-b border-gray-200 px-2">
+        <div class="flex border-b border-gray-200 px-2 flex-shrink-0">
             <button
                 v-for="tab in tabs"
                 :key="tab.id"
                 type="button"
-                class="flex-1 py-3 px-2 text-xs font-medium transition-colors border-b-2 -mb-px"
+                class="flex-1 py-2.5 sm:py-3 px-1 sm:px-2 text-[10px] sm:text-xs font-medium transition-colors border-b-2 -mb-px"
                 :class="[
                     activeTab === tab.id
                         ? 'border-violet-500 text-violet-600'
@@ -103,18 +107,19 @@ const handleTemplateSelect = (template) => {
         </div>
 
         <!-- Tab Content -->
-        <div class="flex-1 overflow-y-auto p-4">
+        <div class="flex-1 overflow-y-auto p-3 sm:p-4">
             <!-- Templates Tab -->
-            <div v-if="activeTab === 'templates'" class="space-y-4">
-                <p class="text-sm text-gray-600">
+            <div v-if="activeTab === 'templates'" class="space-y-3 sm:space-y-4">
+                <p class="text-xs sm:text-sm text-gray-600">
                     Alege un template sau începe de la zero
                 </p>
-                <div class="grid grid-cols-2 gap-3">
+                <div class="grid grid-cols-3 sm:grid-cols-2 gap-2 sm:gap-3">
                     <TemplateCard
                         v-for="template in templates"
                         :key="template.id"
                         :template="template"
                         :selected="selectedTemplate === template.id"
+                        :compact="mobile"
                         @select="handleTemplateSelect"
                     />
                 </div>
@@ -139,15 +144,15 @@ const handleTemplateSelect = (template) => {
             </div>
 
             <!-- Elements Tab -->
-            <div v-else-if="activeTab === 'elements'" class="space-y-6">
+            <div v-else-if="activeTab === 'elements'" class="space-y-4 sm:space-y-6">
                 <!-- Instructions -->
-                <div v-if="!selectedElementId" class="text-center py-8">
+                <div v-if="!selectedElementId" class="text-center py-4 sm:py-8">
                     <div class="text-gray-400 mb-2">
-                        <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-8 h-8 sm:w-12 sm:h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
                         </svg>
                     </div>
-                    <p class="text-sm text-gray-500">
+                    <p class="text-xs sm:text-sm text-gray-500">
                         Click pe un element din preview pentru a-l edita
                     </p>
                 </div>
@@ -174,14 +179,14 @@ const handleTemplateSelect = (template) => {
                 </div>
 
                 <!-- Quick Access to All Elements -->
-                <div class="border-t pt-4 mt-4">
-                    <h4 class="text-sm font-medium text-gray-700 mb-2">Toate elementele</h4>
+                <div class="border-t pt-3 sm:pt-4 mt-3 sm:mt-4">
+                    <h4 class="text-xs sm:text-sm font-medium text-gray-700 mb-2">Toate elementele</h4>
                     <div class="space-y-1">
                         <button
                             v-for="element in design.textElements"
                             :key="element.id"
                             type="button"
-                            class="w-full p-2 text-left text-sm rounded-lg transition-colors"
+                            class="w-full p-1.5 sm:p-2 text-left text-xs sm:text-sm rounded-lg transition-colors"
                             :class="[
                                 selectedElementId === element.id
                                     ? 'bg-violet-50 text-violet-700'
@@ -190,11 +195,11 @@ const handleTemplateSelect = (template) => {
                             @click="emit('select-element', element.id)"
                         >
                             <span class="font-medium">{{ element.id === 'names' ? 'Nume' : element.id === 'date' ? 'Dată' : element.id === 'message' ? 'Mesaj' : 'Instrucțiuni' }}</span>
-                            <span class="text-gray-400 ml-2">{{ element.content }}</span>
+                            <span class="text-gray-400 ml-1 sm:ml-2 text-[10px] sm:text-sm truncate">{{ element.content }}</span>
                         </button>
                         <button
                             type="button"
-                            class="w-full p-2 text-left text-sm rounded-lg transition-colors"
+                            class="w-full p-1.5 sm:p-2 text-left text-xs sm:text-sm rounded-lg transition-colors"
                             :class="[
                                 selectedElementId === 'qr'
                                     ? 'bg-violet-50 text-violet-700'
@@ -209,8 +214,8 @@ const handleTemplateSelect = (template) => {
             </div>
         </div>
 
-        <!-- Actions -->
-        <div class="border-t border-gray-200 p-4 space-y-2">
+        <!-- Actions - Hidden on mobile (buttons are in header) -->
+        <div v-if="!mobile" class="border-t border-gray-200 p-4 space-y-2 flex-shrink-0">
             <button
                 type="button"
                 class="w-full px-4 py-2.5 bg-gradient-to-r from-violet-600 to-purple-600 text-white rounded-lg hover:from-violet-700 hover:to-purple-700 transition-colors font-medium"

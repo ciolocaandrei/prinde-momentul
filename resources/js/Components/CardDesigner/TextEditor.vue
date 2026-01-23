@@ -62,33 +62,33 @@ const fontSizes = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 42, 48]
 </script>
 
 <template>
-    <div class="text-editor space-y-4">
+    <div class="text-editor space-y-3 sm:space-y-4">
         <div class="flex items-center justify-between">
-            <h4 class="font-medium text-gray-900">
+            <h4 class="text-sm sm:text-base font-medium text-gray-900">
                 {{ elementLabels[element.id] || element.id }}
             </h4>
-            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+            <span class="text-[10px] sm:text-xs text-gray-500 bg-gray-100 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">
                 Text
             </span>
         </div>
 
         <!-- Content -->
         <div>
-            <label class="block text-sm text-gray-600 mb-1">Conținut</label>
+            <label class="block text-xs sm:text-sm text-gray-600 mb-1">Conținut</label>
             <input
                 type="text"
                 v-model="localContent"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
+                class="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
                 @input="updateContent"
             />
         </div>
 
         <!-- Font Family -->
         <div>
-            <label class="block text-sm text-gray-600 mb-1">Font</label>
+            <label class="block text-xs sm:text-sm text-gray-600 mb-1">Font</label>
             <select
                 v-model="localFontFamily"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
+                class="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
                 @change="updateStyle('fontFamily', localFontFamily)"
             >
                 <option
@@ -103,12 +103,12 @@ const fontSizes = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 42, 48]
         </div>
 
         <!-- Font Size & Weight -->
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-2 gap-2 sm:gap-3">
             <div>
-                <label class="block text-sm text-gray-600 mb-1">Mărime</label>
+                <label class="block text-xs sm:text-sm text-gray-600 mb-1">Mărime</label>
                 <select
                     v-model.number="localFontSize"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
+                    class="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
                     @change="updateStyle('fontSize', localFontSize)"
                 >
                     <option v-for="size in fontSizes" :key="size" :value="size">
@@ -117,10 +117,10 @@ const fontSizes = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 42, 48]
                 </select>
             </div>
             <div>
-                <label class="block text-sm text-gray-600 mb-1">Grosime</label>
+                <label class="block text-xs sm:text-sm text-gray-600 mb-1">Grosime</label>
                 <select
                     v-model="localFontWeight"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
+                    class="w-full px-2.5 sm:px-3 py-1.5 sm:py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
                     @change="updateStyle('fontWeight', localFontWeight)"
                 >
                     <option value="normal">Normal</option>
@@ -133,14 +133,14 @@ const fontSizes = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 42, 48]
 
         <!-- Text Color -->
         <div>
-            <label class="block text-sm text-gray-600 mb-1">Culoare text</label>
+            <label class="block text-xs sm:text-sm text-gray-600 mb-1">Culoare text</label>
             <div class="flex items-center gap-2">
                 <div class="grid grid-cols-6 gap-1 flex-1">
                     <button
                         v-for="color in presetColors"
                         :key="color"
                         type="button"
-                        class="w-6 h-6 rounded border-2 transition-all hover:scale-110"
+                        class="w-5 h-5 sm:w-6 sm:h-6 rounded border-2 transition-all hover:scale-110"
                         :class="localColor === color ? 'border-violet-500' : 'border-gray-200'"
                         :style="{ backgroundColor: color }"
                         @click="localColor = color; updateStyle('color', color)"
@@ -149,7 +149,7 @@ const fontSizes = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 42, 48]
                 <input
                     type="color"
                     v-model="localColor"
-                    class="w-8 h-8 rounded cursor-pointer border-0"
+                    class="w-7 h-7 sm:w-8 sm:h-8 rounded cursor-pointer border-0"
                     @input="updateStyle('color', localColor)"
                 />
             </div>
@@ -157,10 +157,10 @@ const fontSizes = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 42, 48]
 
         <!-- Position -->
         <div>
-            <label class="block text-sm text-gray-600 mb-1">Poziție (%)</label>
-            <div class="grid grid-cols-2 gap-3">
+            <label class="block text-xs sm:text-sm text-gray-600 mb-1">Poziție (%)</label>
+            <div class="grid grid-cols-2 gap-2 sm:gap-3">
                 <div>
-                    <label class="text-xs text-gray-500">X (orizontal)</label>
+                    <label class="text-[10px] sm:text-xs text-gray-500">X (orizontal)</label>
                     <input
                         type="range"
                         v-model.number="localPositionX"
@@ -169,10 +169,10 @@ const fontSizes = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 42, 48]
                         class="w-full accent-violet-500"
                         @input="updatePosition"
                     />
-                    <div class="text-xs text-center text-gray-500">{{ localPositionX }}%</div>
+                    <div class="text-[10px] sm:text-xs text-center text-gray-500">{{ localPositionX }}%</div>
                 </div>
                 <div>
-                    <label class="text-xs text-gray-500">Y (vertical)</label>
+                    <label class="text-[10px] sm:text-xs text-gray-500">Y (vertical)</label>
                     <input
                         type="range"
                         v-model.number="localPositionY"
@@ -181,7 +181,7 @@ const fontSizes = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 42, 48]
                         class="w-full accent-violet-500"
                         @input="updatePosition"
                     />
-                    <div class="text-xs text-center text-gray-500">{{ localPositionY }}%</div>
+                    <div class="text-[10px] sm:text-xs text-center text-gray-500">{{ localPositionY }}%</div>
                 </div>
             </div>
         </div>
