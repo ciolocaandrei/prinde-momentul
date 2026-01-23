@@ -537,6 +537,12 @@ const submit = () => {
                         </div>
                         <span class="text-xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">Prinde Momentul</span>
                     </Link>
+                    <Link
+                        :href="route('contact')"
+                        class="text-sm font-medium text-slate-600 hover:text-violet-600 transition-colors"
+                    >
+                        Contact
+                    </Link>
                 </div>
             </div>
         </header>
@@ -1283,6 +1289,11 @@ const submit = () => {
         <!-- Footer -->
         <footer class="border-t border-slate-200 bg-white/50 py-8 mt-12">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-500">
+                <div class="flex items-center justify-center gap-4 mb-3">
+                    <Link href="/" class="hover:text-violet-600 transition-colors">Acasă</Link>
+                    <span class="text-slate-300">·</span>
+                    <Link :href="route('contact')" class="hover:text-violet-600 transition-colors">Contact</Link>
+                </div>
                 <p>&copy; {{ new Date().getFullYear() }} Prinde Momentul. Toate drepturile rezervate.</p>
             </div>
         </footer>

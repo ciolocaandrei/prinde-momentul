@@ -46,7 +46,13 @@ const mobileMenuOpen = ref(false);
                             :href="route('preorder.create')"
                             class="text-sm font-medium text-slate-600 hover:text-violet-600 transition-colors"
                         >
-                            Comanda acum
+                            Comandă acum
+                        </Link>
+                        <Link
+                            :href="route('contact')"
+                            class="text-sm font-medium text-slate-600 hover:text-violet-600 transition-colors"
+                        >
+                            Contact
                         </Link>
                         <Link
                             v-if="canLogin && $page.props.auth.user"
@@ -94,7 +100,13 @@ const mobileMenuOpen = ref(false);
                             :href="route('preorder.create')"
                             class="block rounded-xl bg-slate-50 px-4 py-3 text-base font-medium text-slate-700 hover:bg-slate-100"
                         >
-                            Comanda acum
+                            Comandă acum
+                        </Link>
+                        <Link
+                            :href="route('contact')"
+                            class="block rounded-xl bg-slate-50 px-4 py-3 text-base font-medium text-slate-700 hover:bg-slate-100"
+                        >
+                            Contact
                         </Link>
                         <Link
                             v-if="canLogin && $page.props.auth.user"

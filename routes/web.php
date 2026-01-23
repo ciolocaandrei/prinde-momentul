@@ -22,6 +22,10 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/contact', function () {
+    return Inertia::render('Contact');
+})->name('contact');
+
 // Guest Upload Routes (Public - No Auth Required)
 Route::get('/upload/{code}', [GuestUploadController::class, 'show'])->name('guest.upload');
 Route::post('/upload/{code}', [GuestUploadController::class, 'upload'])->name('guest.upload.store');
