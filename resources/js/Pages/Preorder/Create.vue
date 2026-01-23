@@ -542,15 +542,108 @@ const submit = () => {
         </header>
 
         <!-- Main Content -->
-        <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
             <!-- Hero Section -->
-            <div class="text-center mb-12">
-                <h1 class="text-4xl font-bold text-slate-900 mb-4">
-                    Rezerva serviciul nostru
+            <div class="text-center mb-10 sm:mb-16">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-100 text-violet-700 text-sm font-medium mb-4">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                    Folosit la peste 150+ evenimente
+                </div>
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
+                    Toate fotografiile invitaților,<br class="hidden sm:block" />
+                    <span class="bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">într-un singur loc</span>
                 </h1>
-                <p class="text-lg text-slate-600 max-w-2xl mx-auto">
-                    Completeaza formularul de mai jos pentru a face o precomanda. Te vom contacta in cel mai scurt timp posibil.
+                <p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto mb-6">
+                    Oferă invitaților un cod QR elegant. Ei încarcă pozele de pe telefon, tu primești toate amintirile într-o galerie privată.
                 </p>
+                <div class="flex flex-wrap justify-center gap-4 text-sm text-slate-500">
+                    <div class="flex items-center gap-1.5">
+                        <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        Fără aplicație de instalat
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        Galerie privată securizată
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        Cartonașe QR personalizate
+                    </div>
+                </div>
+            </div>
+
+            <!-- How It Works -->
+            <div class="mb-10 sm:mb-16">
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-900 text-center mb-8">Cum funcționează?</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <div class="w-12 h-12 mx-auto rounded-full bg-violet-100 flex items-center justify-center text-violet-600 font-bold text-lg mb-3">1</div>
+                        <h3 class="font-semibold text-slate-900 mb-1">Primești cartonașele QR</h3>
+                        <p class="text-sm text-slate-500">Cartonașe elegante personalizate cu numele și data evenimentului tău</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-12 h-12 mx-auto rounded-full bg-violet-100 flex items-center justify-center text-violet-600 font-bold text-lg mb-3">2</div>
+                        <h3 class="font-semibold text-slate-900 mb-1">Invitații scanează și încarcă</h3>
+                        <p class="text-sm text-slate-500">Fără aplicație - funcționează direct din browser pe orice telefon</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-12 h-12 mx-auto rounded-full bg-violet-100 flex items-center justify-center text-violet-600 font-bold text-lg mb-3">3</div>
+                        <h3 class="font-semibold text-slate-900 mb-1">Tu ai toate pozele</h3>
+                        <p class="text-sm text-slate-500">Accesezi galeria privată și descarci toate amintirile</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Proof -->
+            <div class="mb-10 sm:mb-16 bg-white rounded-2xl p-6 sm:p-8 shadow-sm ring-1 ring-slate-900/5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-pink-400 to-rose-400 flex items-center justify-center text-white font-semibold">AM</div>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-1 mb-1">
+                                <svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                                <svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                                <svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                                <svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                                <svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                            </div>
+                            <p class="text-sm text-slate-600 italic">"Am strâns peste 400 de poze de la invitați! Cea mai bună idee pentru nuntă."</p>
+                            <p class="text-xs text-slate-400 mt-1">Ana & Mihai - Nuntă București</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-indigo-400 flex items-center justify-center text-white font-semibold">RC</div>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-1 mb-1">
+                                <svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                                <svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                                <svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                                <svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                                <svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                            </div>
+                            <p class="text-sm text-slate-600 italic">"Super simplu pentru invitați. Bunicii au reușit să trimită poze fără ajutor!"</p>
+                            <p class="text-xs text-slate-400 mt-1">Raluca & Cristi - Nuntă Cluj</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Section Title -->
+            <div class="text-center mb-8">
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mb-2">Rezervă acum pentru evenimentul tău</h2>
+                <p class="text-slate-500">Completează formularul și te contactăm în 24h pentru confirmare</p>
             </div>
 
             <form @submit.prevent="submit" class="space-y-8">
@@ -1098,27 +1191,93 @@ const submit = () => {
                     </div>
                 </div>
 
+                <!-- Guarantee -->
+                <div class="rounded-2xl bg-gradient-to-r from-emerald-50 to-teal-50 p-6 ring-1 ring-emerald-200">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-emerald-900 mb-1">Garanție 100% satisfacție</h3>
+                            <p class="text-sm text-emerald-700">Dacă nu ești mulțumit de serviciu, îți returnăm banii integral. Fără întrebări, fără bătăi de cap.</p>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Submit Button -->
-                <div class="flex items-center justify-end gap-x-4 pt-4">
+                <div class="flex flex-col sm:flex-row items-center justify-end gap-4 pt-4">
                     <Link
                         href="/"
-                        class="rounded-xl px-6 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100 transition-colors"
+                        class="order-2 sm:order-1 rounded-xl px-6 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100 transition-colors"
                     >
-                        Anuleaza
+                        Anulează
                     </Link>
                     <button
                         type="submit"
                         :disabled="form.processing || !form.terms_accepted"
-                        class="inline-flex items-center gap-x-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 hover:from-violet-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                        class="order-1 sm:order-2 w-full sm:w-auto inline-flex items-center justify-center gap-x-2 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 hover:from-violet-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                     >
                         <svg v-if="form.processing" class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        Trimite Precomanda
+                        Rezervă acum →
                     </button>
                 </div>
             </form>
+
+            <!-- FAQ Section -->
+            <div class="mt-16 mb-8">
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-900 text-center mb-8">Întrebări frecvente</h2>
+                <div class="space-y-4">
+                    <details class="group rounded-2xl bg-white shadow-sm ring-1 ring-slate-900/5">
+                        <summary class="flex items-center justify-between cursor-pointer p-5 font-medium text-slate-900">
+                            Ce este inclus în pachetul standard?
+                            <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </summary>
+                        <div class="px-5 pb-5 text-sm text-slate-600">
+                            Pachetul standard include: galerie foto privată pentru evenimentul tău, cod QR unic, stocare nelimitată pentru poze, acces 12 luni la galerie, și suport tehnic. Cartonașele QR printate se comandă separat.
+                        </div>
+                    </details>
+                    <details class="group rounded-2xl bg-white shadow-sm ring-1 ring-slate-900/5">
+                        <summary class="flex items-center justify-between cursor-pointer p-5 font-medium text-slate-900">
+                            Invitații trebuie să instaleze vreo aplicație?
+                            <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </summary>
+                        <div class="px-5 pb-5 text-sm text-slate-600">
+                            Nu! Invitații doar scanează codul QR cu telefonul și încarcă pozele direct din browser. Funcționează pe orice telefon, fără instalare.
+                        </div>
+                    </details>
+                    <details class="group rounded-2xl bg-white shadow-sm ring-1 ring-slate-900/5">
+                        <summary class="flex items-center justify-between cursor-pointer p-5 font-medium text-slate-900">
+                            Când primesc cartonașele QR?
+                            <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </summary>
+                        <div class="px-5 pb-5 text-sm text-slate-600">
+                            Cartonașele sunt livrate cu 5-7 zile înainte de eveniment. Pentru comenzi urgente, te rugăm să ne contactezi pentru opțiuni de livrare expresă.
+                        </div>
+                    </details>
+                    <details class="group rounded-2xl bg-white shadow-sm ring-1 ring-slate-900/5">
+                        <summary class="flex items-center justify-between cursor-pointer p-5 font-medium text-slate-900">
+                            Pot personaliza designul cartonașelor?
+                            <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </summary>
+                        <div class="px-5 pb-5 text-sm text-slate-600">
+                            Da! Poți alege dintr-o varietate de designuri pre-făcute sau poți folosi designer-ul nostru avansat pentru a crea un design unic. Adaugi numele, data, și alegi culorile care se potrivesc temei evenimentului.
+                        </div>
+                    </details>
+                </div>
+            </div>
         </main>
 
         <!-- Footer -->
